@@ -1,0 +1,231 @@
+%-*-latex-*-
+\sectionthree{Attacking the shift cipher}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Recall that for the shift cipher, we have
+\begin{align*}
+ E_k(x) &\equiv (x+k) \,\,\,(\operatorname{mod} 26) \\
+ D_k(x) &\equiv (x-k) \,\,\,(\operatorname{mod} 26)
+\end{align*}
+
+Since $0 \leq k \leq 25$, there are not many possible values for
+$k$. So you can try to apply
+\textit{all} the possible decryptions
+$D_0$, $D_1$, $D_2$, $\ldots$, $D_{25}$. Assuming the message is
+something Eve can read, all that is required is that Eve has
+enough time to read 26 messages. Easy!
+Since Eve is trying all keys, this is a brute force attack.
+
+But in fact Eve can do better, by using
+a heuristic approach based on probability.
+If the message is long enough, based
+on letter frequencies, heuristically, she can try to tabulate the
+frequencies of all the characters and then assume the most common
+occurring character is decrypted as \texttt{e} which is
+statistically the most commonly occurring letter in English.
+\sidenote{Too bad if the message is in Russian.} Of course knowing
+how to decrypt to \texttt{e} is sufficient for Eve to decrypt all
+the letters right?
+
+The following is a table of probabilities for each letter used in
+English.
+\[
+ \begin{tabular}{|c|c|}
+   \hline
+   % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   Letter & Probability \\
+   \hline
+   \texttt{e} &  0.127 \\ \hline
+   \texttt{t} &  0.091 \\
+   \texttt{a} &  0.082 \\
+   \texttt{o} &  0.075 \\
+   \texttt{i} &  0.070 \\
+   \texttt{n} &  0.067 \\
+   \texttt{s} &  0.063 \\
+   \texttt{h} &  0.061 \\
+   \texttt{r} &  0.060 \\ \hline
+   \texttt{d} &  0.043 \\
+   \texttt{l} &  0.040 \\ \hline
+   \texttt{c} &  0.028 \\
+   \texttt{u} &  0.028 \\
+   \texttt{m} &  0.024 \\
+   \texttt{w} &  0.023 \\
+   \texttt{f} &  0.022 \\
+   \texttt{g} &  0.020 \\
+   \texttt{y} &  0.020 \\
+   \texttt{p} &  0.019 \\
+   \texttt{b} &  0.015 \\ \hline
+   \texttt{v} &  0.010 \\
+   \texttt{k} &  0.008 \\
+   \texttt{j} &  0.002 \\
+   \texttt{x} &  0.001 \\
+   \texttt{q} &  0.001 \\
+   \texttt{z} &  0.001 \\
+   \hline
+ \end{tabular}
+\]
+
+Of course these are probabilities. It does not mean that the
+second most frequently occurring letter
+\textit{must} be \texttt{t}!
+I've divided up the probabilities into groups according to jumps
+in the values.
+
+It is also useful to know that besides commonly occurring letters,
+which \textit{pairs} of letters occurring frequently next to each
+other. These are called
+\defone{digrams}
+(or 2--grams). For three,
+they are called
+\defone{trigrams}
+(or 3--grams).
+The following is a
+table of commonly occurring digrams and trigrams listed in
+decreasing order of frequencies:
+
+\[
+ \begin{tabular}{|c|l|}
+   \hline
+   $n$ & $n$-grams (in decreasing order)\\
+   \hline
+   2 & \texttt{th he in er an re ed on es st en at to nt ha nd} \\
+     & \texttt{ou ea ng as or ti is et it ar te se hi of} \\
+     \hline
+   3 & \texttt{the ing and her ere ent tha nth was eth for dth} \\
+   \hline
+ \end{tabular}
+\]
+
+Here are the frequencies of the 2-grams (of course not all 2-grams, just the
+top few):
+\[
+ \begin{tabular}{|c|c|}
+   \hline
+   % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   2-gram & Probability \\
+   \hline
+\texttt{th} &  0.0271\\
+\texttt{he} &  0.0233\\
+\texttt{in} &  0.0203\\
+\texttt{er} &  0.0178\\
+\texttt{an} &  0.0161\\
+\texttt{re} &  0.0141\\
+\texttt{es} &  0.0132\\
+\texttt{on} &  0.0132\\
+\texttt{st} &  0.0125\\
+\texttt{nt} &  0.0117\\
+\texttt{en} &  0.0113\\
+\texttt{at} &  0.0112\\
+\texttt{ed} &  0.0108\\
+\texttt{nd} &  0.0107\\
+\texttt{to} &  0.0107\\
+\texttt{or} &  0.0106\\
+\texttt{ea} &  0.0100\\
+\texttt{ti} &  0.0099\\
+\texttt{ar} &  0.0098\\
+\texttt{te} &  0.0098\\
+\texttt{ng} &  0.0089\\
+\texttt{al} &  0.0088\\
+\texttt{it} &  0.0088\\
+\texttt{as} &  0.0087\\
+\texttt{is} &  0.0086\\
+\texttt{ha} &  0.0083\\
+\texttt{et} &  0.0076\\
+\texttt{se} &  0.0073\\
+\texttt{ou} &  0.0072\\
+\texttt{of} &  0.0071\\
+   \hline
+ \end{tabular}
+\]
+and the 3-grams:
+\[
+ \begin{tabular}{|c|c|}
+   \hline
+   % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   3-gram & Probability \\
+   \hline
+\texttt{the} &  0.0181\\                
+\texttt{and} &  0.0073\\                
+\texttt{ing} &  0.0072\\                
+\texttt{ent} &  0.0042\\                
+\texttt{ion} &  0.0042\\                
+\texttt{her} &  0.0036\\                
+\texttt{for} &  0.0034\\                
+\texttt{tha} &  0.0033\\                
+\texttt{nth} &  0.0033\\                
+\texttt{int} &  0.0032\\                
+\texttt{ere} &  0.0031\\
+\texttt{tio} &  0.0031\\
+\texttt{ter} &  0.0030\\
+\texttt{est} &  0.0028\\
+\texttt{ers} &  0.0028\\
+\texttt{ati} &  0.0026\\
+\texttt{hat} &  0.0026\\
+\texttt{ate} &  0.0025\\
+\texttt{all} &  0.0025\\
+\texttt{eth} &  0.0024\\
+\texttt{hes} &  0.0024\\
+\texttt{ver} &  0.0024\\
+\texttt{his} &  0.0024\\
+\texttt{oft} &  0.0022\\
+\texttt{ith} &  0.0021\\
+\texttt{fth} &  0.0021\\
+\texttt{sth} &  0.0021\\
+\texttt{oth} &  0.0021\\
+\texttt{res} &  0.0021\\
+\texttt{ont} &  0.0020\\
+   \hline
+ \end{tabular}
+\]
+and the 4-grams:
+\[
+ \begin{tabular}{|c|c|}
+   \hline
+   % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
+   4-gram & Probability \\
+   \hline
+\texttt{tion} &  0.31\\        
+\texttt{nthe} &  0.27\\        
+\texttt{ther} &  0.24\\        
+\texttt{that} &  0.21\\        
+\texttt{ofth} &  0.19\\        
+\texttt{fthe} &  0.19\\        
+\texttt{thes} &  0.18\\        
+\texttt{with} &  0.18\\        
+\texttt{inth} &  0.17\\        
+\texttt{atio} &  0.17\\        
+\texttt{othe} &  0.16\\        
+\texttt{tthe} &  0.16\\        
+\texttt{dthe} &  0.15\\        
+\texttt{ingt} &  0.15\\        
+\texttt{ethe} &  0.15\\        
+\texttt{sand} &  0.14\\        
+\texttt{sthe} &  0.14\\        
+\texttt{here} &  0.13\\        
+\texttt{thec} &  0.13\\        
+\texttt{ment} &  0.12\\        
+\texttt{them} &  0.12\\
+\texttt{rthe} &  0.12\\
+\texttt{thep} &  0.11\\
+\texttt{from} &  0.10\\
+\texttt{this} &  0.10\\
+\texttt{ting} &  0.10\\
+\texttt{thei} &  0.10\\
+\texttt{ngth} &  0.10\\
+\texttt{ions} &  0.10\\
+\texttt{andt} &  0.10\\
+   \hline
+ \end{tabular}
+\]
+
+So a slight improve to brute force search of trying
+$k=0,1,2,\ldots,25$, is to try encrypt \texttt{e} to the most
+commonly occurring letter, the second, the third, etc.
+
+(Some authors use $M$ for their set of plaintexts instead of $P$.
+In that case they might call their plaintexts messages.)
+
+\input{exercises/exercise-20/main.tex}
+\input{exercises/exercise-21/main.tex}

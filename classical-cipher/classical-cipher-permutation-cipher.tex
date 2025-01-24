@@ -1,0 +1,471 @@
+\sectionthree{Permutation cipher}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+In the above ciphers, a character is replaced by another.
+The
+\defone{permutation cipher}
+is different:
+each character is \textit{moved} to a different
+\textit{location} in the plaintext
+to form the ciphertext.
+
+Here's an example.
+Look at this:
+\[
+  \pi =
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 & 5 & 6 \\
+    3 & 1 & 2 & 5 & 4 & 6 \\
+  \end{pmatrix}
+  \]
+  It's just the function where a value in the top row maps to the
+  corresponding value at the bottom row: 
+  \begin{align*}
+    \pi(1) &= 3 \\
+    \pi(2) &= 1 \\
+    \pi(3) &= 2 \\
+    \vdots &\textwhite{=} \ \vdots \\
+    \pi(6) &= 6 \\
+  \end{align*}
+Let $\pi$ is called a
+permutation
+of $\{1,2,3,4,5,6\}$.
+A
+\defone{permutation}
+is simply a bijection (1--1 and onto) function
+from
+$\{1, 2, 3, ..., n\}$
+to
+$\{1, 2, 3, ..., n\}$.
+As a shorthand, the above permutation
+\[
+  \pi =
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 & 5 & 6 \\
+    3 & 1 & 2 & 5 & 4 & 6 \\
+  \end{pmatrix}
+\]
+is also written as
+\[
+  \pi = (1 \ \ 3 \ \ 2)(4 \ \ 5)(6)
+\]
+This is called the
+\defone{cycle notation}
+of $\pi$.
+In the above example, we say that the permutation $\pi$ has
+\defone{length}
+6.
+
+\input{exercises/permutation-0/main.tex}
+
+How does a permutation give you an encryption?
+For the permutation $\pi = (1 \ \ 3 \ \ 2)(4 \ \ 5)(6)$,
+you do this:
+\begin{enumerate}[nosep]
+  \item
+    character at position 1 goes to position 3,
+  \item
+    character at position 2 goes to position 1,
+  \item etc.
+\end{enumerate}
+In the example above, the $n$ is 6.
+For instance for the string \texttt{marvin}
+and the permutation $\pi = (1 \ \ 3 \ \ 2)(4 \ \ 5)(6)$,
+the since in the permutation $1 \mapsto 3$, the character at
+position 1 goes to position 3:
+\begin{smallconsole}
+    1 2 3 4 5 6
+    m a r v i n
+        m
+\end{smallconsole}
+since $3 \mapsto 2$, the character at
+position 3 goes to position 2:
+\begin{smallconsole}
+    1 2 3 4 5 6
+    m a r v i n
+      r m
+\end{smallconsole}
+Etc.
+Altogether I get
+\[
+E(\pi, \texttt{marvin}) = \texttt{armivn}
+\]
+This assumes your string has a length which is a multiple of 6.
+So you might need to add some dummy data at the end of your string.
+
+
+Note that in the above example, you have to encrypt substrings of length 5.
+Therefore if the original plaintext does not have a length that is a
+multiple of 5, you would need to pad it with some characters until the
+length is a multiple of 5.
+
+\input{exercises/permutation-1/main.tex}
+
+The decryption is the same algorithm as the encryption
+except that the permutation is read in the \lq\lq opposite direction''.
+If
+\[
+  \pi =
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 & 5 \\
+    3 & 1 & 2 & 5 & 4 \\
+  \end{pmatrix}
+\]
+then the inverse of $\pi$, denoted by $\pi^{-1}$ is the \lq\lq opposite''
+of the above:
+\[
+  \pi^{-1} =
+  \begin{pmatrix}
+    3 & 1 & 2 & 5 & 4 \\
+    1 & 2 & 3 & 4 & 5 \\
+  \end{pmatrix}
+\]
+(do you see the row switch?) and to make things look nice, you arrange the
+top row:
+\[
+  \pi^{-1} =
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 & 5 \\
+    2 & 3 & 1 & 5 & 4 \\
+  \end{pmatrix}
+\]
+Using the cycle notation,
+\[
+  \pi^{-1} = (1 \ \ 2 \ \ 3)(4 \ \ 5)
+\]
+So
+\[
+  D(\pi, y)
+\]
+is the same as
+\[
+  E(\pi^{-1}, y)
+\]
+So
+\begin{align*}
+  D((1 \ \ 3 \ \ 2)(4 \ \ 5), \texttt{armivn})
+  &= E((1 \ \ 3 \ \ 2)(4 \ \ 5)^{-1}, \texttt{armivn}) \\
+  &= E((1 \ \ 2 \ \ 3)(4 \ \ 5), \texttt{armivn}) \\
+  &= \texttt{marvin}
+\end{align*}
+
+\input{exercises/permutation-2/main.tex}
+\input{exercises/permutation-3/main.tex}
+\input{exercises/permutation-4/main.tex}
+
+
+\textsc{Breaking the permutation cipher}
+
+Frequency analysis obviously won't help: each letter is not replaced by another.
+It's the position of a letter that is changed.
+
+Now suppose the permutation is
+\[
+  \pi =
+  \begin{pmatrix}
+    1 & 2 & 3 & 4 & 5 \\
+    3 & 1 & 2 & 5 & 4 \\
+  \end{pmatrix}
+\]
+Suppose you know the length of the permutation is 5.
+After breaking your ciphertext into substrings of length 5,
+suppose one of these substrings is
+\begin{Verbatim}
+  hatoe
+\end{Verbatim}
+We know that \verb!th! is a commonly occurring digram.
+Then it's natural to suspect that this comes from the encryption of 5 letters containing
+\verb!th!,
+either
+\begin{Verbatim}
+  plaintext : ..... th... ...
+  ciphertext: ..... hatoe ...
+\end{Verbatim}
+or
+\begin{Verbatim}
+  plaintext : ..... .th.. ...
+  ciphertext: ..... hatoe ...
+\end{Verbatim}
+or
+\begin{Verbatim}
+  plaintext : ..... ..th. ...
+  ciphertext: ..... hatoe ...
+\end{Verbatim}
+or
+\begin{Verbatim}
+  plaintext : ..... ...th ...
+  ciphertext: ..... hatoe ...
+\end{Verbatim}
+Whereas for a substring of length 5, there are $5! = 120$ possible
+permutations,
+once two is fixed, there are $3! = 6$ possible permutations.
+This might cut down on the search for the key and help break the ciphertext.
+If \verb!th! is not found or the above analysis involving \verb!th!
+does not work, you go on to the next commonly occurring digram.
+
+Of course you do not know if the length of the permutation is length 5.
+You therefore have to do a loop over all possible permutation lengths.
+Of course the key length cannot be 1 since that would be doing nothing!
+For key of size two, the permutation must be $(1, 2)$.
+For a key of size three, there are $3! = 6$ permutations:
+There are 6 possible permutations:
+$(1)(2)(3)$, $(1)(2, 3)$, $(2)(1, 3)$, $(3)(1, 2)$,
+$(1, 2, 3)$, $(1, 3, 2)$.
+Since there are not many permutations of length 3, for this case,
+you might want to simply try all permutations.
+In general, you try key lengths dividing the length of the ciphertext.
+
+Note that it's also possible that the \verb!th! in the plaintext
+is broken up with the \verb!t! is one substring of length 5
+and \verb!h! in the following substring.
+For instance, here is a case:
+\begin{Verbatim}[commandchars=\\\{\}]
+  plaintext : cant\underline{h} \underline{e}fish         
+  ciphertext: acn\underline{h}t f\underline{e}ihs
+\end{Verbatim}
+Of course it's also OK if you do not wish to consider cases where the
+digram is split across two substrings, since in the above case,
+you would have picked up the \verb!he! when you consider a key of length (say) 10.
+
+By looking at lots of digrams and trigrams, if the ciphertext is long enough, you
+should be able to break the code.
+
+\newpage
+\begin{eg}
+  Let me break the following permutation ciphertext
+\[
+  \texttt{imahsnrwnesotanfusefvitieedoslwswma}
+\]
+\end{eg}
+
+\SOLUTION
+
+The length is 35. Since the length of the permutation must divide 35,
+it must be 1, 5, 7, 35.
+
+
+\textsc{Length 1.}
+Of course if the length is 1, then the ciphertext is the same as the
+plaintext. But the plaintext is meaningless. Therefore the length
+cannot be 1.
+
+\textsc{Length 5.}
+Assume the key length is 5.
+I break up the string
+above into substrings of length 5 to make it easier to read:
+\begin{Verbatim}
+  imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+
+
+\textsc{Length 5. Digram \texttt{th}.}
+I don't see any \verb!th! in each substrings or consecutive substrings.
+
+
+\textsc{Length 5. Digram \texttt{he}.}
+I do see \verb!he!:
+\begin{Verbatim}[commandchars=\\\{\}]
+  ima\underline{h}s nrwn\underline{e} sotan fusef vitie edosl wswma
+\end{Verbatim}
+If you assume these two characters come from \verb!he!, then it has to come from this:
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ....h e.... ..... ..... ..... ..... .....
+ ciphertext: ima\underline{h}s nrwn\underline{e} sotan fusef vitie edosl wswma
+\end{Verbatim}
+which means the permutation contains $1 \mapsto 5, 5 \mapsto 4$.
+If that's the case, we have
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  s...h e...n n...a f...e e...i l...s a...m
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+Look at just the first group of 5 characters
+the \verb!s...h! can only be
+\verb!simah!,
+\verb!siamh!,
+\verb!saimh!,
+\verb!samih!,
+\verb!smiah!, or
+\verb!smaih!.
+The only promising one is \verb!siamh! (maybe \lq\lq Siam has cats ...?").
+Using this we get
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  siamh enwrn nstoa ffsue evtii leods awwsm
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+which is meaningless.
+
+\newpage
+[force newpage]
+
+\textsc{Length 5. Digram \texttt{in}.}
+The next digram to try is \verb!in!:
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ....i n.... ..... ..... ..... ..... .....
+ ciphertext: \underline{i}mahs \underline{n}rwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+or
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ....i n.... ..... ..... ..... ..... .....
+ ciphertext: \underline{i}mahs nrw\underline{n}e sotan fusef vitie edosl wswma
+\end{Verbatim}
+The first is not possible. (Why?)
+% the i means 5->1 and the n means 1->1. cannot have 5->1,1->1 for permutation.
+The second gives us
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  h...i n...n a...s e...f i...v s...e m...w
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+Looking at just the first 5 characters,
+the only possible decryptions are
+\verb!hmasi!,
+\verb!hmsai!,
+\verb!hamsi!,
+\verb!hasmi!,
+\verb!hsami!,
+\verb!hsmai!.
+Only
+\verb!hamsi!,
+\verb!hasmi!,
+are promising.
+From \verb!hamsi!,
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  hamsi nwren atons esuff itiev sodle mwsaw
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+which is meaningless.
+From \verb!hasmi!,
+\begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  hasmi nwern atnos esfuf iteiv solde mwasw
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+which is meaningless.
+
+\textsc{Length 5. Digram \texttt{er}.}
+The next digram to try is \verb!er!:
+\begin{itemize}
+  \li From
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ..... er... ..... ..... ..... ..... .....
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+we get
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  sm... er... no... fu... ei... ld... as...
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+The first 5 characters can only be
+\verb!smahs!,
+\verb!smash!,
+\verb!smhas!,
+\verb!smhsa!,
+\verb!smsah!,
+\verb!smsha!. Only \verb!smash! seems to form a word.
+(\verb!smhas! might be for instance \texttt{a\ cha\underline{sm\ has}\ separated\ us},
+but the \verb!smhas! is the \textit{beginning} of the plaintext.)
+Using that, we get
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  smash erwen notna fusfe eitei ldols aswam
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+which is not meaningful.
+
+  \li From
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ..... .er.. ..... ..... ..... ..... .....
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+we get
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  .sm.. .er.. .no.. .fu.. .ei.. .ld.. .as..
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+The first 5 characters can only be
+\verb!ismah!,
+\verb!ismha!,
+\verb!asmih!,
+\verb!asmhi!,
+\verb!hsmia!,
+\verb!hsmai!,
+none of which is meaningful,
+except possibly for
+\verb!ismah! (example: \texttt{\underline{is\ mah}i\ mahi\ a\ fish?}),
+\verb!ismha! (example: \texttt{a sch\underline{ism\ ha}ppened overnight}),
+\verb!asmih! (example: \texttt{protopl\underline{asm i h}ave}),
+\verb!asmhi! (example: \texttt{protopl\underline{asm h}ave i})
+but you can check that these do not lead
+to anything meaningful.
+
+
+\li From
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ..... ..er. ..... ..... ..... ..... .....
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+we get
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ..sm. ..er. ..no. ..fu. ..ei. ..ld. ..as.
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+The first 5 characters can only be
+\verb!iasmh!,
+\verb!ihsma!,
+\verb!aismh!,
+\verb!ahsmi!,
+\verb!hisma!,
+\verb!hasmi!.
+Only
+\verb!ahsmi!,
+\verb!hisma!
+and
+\verb!hasmi!
+seem promising.
+For \verb!ahsmi!, we get
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  ahsmi wnern tanos sefuf tieiv oslde wmasw
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+\end{Verbatim}
+which is meaningless.
+For \verb!hisma!, we get
+  \begin{Verbatim}[commandchars=\\\{\}]
+ plaintext:  hisma nnerw asnot effus iveit seldo mwasw
+ ciphertext: imahs nrwne sotan fusef vitie edosl wswma
+ \end{Verbatim}
+ which finally gives us the plaintext
+ \[
+   \texttt{hismannerwasnoteffusiveitseldomwasw}
+ \]
+ This gives us
+ \[
+    \texttt{His manner was not effusive.\ It seldom was.}
+ \]
+ % hismannerwasnoteffusiveitseldomwasw
+ The last \verb!w! is redundant (it's a padding).
+ \end{itemize}
+
+ The key (i.e., permutation) is
+ $(1,4,2)(3,5)$ with a key length of 5.
+ \qed
+
+\begin{comment}
+plainttext: His manner was not effusive. It seldom was.
+key = (1, 4, 2)(3, 5)
+
+hisma - imahs
+nnerw - nrwne
+asnot - sotan
+effus - fusef
+iveit - vitie
+seldo - edosl
+mwasw - wswma
+\end{comment}
+
+\input{exercises/permutation-5/main.tex}
+\input{exercises/permutation-6/main.tex}
+\input{exercises/permutation-7/main.tex}
+\input{exercises/permutation-8/main.tex}
+\input{exercises/permutation-9/main.tex}
+\input{exercises/permutation-10/main.tex}
+
+

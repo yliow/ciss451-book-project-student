@@ -1,0 +1,381 @@
+\chapter{Introduction}
+
+\section{Cryptography}
+
+Obviously cryptography is about scrambling data to make it
+meaningless to an eavesdropper and yet it can be descrambled by
+the person you are sending your data to.
+
+Easy right?
+
+Well yes and no.
+
+(By the way, before I begin, cryptography is not cybersecurity.)
+
+Cryptography is a huge area in computer science, mathematics,
+and engineering.
+If you define cryptography as \lq\lq scrambling and descrambling"
+of data, then in of itself, cryptography is already an extremely huge
+area, in the sense that there's a lot of information in this subject.
+And it's not just an academic subject.
+It has extremely important consequences in the real world.
+If there's no cryptography, then
+there's no e-commerce.
+More generally, there won't be any electronic communication
+that requires privacy.
+The world we know today will be extremely different if
+cryptography does not exist.
+For sure millions of jobs will cease to exist if
+cryptography suddenly disappears or if some very powerful
+adversary (a power superpower rogue country?) makes
+cryptography useless.
+
+Therefore cryptography is the cornerstone of
+information security and a cornerstone of our society.
+
+However you will see that cryptography is even larger than you think.
+Besides \lq\lq scrambling and descrambling data" for
+information security,
+cryptography is also used for instance
+in digital signatures which allows Amazon to 
+say \lq\lq You signed this document to buy the XYZ
+Complete Kit for Underwater Basket Weaving. Pay up. Don't deny it."
+
+Cryptography can also be used to
+implement secure voting 
+so that if you were voted to be
+the next president, the voting system can prove that the votes
+are counted correctly,
+and yet ... Tom Smith, the other candidate who did not win the election,
+cannot possibly find out who voted for you and not him
+so that Tom can't use his political power (if he has any) for retaliation.
+So you can ensure the correctness of the voting process
+\textit{and}
+you prevent voting fraud.
+It can even prevent buying votes --
+if Tom Smith paid Harry Jones to vote for him,
+after the voting process,
+Harry cannot prove to Tom that he voted for Tom!
+If Tom cannot have a guarantee of Harry's vote, he might think twice about
+paying Harry.
+
+You can also use cryptography to implement digital cash,
+the electronic equivalent of our physical dollar bills.
+Except that there's the benefit that digital cash cannot be counterfeited.
+There's the benefit of privacy too -- Amazon, where
+you bought your
+\lq\lq XYZ Complete Kit for Underwater Basket Weaving", does not
+know that it was you who bought it.
+Neither can the bank or credit card agency that acts as the
+intermediate payment gateway.
+Blockchain-based cryptocurrency such as bitcoin and ether
+have exploded in value in recent years.
+Blockchain has applications beyond cryptocurrency.
+It can be used to protect the integrity of data.
+
+And if you are a spy working in a team that you don't fully trust (is there
+a double agent or mole in your group?),
+you can use cryptography to implement secret sharing so that
+the door to the vault
+that holds gold bullion is opened only when all the members are
+present with their part of the key combination to unlock the door to the vault.
+
+You do want to be sure that
+your self-driving car will not follow an unauthenticated
+message from your enemy to instruct your car to ram into the
+nearest police car right?
+Do you know that Tesla's AI chip has AES cipher built into it at the
+hardware level so that it can communicate on the
+car's controller area network securely?
+
+And suppose you have invited a new algorithm/device that you know will be
+worth billions.
+But it's at the prototype stage and you need funds from
+a venture capitalist.
+How can you convince the venture capitalize that your idea
+works without revealing it?
+ 
+And wouldn't it be nice if you send an encrypted search to google,
+google returns the results -- encrypted -- which you decrypt.
+And google does not know what your search was and does not know what
+the search results were.
+
+And the list of interesting cryptographic problems go on and on.
+
+As the world becomes more and more connected (electronically),
+there's no doubt that more and more problems like the above will be
+proposed and solved using cryptography.
+
+You know the \lq\lq scrambling and descrambling" part of cryptography
+just from reading novels or watching movies.
+A \lq\lq scrambling and descrambling" algorithm is usually called a
+cipher.
+Most people equate cryptography with ciphers.
+Cryptography is more than just about ciphers 
+to achieve message confidentiality.
+Cryptography is the study of real world problems
+related to information protection in general using cryptographic tools.
+Besides ciphers, the other two very important cryptographic tools
+are cryptographic hash functions and
+pseudorandom number generators.
+Cryptographic hash functions is similar to the concept of hash functions in
+the study of data structures and algorithms (CISS350 and CISS358).
+except that
+they are \lq\lq stronger".
+I'll get into that later.
+In the recipes to solve information protection problems,
+other mathematical and algorithmic tools are used as well.
+
+Cryptography is a very huge area of study and
+research in this area is extremely active.
+Researchers come from computer science, math, and engineering.
+
+
+\section{Tools}
+
+There are other benefits to studying cryptography besides working
+in the area of information security.
+The following are subjects/areas that I hope to touch on, if not all,
+hopefully most:
+\begin{itemize}
+
+  \li
+  To begin with, cryptography involves algorithms.
+  And you can never get enough of algorithms.
+
+  \li
+  You will study probability theory which is incredibly important in the
+  real world.
+  Probability theory should be as important as calculus and
+  algebra in college, but for some reason many schools do not emphasize
+  it or do not teach it well.
+  I have no idea why.
+  Taking cryptography and advanced algorithms (CISS451 and 358)
+  hopefully will repair some of that problem.
+
+  \li
+  You will study information theory which is an area that builds
+  on top of probability theory.
+  Information theory is one of the newest areas of study in
+  computer science,
+  math, and engineering.
+  The concept of information theory was discovered only recently by
+  Claude Shannon in 1948.
+  Information theory can for instance predict for you how much data
+  (the maximum data rate) that can be sent through a noisy data channel.
+  It can also tell you what is the maximum data compression date.
+  Information theory can also tell you if an encryption-decryption
+  scheme is \lq\lq absolutely" secure.
+  Although Shannon proposed this concept to study
+  problems in math and engineering,
+  information theory is now also used in physics in an area called
+  quantum information theory.
+
+  \li
+  You'll be studying number theory. 
+  You have seen a bit of number theory in discrete math.
+  Many of the algorithms in crytography are number theoretic in nature.
+  For instance you have seen the 
+  Extended Euclidean Algorithm.
+  I bet you have not implemented it.
+  Well ... you'll be studying that in cryptography and
+  seeing it in action.
+  Then you'll see why the Extended Euclidean Algorithm is so important.
+  Therefore the study of cryptography is partially
+  a review of number theoretic concepts from discrete math.
+  Practically speaking, number theory is used in the implementation of the
+  RSA cipher.
+  And lo and behold ... RSA depends on prime factorization, something that
+  you learned in middle school and learned to program in CISS240.
+  
+  \li
+  You'll be studying finite fields.
+  You have actually seen finite fields before.
+  Well ... actually you have only seen one single finite field.
+  In CISS360 the values of a bit, i.e., $0$ and $1$,
+  forms a field $\{0, 1\}$ called a binary field.
+  But there are many other fields.
+  A field is just a collection of values where you can
+  add, subtract, multiply, and divide (except you can't
+  divide by 0).
+  You have seen many fields before, fields which are not finite.
+  For instance the set of real numbers $\R$ is a field which is not finite.
+  So are $\Q$ (field of rational numbers) and $\C$ (field of
+  complex numbers).
+  A finite field is just a field with finitely many values.
+  They are very important not just in
+  computer architecture.
+  They appear in cryptography, digital signal processing, data compression,
+  error correction codes, etc.
+
+  \li
+  You'll be studying groups.
+  You have also seen groups before.
+  If you think about real numbers, you see that you have two
+  operations: addition and multiplication.
+  (Subtraction is related to addition and division is related to
+  multiplication.)
+  A group is basically a set of values together with one operation.
+  For instance the set of real numbers with addition is a group
+  (just forget about the multiplication).
+  While RSA uses number theory,
+  certain cryptographic ciphers use
+  groups.
+  These are called group-based cryptography or discrete log cryptography.
+  The standard group used (right now) is based on
+  elliptic curves.
+  At this point, elliptic curve cryptography (ECC) seems to be more
+  popular in browser and SSL/TLS host.
+  (If your browser is hitting a website that begins with \verb!htts!,
+  then you are using TLS.)
+  %https://malware.news/t/everyone-loves-curves-but-which-elliptic-curve-is-the-most-popular/17657
+  ECC is also more suitable for the constrained environments such as
+  smart cards, smart phones, and IoT.
+  By the way, bitcoin uses ECC too.
+  Besides cryptography, the theory of groups is extremely important
+  and is used in computer science, engineering, physics, and chemistry.
+  For instance group theory is used in
+  computer vision and robotics.
+  In physics and chemistry, group theory appears in quantum mechanics.
+  In general when you study spatial structures, you will frequently
+  find matrices and groups.
+
+  \li
+  A ring is just a field except that for fields you have
+  addition, subtraction, multiplication, and division (by nonzero),
+  while for rings you have all the four operations except you
+  usually can't divide.
+  The triad of \lq\lq groups, rings, and fields"
+  forms a very important collection of structures for higher
+  math, computer science, and engineering.
+  The study of \lq\lq abstract algebra" is the study
+  of groups, rings, and fields (and more).
+  They are becoming more and more important in for instance
+  algorithms, automata theory,
+  and machine learning.
+  By the way don't freak out: the word \lq\lq abstract" in abstract algebra
+  does not mean more complicated.
+  It means \lq\lq abstract away the non-essentials so that the
+  theory is more applicable".
+  It's similar to the concept of abstract base class in \cpp\ which is
+  a general class interface applicable to more subclasses.
+
+  \li
+  Besides the groups-rings-fields triad you will see
+  the structures which are more familiar to you:  
+  graphs, matrices etc.
+
+  \li
+  In the above, I mentioned that you will be studying elliptic curves.
+  Elliptic curves belong to an area of study called algebraic geometry.
+  This is the only class where you can study a tiny bit of algebraic geometry.
+  Elliptic curves are example of abelian varieties which makes
+  them even more special than most curves. And you won't
+  find this concept in any other class here.
+  Furthermore, elliptic curves is a crucial ingredient in the proof of
+  probably the most famous math problem in the world,
+  Fermat's Last Theorem (FLT),
+  which says that it is impossible to find integers $x > 0, y > 0, z > 0$
+  such that
+  \[
+  x^n + y^n = z^n
+  \]
+  if $n > 2$. FLT is so difficult that it remained unsolved
+  for more than 350 years.
+  
+  \li
+  You will be writing python and \cpp\ programs.
+  If you have done \cpp\ (CISS240 and CISS245), you will have no problems
+  picking up python.
+  Python is a super simple programming language and yet
+  it is now the dominant language for scientific computations
+  and seriously heavy data/number crunching computations.
+  Therefore knowing python is crucial.
+  By the way, one of the programming tool for number theory
+  research, SageMath, uses python as its language for
+  accessing the libraries inside SageMath.
+  The guts of SageMath include libraries and
+  code written in C, \cpp, Fortran, Lisp,
+  and of course ... python.
+  Here's an example.
+  Suppose you want to compute
+  \[
+  \int \frac{1}{x^2 + x + 42} \ dx
+  \]
+  All you need to do is to run SageMath and enter this command:
+  \begin{Verbatim}[frame=single, fontsize=\small]
+print(integrate(1/(x**2 + x + 42), x))
+  \end{Verbatim}
+  and SageMath will give this to you in a split second:
+  \begin{Verbatim}[frame=single, fontsize=\small]
+2/167*sqrt(167)*arctan(1/167*sqrt(167)*(2*x+1))
+  \end{Verbatim}
+  i.e.,
+  \[
+  \int \frac{1}{x^2 + x + 42} \ dx
+  =
+  \frac{2}{167} \sqrt{167} \arctan \left( \frac{1}{167}\sqrt{167}(2x + 1) \right)
+  \]
+  At some point,
+  I hope to incorporate SageMath into this set of notes.
+
+  \li You will learn some parallel/concurrent programming.
+  This is the only course where you will learn some basic
+  parallel programming.
+
+  \li
+  You will learn probability through massive data processing programming.
+  Massive data crunching is used a lot in security type programming.
+  This is the only class (for now) that does basic statistical
+  data crunching.
+  
+\end{itemize}
+
+\section{Pre-requisites}
+
+In terms of background, I assume
+\begin{itemize}
+
+  \li You know how to program at the level of CISS240 and CISS245.
+
+  \li You have some discrete math background at the level of MATH225.
+  In other words, you have seen some proofs,
+  you know a bit of elementary number theory,
+  you have a bit of combinatorics (counting),
+  you know recursion, and
+  you have a basic understanding of algorthms, including big-O.
+  
+\end{itemize}
+
+In terms of computational tools, I assume
+\begin{itemize}
+  
+  \li You know how to use one of our fedora virtual machine.
+  I'll be using our Fedora 31 virtual machine.
+  if you did not take CISS245 with me, this is not a deal breaker
+  because you can easily learn how to use a virtual machine in 1 hour.
+  In CISS245 I go over virtual machines and linux commands
+  in one class.
+  I'll just tell you what you need to do.
+  
+  \li You know basic linux commands (from CISS245).
+  See above.
+  
+  \li I will be using python and \cpp\ for programming. You do not need to know
+  python. If you have CISS240 and CISS245, learning python will be easy.
+  In fact python is taught in many high schools.
+  Also, most cryptographic programs are computational in nature
+  and so the code does not use a lot of python syntax.
+  
+\end{itemize}
+
+%\section{References}
+%
+%\begin{enumerate}[nosep]
+%
+%  \li Boneh-Shoup: \url{http://toc.cryptobook.us/}
+%
+%  \li Menezes: \url{http://cacr.uwaterloo.ca/hac/}
+%  
+%\end{enumerate}
+

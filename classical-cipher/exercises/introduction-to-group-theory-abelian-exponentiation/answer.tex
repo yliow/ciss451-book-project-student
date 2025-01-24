@@ -1,0 +1,59 @@
+%-*-latex-*-
+\tinysidebar{\debug{exercises/{introduction-to-group-theory-abelian-exponentiation/answer.tex}}}
+First I'll prove the statement for positive integers:
+
+Lemma A.
+$(x * y)^n = x^n * y^n$ for $n \geq 0$.
+
+I will prove Lemma A by induction.
+Since
+\[
+(x * y)^0 = e
+\]
+and
+\[
+x^0 * y^0 = e * e = e
+\]
+the statement is true for $n = 0$.
+Assume the statement is true for $n$.
+We have
+\begin{align*}
+(x * y)^{n+1}
+&= (x * y)^{n} * (x * y) & & \text{by definition of exponentiation}\\
+&= (x^n * y^n) * (x * y) & & \text{by inductive hypothesis} \\
+&= ((x^n * y^n) * x) * y & & \text{by associativity} \\
+&= (x^n * (y^n * x)) * y & & \text{by associativity} \\
+&= (x^n * (x * y^n)) * y & & \text{by abelian property} \\
+&= ((x^n * x) * y^n) * y & & \text{by associativity} \\
+&= (x^{n+1} * y^n) * y    & & \text{by definition of exponentiation}\\
+&= x^{n+1} * (y^n * y)    & & \text{by associativity}\\
+&= x^{n+1} * y^{n+1}       & & \text{by definition of exponentiation}
+\end{align*}
+Hence by induction
+\[
+(x * y)^n = x^n * y^n
+\]
+for $n \geq 0$.
+Lemma A is proven.
+
+Now I will prove the above formula for negative $n$:
+\begin{align*}
+(x * y)^n
+&= ((x * y)^{-1})^{-n}            & & \text{by definition of exponentiation}\\
+&= (y^{-1} * x^{-1})^{-n}          & & \text{by ??} \\
+&= ((y^{-1})^{-n} * (x^{-1}))^{-n}  & & \text{by Lemma A} \\
+&= (y^{n} * x^{n})                & & \text{by definition of exponentiation}\\
+&= (x^{n} * y^{n})                & & \text{by abelian property}
+\end{align*}
+Therefore
+\[
+(x * y)^n = x^n * y^n
+\]
+for $n \in \Z$ and $n < 0$.
+
+Hence altogether
+\[
+(x * y)^n = x^n * y^n
+\]
+for $n \in \Z$.
+\qed

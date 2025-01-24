@@ -1,0 +1,30 @@
+\tinysidebar{\debug{exercises/{exercise-26/question.tex}}}
+  Suppose you want to write a random number generator.
+  Say the numbers are to be in the range [0,256).
+  (You can try a bigger range later -- don't be too ambitious for now.)
+  Of course use (reasonable) formula.
+  \begin{myenum}
+  \item Go ahead and try this one:
+    \[
+      h(n) = (2n + 5) \pmod{256} 
+    \]
+    Starting with a seed value of 1, the next value is $h(1) = 7$.
+    And the value after that is $h(7) = 19$.
+    And the next is $h(19) = 43$.
+    What are all the possible values you can obtain using this $h$?
+  \item
+    Now of course you do want to have lots of values.
+    For instance you might want to use this hash function
+    to build a hashtable.
+    Or a cryptographic hash (which we have no covered yet).
+    But in any case, you hope that $h$ covers \textit{all} the values in
+    $[0,255]$.
+    Was the function above a good function?  
+  \item
+    What if you use a different seed value? What if you start with 2?
+    Or 3?
+  \item 
+    Try to find a function that generates
+    as many values in $[0,255]$ as possible.
+    Can you find one that covers the whole range of $[0,255]$?
+  \end{myenum}

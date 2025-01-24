@@ -1,0 +1,26 @@
+\tinysidebar{\debug{exercises/{hill-10/question.tex}}}
+  \mbox{}
+  \begin{enumerate}[nosep]
+  \item
+    What is the size of the key space assuming the matrix is $2$-by-$2$? (I mean
+    for mod 26 of course.)
+    This means: how many invertible mod 26 matrices are there?
+    Or: What is $|\operatorname{GL}_2(\Z/26)|$?
+    You can write down a few invertible mod 26 matrices.
+    But after a while you might want to
+    write a program.
+
+  \item
+    See if you can find a plausible formula for the case of
+    $n = 2$. The formula involves 2 and 13 because
+    $26 = 2 \times 13$ and because $n = 2$.
+    (Yes, there's a formula.)
+    It also works if mod 26 is replaced by mod $N$ for any positive
+    integer $N \geq 1$. You can try to work with matrices with values in
+    $\Z/5$ then $\Z/8$, etc. and see if you can find a formula for
+    $|\operatorname{GL}_2(\Z/N)|$.
+    (The formula works when $n$ is any integer $\geq 1$. But you would
+    need to know about matrices of size larger than 2-by-2.)
+
+    \qed
+  \end{enumerate}

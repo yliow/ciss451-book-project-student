@@ -1,0 +1,897 @@
+\sectionthree{Substitution cipher}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+OK folks, things are getting more fun (or worse, depending on your
+point of view). If you've read your notes and following the readings
+you should know why the substitution cipher is not that easy to
+break. Right?
+
+Because of the gap in the probability between \texttt{e} and the
+next letter, you can usually figure out what \texttt{e} encrypts
+to. The problem is that next group of letters have frequencies
+which are rather close together.
+
+Here's a suggestion. If you know (or think you do) that \texttt{e}
+is encrypted to $\texttt{r}$, then you should use the digrams.
+Basically the idea is the same as solving crossword puzzles. You
+want to decrypt the letters near to those letters which are
+already decrypted, just like in crossword puzzles you want to work
+near to whose rows and columns that are already solved. So look at
+all the places where \texttt{r} are decrypted as \texttt{e}. Look
+at the letter before and after it and hope that you can now
+decrypt by looking at digrams in the ciphertext of the form
+\texttt{?r} and \texttt{r?}
+
+\begin{eg}
+The goal is to decrypt
+the following ciphertext (i.e., you need to compute the plaintext) and also
+to discover the key used.
+The substitution cipher is used.
+\begin{Verbatim}[frame=single,fontsize=\small]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewm
+hmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehq
+ermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtx
+lajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatlj
+mwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqq
+evjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlh
+jggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamt
+liammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqt
+xltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmloji
+akexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvat
+kkmxnmh
+\end{Verbatim}
+\end{eg}
+
+\textsc{Solution}.
+The top few 1--gram frequencies of the ciphertext are
+\begin{console}
+1gram: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30 ...  
+\end{console}
+The gap between the frequency of \verb!m! and \verb!t! is extremely large.
+Therefore we suspect that part of the encryption is \verb!e->m!.
+The rest, at least up to \verb!x! are most probably from 
+\texttt{t, a, o, i, n, s, h, r}:
+\[
+  \{ \texttt{t, a, o, i, n, s, h, r} \} \rightarrow \{ \texttt{t, q, h, j, e, i, a, x} \}
+\]
+We can try different possible assignments on the above 8 letters to 8 letters, but that's $8! = 40320$
+which is too big.
+At this point we have
+%\makeatletter
+%\newcommand\stiny{\@setfontsize\notsotiny\@vipt\@viipt}
+%\makeatother
+%\newcommand\stiny{\@setfontsize\notsotiny{6}{7}}
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+-e--------------------e--------------e-----------e-e----------------------------e--e-e-----e--------
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+--------e-e------e-----e---e-e----------e---e-------e-----------e-------------e----e------e---------
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+-----------------e-----------e---e-------------e----------------e-e--e----e-----e---------e----e----
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+--ee-e--ee------------e---------e-----------------e-e--e----e----------------e-----e---e--ee----e---
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+---e--e-----------e---e-----e---e----e-----------------e--------------------e----e---------e----e---
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+------------------e---------------e----e----e------------------e------e----e--------e-----------e-e-
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+-------------------------------e----------e---e-e----ee-e--e-e---e-------e---e-------------e----e---
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+e--------------e------e--------e---e----------e--------e-----e-----e--e-e--e---e-------------------e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+--e-----e--e----e---e------e---------------e-e---------------------------e--------------------------
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e---e-------------e---------e-------------e---------e--e-
+
+ciphertext
+2-grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+         tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3-grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+         feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+plaintext
+1-grams: e t a o i n s h r
+2-grams: th he in er an re ed on es st en at to nt ha nd
+         ou ea ng as or ti is et it ar te se hi of
+3-grams: the ing and her ere ent tha nth was eth for dth
+\end{Verbatim}
+We now look at 2-grams and 3-grams.
+
+The common 2-grams are \verb!th, he, in, er, an, re, ed, on, es, st!.
+Since we are assuming \verb!e->m!, \verb!mh! is either from \verb!er! or \verb!ed! or \verb!es!.
+Note that \verb!er! and \verb!re! are common 2-grams.
+We also note that \verb!mh! and \verb!hm! are high frequency 2-grams in the ciphertext.
+Note further that \verb!ere! is a common 3-gram and \verb!mhm! is also a common 3-gram in the ciphertext.
+We suspect that \verb!h->r!.
+Therefore we now have
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+-e------r-----------r-e------r-------e-----------ere---------------------r------e--ere-----e------r-
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+--------e-e------e-r---e---e-e---------re--re---r---e-------r---e--------r----er---er-----er--------
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+-----------------e-----------e--re-------------e---------------re-e--e----e-----e--r------e--r-e----
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+--ee-er-ee------------e--------re-----------------e-er-e---re----------------e-----e---er-ee---re---
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+--re--e-----------er--e-----e---e----e-r---------------e----------r---------e--r-er---r----e----er--
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+------------------e---------------e----e----e----r-------------er-----e----e---r----e-----r-----ere-
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+-------r------------r----------er---------e--re-e----ee-e--ere---e-r-----er-re-------------er---e-r-
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er--r----------er-----er-------e--re----------er-------e-----e---rre--ere--e---er--r---------------e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+-re-----e--e----e---e--r---e--r------------ere-----------------r---------e-------r--r---r-----------
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e---e------r-----re---------e----r-----r--e---r-----e--er
+
+ciphertext
+1grams: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30
+2grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+        tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+        feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+plaintext
+1grams: e t a o i n s h r
+2grams: th he in er an re ed on es st en at to nt ha nd
+        ou ea ng as or ti is et it ar te se hi of
+3grams: the ing and her ere ent tha nth was eth for dth
+
+e->m, r->h
+\end{Verbatim}
+
+
+Now we look for \verb!the!.
+We have \verb!the -> ??m!.
+The most commonly occurring ciphertext of this form is 
+\verb!iam!,
+\verb!ewm!,
+\verb!mhm!,
+\verb!twm!.
+\verb!mhm! is from \verb!ere! which we already know so this is useless.
+So we are left with
+\verb!iam!,
+\verb!ewm!,
+\verb!twm!.
+The frequency between \verb!iam! and \verb!ewm! is a huge 30\% drop.
+So hopefully \verb!the -> iam!.
+This means \verb!t->i! and \verb!h->a!.
+We have to take note of this since here we are creating two substitutions
+and the confidence is not as high.
+If we end up in a deadend, we will have to backtrack to this point.
+With the above two new substitutions, we have
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+-e--t---r-t-t-------r-e------r---t---e----------here---t-----------------r------e-tere-----e-t----r-
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+---t----e-e------e-r---e---e-e---------re--re---r---et-----tr---e--t--t--r---her---er-----er------t-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+--t----t---------e-----t-----e--re-t-----------e---------------re-e--e----e-----e--r----t-e--r-e-t--
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+-heeher-ee------------e--------ret--t---t----t----eherhe-t-re-t-----t-------he-----e--her-ee-t-re---
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+--re-te-----------er--e---t-e---e----e-r--------------te--t-------r-------t-e--r-er---r--t-e--tter--
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+------------tt---he---------------e----e----e----r------------her-----e-tt-e---r----e-----r----tere-
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+-------r--t---------rh--------her--------he--re-e--t-ee-e--ere---e-r-----er-re-t-----t--t-her---e-rh
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er--r-t-------her----ter-------e--re----------er-------e-t---e---rre--eret-e-t-er--rt--------------e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+-re----het-et---e--he--rt--e--r-----------here---t-------------rt--------e-------r--r---r-------h---
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e---e------r-t---re-------t-e--t-r-----r--e---r-----e--er
+ciphertext
+1grams: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30
+2grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+        tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+        feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+plaintext
+1grams: e t a o i n s h r
+2grams: th he in er an re ed on es st en at to nt ha nd
+        ou ea ng as or ti is et it ar te se hi of
+3grams: the ing and her ere ent tha nth was eth for dth
+
+e->m, r->h, t->i, h->a
+\end{Verbatim}
+
+\verb!ent! is also a common plaintext trigram.
+This is encrypted as \verb!m?i!.
+The only one that fits is \verb!mqi! but the frequency of this is only 4 -- so this is probably wrong.
+
+Another high frequency plaintext 3-gram is \verb!tha!.
+This would encrypt as \verb!ia?!.
+We notice that \verb!iam! has a high frequency.
+So perhaps \verb!a->m!.
+
+Now let's look at pairs of digrams.
+
+\verb!es,st! is a high frequency digram.
+This is encrypted as \verb!m?,?i!.
+The only possibility is \verb!mq,qi!.
+So we suspect \verb!s->q!.
+This is what we have now:
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hes-t---r-t-t----h--r-eh-----r---t---e-h--h--s---ere---th----s---s-------r--s-s-e-tere-h-sse-ts---r-
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+---t----e-eh-s---e-r---e---e-e--s----s-re--re---rs--eth---str---e--t--t--rs---er---er-----ers-----t-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+-sth-s-t--sh-ss--e-h--ht-----es-re-th----h-ss--e---h-s----s----rese--eh-she----se--r---sthe--r-est-h
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+--ee-ersee------h-----e------s-reth-th-st--h-th---e-er-e-t-re-t-----t-----h--es----e---er-ee-t-re---
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+--reste-----sh----ersheh--the---e----e-r--h--h--ss----te--th---ss-r-------the--r-er---r--the--tters-
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+------s----stt-h--e-s-s-----------es---esh--e----r-------------erh-s-hesttheh--r--s-e-----r---stere-
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+-------r--t---------r------s---erh-s--ss--e--rehe--thee-es-ere---e-r-----er-re-t-----t--ts-er---e-r-
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er--r-t--------er---ster----h--es-re----sh----ers-----hest---e---rre--erethe-ther--rts--h---h--h---e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+-re-----ethet---es--e--rt--e--r---sh---s---ere---th---------h--rth-s-----e-------r--r---r-----------
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e---e------rst---ress-----the--t-r---s-r--ess-r-h---e--er
+
+ciphertext
+1grams: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30
+2grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+        tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+        feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+        plaintext
+1grams: e t a o i n s h r
+2grams: th he in er an re ed on es st en at to nt ha nd
+        ou ea ng as or ti is et it ar te se hi of
+3grams: the ing and her ere ent tha nth was eth for dth
+
+e->m, r->h, t->i, h->a, s->q
+\end{Verbatim}
+
+Note that \verb!ti,is! is a common plaintext 2-gram.
+When encrypted, this is \verb!i?,?q!.
+Unfortunately we can't find this pattern.
+
+We now have enough substitutions to consider multiple cases of pairs of digrams.
+
+Consider the common plaintext digram \verb!aj,jq!.
+With what we have at this point, the encryption is
+\verb!h?,?s -> aj,jq!.
+The possibilities for
+\verb!h?,?s! are
+\begin{tightlist}
+ \li \verb!he,es!: Therefore \verb!e->j!, but \verb!e! is already encrypted as \verb!m!.
+ \li \verb!ha,as!: Therefore \verb!a->j!.
+ \li \verb!hi,is!: Therefore \verb!i->j!.
+\end{tightlist}
+So we have \verb!a->j! or \verb!i->j!.
+Before we make a choice, let's consider more digrams.
+
+Consider \verb!h?,e?!. \verb!h?,e?! might be encrypted as \verb!at,mt!.
+Possibilities for \verb!h?,e?!
+\begin{tightlist}
+  \li \verb!hi,ei!: But \verb!ei! is not common.
+  \li \verb!ha,ea!: Therefore \verb!a->t!. 
+\end{tightlist}
+Therefore \verb!a->t!.
+
+Consider \verb!h?,?r!.
+\verb!h?,?r! might be encrypted to \verb!at,th!.
+The only possibilities for \verb!h?,?r! are
+\begin{tightlist}
+  \li \verb!ha,ar!: Therefore \verb!a->t!.
+  \li \verb!hi,ir!: But \verb!ir! is not common.
+\end{tightlist}
+Therefore \verb!a->t!.
+
+Consider \verb!?s,e?!. \verb!?s,e?! might be encrypted as \verb!tq,mt!.
+The only possibility for \verb!?s,e?! is \verb!as,ea!
+which implies \verb!a->t!.
+
+\verb!?s,e?! might be encrypted as \verb!tq,th!.
+The only possibility for \verb!?s,e?! is \verb!as,ea!
+which implies \verb!a->t!.
+
+\verb!e?,?r! might be encrypted to \verb!mt,th!.
+The possibilities for \verb!e?,?r! are
+\begin{tightlist}
+\li \verb!ed,rd!: But \verb!rd! is not common.
+\li \verb!es,sr!: But \verb!sr! and \verb!os! not common.
+\li \verb!en,nr!: But \verb!nr! is not common.
+\li \verb!ea,ar!: Therefore \verb!a->t!.
+\li \verb!et,tr!: But \verb!tr! is not common.
+\end{tightlist}
+All in all, this case implies \verb!a->t!.
+
+From all the above cases, it seems that \verb!a->t!
+and \verb!i->j!.
+(The argument for \verb!a->t! is stronger.)
+We now have
+\begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hesati-ar-tati---hair-ehi--a-r-a-ta--e-hi-h-as---ere--ith----s-a-sa---ia-ra-sasie-tere-hisseats---r-
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+---t--a-e-ehisa--eara--e-a-e-e-as-i-as-re-are---rs--ethi--stra--e--t--t--rs---er---eri--a-ers--a-it-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+asthisit-ashissi-e-hi-ht-----es-reatha-a-hissi-ea--hisi---si---rese--ehishea--ase--r---sthe-ar-estih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+a-ee-ersee-----ah--a--ei--ia-s-rethathist--hatha-ie-er-e-t-re-t----it-----ha-es-i--e---er-ee-tire--a
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+--reste-----sh----ersheha-the-a-ea---ear--hi-hiass--iate-itha-ass-ria-----the--r-er---ri-the-atters-
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+--a--asa---stt-ha-eas-s-i-i-------es-a-esha-e-a--ri---i--------erhis-hestthehair-as-e---iar--astere-
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+----i--r--ti-a------r-i---is---erhis-assi-e--rehea-thee-es-ere---e-ra----er-reat--a--t--ts-er---ear-
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er--riti-a-a---er--aster---ah--es-rea---sh----ersa--a-hest-i-ea-arre--erethe-ther-arts--hi--hi-ha--e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+are-a---etheta--esa-e--rt--e--r---sha--s---ere--ith------a--hairthisa--a-e----i--r-ari--r----i----i-
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e-a-e-----irsti--ressi----the--t-ri--s-r--ess-r-ha--e--er
+
+ciphertext
+1grams: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30
+2grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+        tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+        feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+        plaintext
+1grams: e t a o i n s h r
+2grams: th he in er an re ed on es st en at to nt ha nd
+        ou ea ng as or ti is et it ar te se hi of
+3grams: the ing and her ere ent tha nth was eth for dth
+
+e->m, r->h, t->i, h->a, s->q, a->t, i->j
+\end{Verbatim}
+
+At this point we can already see (possibly)
+\lq\lq\verb!he sat!''
+at line one 
+and \lq\lq\verb!that his!'' at line 4
+and \lq\lq\verb!his -hest the hair!'' at line 4 -- perhaps \lq\lq\verb!chest!'' is the second word?
+
+Next, we try \verb!tx,jx!.
+\verb!a?,i?! might be encrypted as \verb!tx,jx!.
+The possibilities for \verb!a?,i?! are
+\begin{tightlist}
+  \li \verb!an,in!: Therefore \verb!n->x!.
+  \li \verb!ar,ir!: But \verb!ir! is not common.
+\end{tightlist}
+We get
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hesatinar-tatin--hair-ehin-a-r-a-ta--e-hi-h-as---ere--ith----s-a-san--ia-ra-sasientere-hisseats--nr-
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+-n-t--a-e-ehisa--earan-e-a-e-e-as-i-as-re-are---rs--ethin-stran-e--tn-t--rs---er---erin-a-ers-na-it-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+asthisit-ashissi-e-hi-ht----nes-reatha-a-hissi-ean-hisi---sin--resen-ehishea--asen-r---sthe-ar-estih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+a-ee-erseen---nah--an-ein-ia-s-rethathist--hatha-ie-er-ent-re-t---nit-----ha-es-i--e---er-eentire--a
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+n-reste--n--sh----ersheha-the-a-ean--ear--hi-hiass--iate-ithanass-rian----the--r-er---ri-the-atters-
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+--a--asa---stt-ha-eas-s-i-i-n-----es-a-esha-e-an-ri---in----n--erhis-hestthehair-as-e---iar--astere-
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+---nin-r-ntina--n---r-in--is---erhis-assi-e--rehea-thee-es-ere---e-ra--n-er-reat--a--t--ts-er---ear-
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er--riti-a-an--er--aster---ah--es-rea---sh----ersan-a-hest-i-ea-arre--erethe-ther-arts--hi--hi-ha--e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+are-a---etheta--esa-e--rt--en-r---shan-s---ere--ith--n---a--hairthisan-a-e----in-r-arin-r----in---i-
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e-a-e-----irsti--ressi-n--then-t-ri--s-r--ess-r-ha--en-er
+
+ciphertext
+1grams: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30
+2grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+        tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+        feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+        plaintext
+1grams: e t a o i n s h r
+2grams: th he in er an re ed on es st en at to nt ha nd
+        ou ea ng as or ti is et it ar te se hi of
+3grams: the ing and her ere ent tha nth was eth for dth
+
+e->m, r->h, t->i, h->a, s->q, a->t, i->j, n->x
+  \end{Verbatim}
+
+The beginning of the plaintext now reads \lq\lq\verb!he sat in a!.''
+We now look at \verb!xl,ml! and
+\verb!ex,eh!.
+
+\verb!n?,e?! might be encrypted as \verb!xl,ml!.
+The possibilities for \verb!n?,e?! are
+\begin{tightlist}
+  \li \verb!nt,et!: But \verb!t! is already assigned.
+  \li \verb!nd,ed!: Therefore implies \verb!d->l!.
+  \li \verb!ng,eg!: But \verb!eg! is not common.
+\end{tightlist}
+
+\verb!?n,?r! might be encrypted as \verb!ex,eh!.
+The possibilities for \verb!?n,?r! are
+\begin{tightlist}
+  \li \verb!in,ir!: But \verb!i! is already assigned.
+  \li \verb!an,ar!: But \verb!a! is already assigned.
+  \li \verb!on,or!: This implies \verb!o->e!.
+  \li \verb!en,er!: But \verb!e! is already assigned.
+\end{tightlist}
+
+Adding \verb!d->l! and \verb!o->e!, we get
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hesatinarotatin--hair-ehinda-roadta--e-hi-h-as-o-ered-ith-oo-s-a-sanddia-ra-sasienteredhisseats--nro
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+-ndto-a-e-ehisa--earan-e-ade-e-as-i-as-re-ared-orso-ethin-stran-e--tnot-orsoo-er-o-erin-a-ersona-it-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+asthisit-ashissi-e-hi-htoo-ones-reatha-a-hissi-eandhisi--osin--resen-ehishead-asenor-o-sthe-ar-estih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+a-ee-erseen--onah--an-ein-ia-s-rethathisto-hathadie-er-ent-redtodonit-o--dha-es-i--edo-er-eentire--a
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+ndrestedon--sho--dershehadthe-a-eand-eard-hi-hiasso-iate-ithanass-rian----the-or-er--oridthe-atterso
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+--a--asa--osttoha-eas-s-i-iono----es-adesha-edandri---in-do-no-erhis-hestthehair-as-e---iar--astered
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+do-nin-rontina-on---r-in--is-o-erhis-assi-e-oreheadthee-es-ere---e-ra--nder-reat--a--t--ts-er---ear-
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er--riti-a-and-er--aster---ah--es-reado-sho--dersanda-hest-i-ea-arre--eretheother-artso-hi--hi-ha--e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+areda-o-etheta--esa-e-ort-oenor-o-shands-o-ered-ith-on---a--hairthisanda-e--o-in-roarin-r----in--oi-
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e-ade-----irsti--ressiono-thenotorio-s-ro-essor-ha--en-er
+
+ciphertext
+1grams: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30
+2grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+        tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+        feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+        plaintext
+1grams: e t a o i n s h r
+2grams: th he in er an re ed on es st en at to nt ha nd
+        ou ea ng as or ti is et it ar te se hi of
+3grams: the ing and her ere ent tha nth was eth for dth
+
+e->m, r->h, t->i, h->a, s->q, a->t, i->j, n->x, d->l, o->e
+\end{Verbatim}
+
+The beginning reads
+\lq\lq\verb!he sat in a rotatin--hair-ehinda-road...!''
+which is very likely
+\lq\lq\verb!he sat in a rotating chair-ehinda-road...!'',
+giving us
+\verb!g->n! and \verb!c->v!.
+This gives us
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hesatinarotatingchair-ehinda-roadta--e-hich-asco-ered-ith-oo-s-a-sanddiagra-sasienteredhisseats--nro
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+-ndto-ace-ehisa--earance-ade-egas-i-as-re-ared-orso-ethingstrange--tnot-orsoo-er-o-eringa-ersona-it-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+asthisit-ashissi-e-hichtoo-ones-reatha-a-hissi-eandhisi--osing-resencehishead-asenor-o-sthe-argestih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+a-ee-erseen--onah--an-eingia-s-rethathisto-hathadie-er-ent-redtodonit-o--dha-es-i--edo-er-eentire--a
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+ndrestedon--sho--dershehadthe-aceand-eard-hichiassociate-ithanass-rian----the-or-er--oridthe-atterso
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+--ac-asa--osttoha-eas-s-iciono----es-adesha-edandri---ingdo-no-erhischestthehair-as-ec--iar--astered
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+do-nin-rontina-ongc-r-ing-is-o-erhis-assi-e-oreheadthee-es-ere---egra--ndergreat--ac-t--ts-er-c-ear-
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er-critica-and-er--aster---ah-ges-reado-sho--dersandachest-i-ea-arre--eretheother-artso-hi--hicha--e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+areda-o-etheta--esa-e-ort-oenor-o-shandsco-ered-ith-ong--ac-hairthisanda-e--o-ingroaringr----ing-oic
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+e-ade-----irsti--ressiono-thenotorio-s-ro-essorcha--enger
+
+ciphertext
+1grams: m:116 t:95 q:75 h:74 j:68 e:65 i:59 a:59 x:53 l:40 k:34 g:30
+2grams: mh:25 ia:20 hm:20 aj:19 wm:18 at:16 am:16 tq:15 mq:15 xn:14
+        tx:14 mt:14 jx:14 xl:12 qi:12 jq:12 th:11 ml:10 ex:10 eh:10
+3grams: wmh:11 ajq:11 jxn:10 iam:10 txl:9 hml:7 ewm:7 mhm:6 otq:5 mhq:5
+        feh: 5 twm: 4 qqj: 4 oaj: 4 mth:4 mqi:4 mia:4 jva:4 imh:4 iat:4
+        plaintext
+1grams: e t a o i n s h r
+2grams: th he in er an re ed on es st en at to nt ha nd
+        ou ea ng as or ti is et it ar te se hi of
+3grams: the ing and her ere ent tha nth was eth for dth
+
+e->m, r->h, t->i, h->a, s->q, a->t, i->j, n->x, d->l, o->e, g->n, c->v
+\end{Verbatim}
+
+Near the middle of the first line,
+\lq\lq\verb!-hich-asco-ered-ith!''
+is probably
+\lq\lq\verb!which-asco-eredwith!''
+giving us \verb!w->o!.
+
+On the second line
+\lq\lq\verb!orso-ethingstrange-!'' is probably
+\lq\lq\verb!or something strange-!'',
+giving us \verb!m->r!.
+
+On the third line
+\lq\lq\verb!sthe-argestiha-ee-erseen!''
+is probably
+\lq\lq\texttt{s the largest i have ever seen}.''
+This gives us \verb!l->k! and \verb!v->w!.
+
+At this point we have
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hesatinarotatingchair-ehinda-roadta-lewhichwascoveredwith-oo-sma-sanddiagramsasienteredhisseats--nro
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+-ndto-acemehisa--earancemademegas-iwas-re-ared-orsomethingstrange--tnot-orsoover-oweringa-ersonalit-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+asthisitwashissi-ewhichtoo-ones-reathawa-hissi-eandhisim-osing-resencehisheadwasenormo-sthelargestih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+aveeverseen--onah-man-eingiams-rethathisto-hathadievervent-redtodonitwo-ldhavesli--edovermeentirel-a
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+ndrestedonm-sho-ldershehadthe-aceand-eardwhichiassociatewithanass-rian--llthe-ormer-loridthelatterso
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+-lac-asalmosttohaveas-s-iciono--l-es-adesha-edandri--lingdownoverhischestthehairwas-ec-liar-lastered
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+downin-rontinalongc-rvingwis-overhismassive-oreheadthee-eswere-l-egra--ndergreat-lac-t--tsver-clearv
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er-criticalandver-master--lah-ges-reado-sho-ldersandachestli-ea-arrelweretheother-artso-himwhicha--e
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+areda-ovetheta-lesave-ortwoenormo-shandscoveredwithlong-lac-hairthisanda-ellowingroaringr-m-lingvoic
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+emade--m--irstim-ressiono-thenotorio-s-ro-essorchallenger
+
+e->m, r->h, t->i, h->a, s->q, a->t, i->j, n->x, d->l, o->e, g->n, c->v, w->o, m->r,
+l->k, v->w
+\end{Verbatim}
+
+At the third line
+\lq\lq\texttt{hisim-osing-resencehisheadwasenormo-sthelargestihaveeverseen}''
+is probably
+\lq\lq\texttt{his imposing presence his head was enormous the largest i have ever seen}''
+giving us \verb!p->g! and \verb!u->b!.
+
+At line 7,
+\lq\lq\texttt{hismassive-orehead}'' is \lq\lq\texttt{his massive forehead}'' giving us \verb!f->f!.
+
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hesatinarotatingchair-ehinda-roadta-lewhichwascoveredwith-oo-smapsanddiagramsasienteredhisseatspunro
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+undtofacemehisappearancemademegaspiwaspreparedforsomethingstrange-utnotforsooverpoweringapersonalit-
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+asthisitwashissi-ewhichtoo-ones-reathawa-hissi-eandhisimposingpresencehisheadwasenormousthelargestih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+aveeverseenuponahuman-eingiamsurethathistophathadieverventuredtodonitwouldhaveslippedovermeentirel-a
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+ndrestedonm-shouldershehadthefaceand-eardwhichiassociatewithanass-rian-ulltheformerfloridthelatterso
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+-lac-asalmosttohaveasuspicionof-luespadeshapedandripplingdownoverhischestthehairwaspeculiarplastered
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+downinfrontinalongcurvingwispoverhismassiveforeheadthee-eswere-luegra-undergreat-lac-tuftsver-clearv
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+er-criticalandver-masterfulahugespreadofshouldersandachestli-ea-arrelweretheotherpartsofhimwhichappe
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+areda-ovetheta-lesavefortwoenormoushandscoveredwithlong-lac-hairthisanda-ellowingroaringrum-lingvoic
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+emadeupm-firstimpressionofthenotoriousprofessorchallenger
+
+e->m, r->h, t->i, h->a, s->q, a->t, i->j, n->x, d->l, o->e, g->n, c->v, w->o, m->r,
+l->k, v->w, p->g, u->b, f->f
+\end{Verbatim}
+
+The beginning
+\lq\lq\texttt{hesatinarotatingchair-ehinda-roadta-le}''
+is
+\lq\lq\texttt{he sat in a rotating chair behind abroad table}''
+giving us \verb!b->u!.
+
+At line 5, \lq\lq\verb!restedonm-shoulder!'' is \lq\lq\verb!rested on my shoulder!''
+giving us \verb!y->s!.
+
+At line 8,
+\lq\lq\texttt{shouldersandachestli-ea-arrel}''
+is
+\lq\lq\texttt{shoulders and a chest like a barrel},
+giving us \verb!k->c!.
+
+At line 3,
+\lq\lq\texttt{itwashissi-ewhichtookonesbreathaway}'' is
+\lq\lq\texttt{it was his size which took ones breath away}'' giving us \verb!z->p!.
+
+We now have
+  \begin{Verbatim}[frame=single,fontsize=\tiny]
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewmhmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+hesatinarotatingchairbehindabroadtablewhichwascoveredwithbooksmapsanddiagramsasienteredhisseatspunro
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehqermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+undtofacemehisappearancemademegaspiwaspreparedforsomethingstrangebutnotforsooverpoweringapersonality
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtxlajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+asthisitwashissizewhichtookonesbreathawayhissizeandhisimposingpresencehisheadwasenormousthelargestih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatljmwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+aveeverseenuponahumanbeingiamsurethathistophathadieverventuredtodonitwouldhaveslippedovermeentirelya
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqqevjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+ndrestedonmyshouldershehadthefaceandbeardwhichiassociatewithanassyrianbulltheformerfloridthelatterso
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlhjggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+blackasalmosttohaveasuspicionofbluespadeshapedandripplingdownoverhischestthehairwaspeculiarplastered
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamtliammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+downinfrontinalongcurvingwispoverhismassiveforeheadtheeyeswerebluegrayundergreatblacktuftsveryclearv
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqtxltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+erycriticalandverymasterfulahugespreadofshouldersandachestlikeabarrelweretheotherpartsofhimwhichappe
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmlojiakexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+aredabovethetablesavefortwoenormoushandscoveredwithlongblackhairthisandabellowingroaringrumblingvoic
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvatkkmxnmh
+emadeupmyfirstimpressionofthenotoriousprofessorchallenger
+
+e->m, r->h, t->i, h->a, s->q, a->t, i->j, n->x, d->l, o->e, g->n, c->v, w->o, m->r,
+l->k, v->w, p->g, u->b, f->f, b->b, y->s, k->c, z->p
+q->q, x->x, j->j
+\end{Verbatim}
+Note that \verb!q,x,j! were not used in the plaintext.
+We have added \verb!q->q, x->x, j->j! to the substitution key.
+The following is the plaintext with spaces inserted (puncuations not restored):
+\begin{itemize}
+  \item[]
+he sat in a rotating chair behind a broad table which was covered with books maps and diagrams
+as i entered his seat spun round to face me his appearance made me gasp i was prepared for
+something strange but not for so overpowering a personality
+as this it was his size which took ones breath away his size and his imposing presence
+his head was enormous the largest i have ever seen upon a human being i am sure that his
+tophat had i ever ventured to
+don it would have slipped over me entirely
+and rested on my shoulders
+he had the face and beard which i associate
+with an assyrian bull the former
+florid the latter
+so
+black as
+almost to have a suspicion of blue spade shaped and rippling down
+over his chest the hair was peculiar plastered
+down in front in a long curving wisp over his massive forehead
+the eyes were blue gray under great black tufts very
+clear very critical and very masterful
+a huge spread of shoulders and a chest like a barrel
+were the other parts of him which
+appeared above the table save for two enormous hands
+covered with long black hair this and a bellowing roaring
+rumbling voice made up my first impression of the notorious professor
+challenger
+\end{itemize}
+\qed
+
+The following programs are helpful (so go ahead and write them):
+\begin{myenum}
+\item Code to print the top 1-grams, 2-grams, 3-grams.
+  The 1-grams will help determine the character that \verb!e! is encrypted to.
+  The trigrams might help determine what \verb!the! is encrypted to.
+\item Given a character \verb!c!, code that computes character(s) \verb!d!
+  such that \verb!cd! and \verb!dc! occurs most frequently.
+  So if you suspect \verb!e! is encrypted to \verb!r!,
+  your code will print all \verb!x! such that \verb!rx! and \verb!xr! is common
+  will be helpful in decoding \verb!x!.
+\item Given a collection of common 2-grams (in plaintext), a
+  partially specified substitution,
+  compute pairs of commonly ocurring digrams
+  of the form \verb!xy,xz! or \verb!xy,zx! or \verb!xy,yz! or \verb!xy,zy!
+  (i.e., there are three distinct characters in the pairs of digrams)
+  where two of the characters have already been decrypted and the remaining
+  one has not and has not been assigned to a plaintext character.
+\item Instead of the above where there are two digrams, listing 4-grams
+  where the decryption of 3 are known and one is unknown is also 
+  useful.
+\end{myenum}
+
+
+Here are some exercises for you:
+
+\input{exercises/substitution-cipher-0/main.tex}
+\input{exercises/substitution-cipher-1/main.tex}
+\input{exercises/substitution-cipher-2/main.tex}
+
+Once you have solved a few substitution ciphers by hand,
+you are ready
+to write a program to automate your process.
+Instead of a perfect solver,
+your program should aim to print a list of
+possible decryptions, ordered by likelihood (of being the original plaintext).
+
+You can learn more about breaking substitution ciphers by doing a
+google search.
+Clearly the process of breaking a substitution cipher involves trying
+substitutions.
+This leads to search algorithms.
+Starting with the traditional backtracking search, you
+will be led to other heuristic search algorithms
+such as local seach algorithms, genetic algorithms, etc.
+Studying substitution ciphers will also lead to studies of
+probability theory and specifically markov chains.
+A search on google will reveal many research papers
+(many of which are very recent)
+on substitution cipher, AI search algorithms,
+markov chains, etc.
+
+
+
+\begin{comment}
+====================================================
+ENCRYPTION KEY
+==============
+a -> t   b -> u   c -> v   d -> l   e -> m  
+f -> f   g -> n   h -> a   i -> j   j -> y  
+k -> c   l -> k   m -> r   n -> x   o -> e  
+p -> g   q -> z   r -> h   s -> q   t -> i  
+u -> b   v -> w   w -> o   x -> d   y -> s  
+z -> p  
+
+MESSAGES (ciphertext on top)
+============================
+amqtijxtheitijxnvatjhumajxltuhetlitukmoajvaotqvewm
+hesatinarotatingchairbehindabroadtablewhichwascove
+
+hmlojiaueecqrtgqtxlljtnhtrqtqjmximhmlajqqmtiqgbxhe
+redwithbooksmapsanddiagramsasienteredhisseatspunro
+
+bxlieftvmrmajqtggmthtxvmrtlmrmntqgjotqghmgthmlfehq
+undtofacemehisappearancemademegaspiwaspreparedfors
+
+ermiajxnqihtxnmubixeifehqeewmhgeomhjxntgmhqextkjis
+omethingstrangebutnotforsooverpoweringapersonality
+
+tqiajqjiotqajqqjpmoajvaieecexmquhmtiatotsajqqjpmtx
+asthisitwashissizewhichtookonesbreathawayhissizean
+
+lajqjrgeqjxnghmqmxvmajqamtlotqmxehrebqiamkthnmqija
+dhisimposingpresencehisheadwasenormousthelargestih
+
+twmmwmhqmmxbgextabrtxumjxnjtrqbhmiatiajqiegatiatlj
+aveeverseenuponahumanbeingiamsurethathistophathadi
+
+mwmhwmxibhmlielexjioebklatwmqkjggmlewmhrmmxijhmkst
+everventuredtodonitwouldhaveslippedovermeentirelya
+
+xlhmqimlexrsqaebklmhqamatliamftvmtxlumthloajvajtqq
+ndrestedonmyshouldershehadthefaceandbeardwhichiass
+
+evjtimojiatxtqqshjtxubkkiamfehrmhfkehjliamktiimhqe
+ociatewithanassyrianbulltheformerfloridthelatterso
+
+uktvctqtkreqiieatwmtqbqgjvjexefukbmqgtlmqatgmltxlh
+blackasalmosttohaveasuspicionofbluespadeshapedandr
+
+jggkjxnleoxewmhajqvamqiiamatjhotqgmvbkjthgktqimhml
+ipplingdownoverhischestthehairwaspeculiarplastered
+
+leoxjxfhexijxtkexnvbhwjxnojqgewmhajqrtqqjwmfehmamt
+downinfrontinalongcurvingwispoverhismassiveforehea
+
+liammsmqomhmukbmnhtsbxlmhnhmtiuktvcibfiqwmhsvkmthw
+dtheeyeswerebluegrayundergreatblacktuftsveryclearv
+
+mhsvhjijvtktxlwmhsrtqimhfbktabnmqghmtlefqaebklmhqt
+erycriticalandverymasterfulahugespreadofshouldersa
+
+xltvamqikjcmtuthhmkomhmiameiamhgthiqefajroajvatggm
+ndachestlikeabarrelweretheotherpartsofhimwhichappe
+
+thmltuewmiamitukmqtwmfehioemxehrebqatxlqvewmhmloji
+aredabovethetablesavefortwoenormoushandscoveredwit
+
+akexnuktvcatjhiajqtxltumkkeojxnhethjxnhbrukjxnwejv
+hlongblackhairthisandabellowingroaringrumblingvoic
+
+mrtlmbgrsfjhqijrghmqqjexefiamxeiehjebqghefmqqehvat
+emadeupmyfirstimpressionofthenotoriousprofessorcha
+
+kkmxnmh
+llenger
+
+====================================================
+\end{comment}
+

@@ -1,0 +1,155 @@
+\sectionthree{Linear feedback shift register}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Recall that the
+one time pad uses exclusive-or to operator on
+bit sequences.
+Note that the exclusive-or is the same as
+addition mod 2!!!
+In other words addition \textit{in mod 2}
+\begin{align*}
+  0 + 0 \equiv 0 \pmod{2} \\
+  0 + 1 \equiv 1 \pmod{2} \\
+  1 + 0 \equiv 1 \pmod{2} \\
+  1 + 0 \equiv 0 \pmod{2} \\
+\end{align*}
+is the same as exclusive-or operation \textit{on bits}:
+\begin{align*}
+  0 \oplus 0 = 0  \\
+  0 \oplus 1 = 1  \\
+  1 \oplus 0 = 1  \\
+  1 \oplus 0 = 0 
+\end{align*}
+(I'm using $\oplus$ for exclusive-or bit operator -- that's pretty standard.)
+
+Now I'm going to this:
+first I define the following bit sequence of length 5:
+\[
+  x_1x_2x_3x_4x_5 = 10110
+\]
+which is the same as defining integer $x_1, ..., x_5$ in $\Z/2$.
+Then I define
+\[
+  x_{n + 6} \equiv x_{n+1} + x_{n+2} + x_{n+4} \pmod{2}
+\]
+for $n \geq 0$.
+For instance
+\[
+  x_{6} \equiv x_{1} + x_{2} + x_{4} \equiv 1 + 0 + 1 \equiv 0 \pmod{2} 
+\]
+Here are next about 15: 
+\begin{align*}
+  x_{6} &\equiv x_{1} + x_{2} + x_{4} \equiv 1 + 0 + 1 \equiv 0  & \pmod{2} \\
+  x_{7} &\equiv x_{2} + x_{3} + x_{5} \equiv 0 + 1 + 0 \equiv 1  & \pmod{2} \\
+  x_{8} &\equiv x_{3} + x_{4} + x_{6} \equiv 1 + 1 + 0 \equiv 0  & \pmod{2} \\
+  x_{9} &\equiv x_{4} + x_{5} + x_{7} \equiv 1 + 0 + 1 \equiv 0  & \pmod{2} \\
+  x_{10} &\equiv x_{5} + x_{6} + x_{8} \equiv 0 + 0 + 0 \equiv 0 & \pmod{2} \\
+  x_{11} &\equiv x_{6} + x_{7} + x_{9} \equiv 0 + 1 + 0 \equiv 1 & \pmod{2} \\
+  x_{12} &\equiv x_{7} + x_{8} + x_{10} \equiv 1 + 0 + 1 \equiv 1 & \pmod{2} \\
+  x_{13} &\equiv x_{8} + x_{9} + x_{11} \equiv 0 + 0 + 1 \equiv 1 & \pmod{2} \\
+  x_{14} &\equiv x_{9} + x_{10} + x_{12} \equiv 0 + 0 + 1 \equiv 1 & \pmod{2} \\
+  x_{15} &\equiv x_{10} + x_{11} + x_{13} \equiv 0 + 1 + 1 \equiv 0 & \pmod{2} \\
+  x_{16} &\equiv x_{11} + x_{12} + x_{14} \equiv 1 + 1 + 1 \equiv 1 & \pmod{2} \\
+  x_{17} &\equiv x_{12} + x_{13} + x_{15} \equiv 1 + 1 + 0 \equiv 0 & \pmod{2} \\
+  x_{18} &\equiv x_{13} + x_{14} + x_{16} \equiv 1 + 1 + 1 \equiv 1 & \pmod{2} \\
+  x_{19} &\equiv x_{14} + x_{15} + x_{17} \equiv 1 + 0 + 0 \equiv 1 & \pmod{2} \\
+  x_{20} &\equiv x_{15} + x_{16} + x_{18} \equiv 0 + 1 + 1 \equiv 0 & \pmod{2} \\
+\end{align*}
+More generally, after defining $x_1, ..., x_5$ (the initial conditions) you can
+generated the sequence $x_i$ using
+\[
+  x_{n + 6} \equiv c_1 x_{n+1} + c_2 x_{n+2} + c_3 x_{n+3} + c_4x_{n+4} + c_5x_{n+5} \pmod{2}
+\]
+for $n \geq 0$ for constants $c_1, ..., c_5$ in $\Z/2$.
+I will say that this is linear relation has \defone{degree 5}.
+Even more generally, you can have any number of bits for the initial condition.
+Say you begin with $x_1, ..., x_k$ (the initial condition) and
+the relation is
+\[
+  x_{n + k + 1} \equiv c_1 x_{n+1} + c_2 x_{n+2} + c_3 x_{n+3} + \cdots + c_kx_{n+k} \pmod{2}
+\]
+
+LSRFs are very easy to implement in both hardware and software
+and they are extremely fast
+(they just access bits and XOR them).
+The LSRF generator itself need to remember the $k$ bits
+$c_1, ..., c_k$ (which is fixed)
+and the $k$ bits of the sequence so far
+$x_{n + 1}, ..., x_{n + k}$ in order to generate the next
+bit $x_{n + k + 1}$.
+
+\begin{comment}
+x = [1,0,1,1,0]
+c = [1,1,0,1,0]
+# x_{n + 6} = 1x_{n+1} + 1x_{n+2} + 0x_{n+3} + 1x_{n+4} + 0x_{n+5}
+def f(c, x):
+    y = x[-5:]
+    s = sum([a*b for (a,b) in zip(c,y)]) % 2
+    x.append(s)
+
+#print x
+for i in range(1000):
+    f(c, x)
+
+found = False
+y = None   
+for length in range(1, 100):
+    y = x[:length]
+    z = x[length:]
+    numtimes = 0
+    while 1:
+        y0 = z[:length]
+        if y0 != y:
+            break
+        numtimes += 1
+        z = z[length:]
+        if len(z) < length:
+            found = True
+    if found: break
+
+if found:
+    print y
+    print length
+    print numtimes
+\end{comment}
+
+In the above example, the sequence from $x_1$ to $x_{20}$ is
+\[
+10110010001111010110010001111010110...
+\]
+Notice that the pattern repeats itself:
+\[
+101100100011110\ \ 101100100011110\ \ 10110...
+\]
+The period is 15.
+
+The problem with the one-time pad is that you need to
+generate a random sequence of 0s and 1s.
+You can see that with 5 bits
+\[
+  x_1 x_2 x_3 x_4 x_5 = 10110
+\]
+and the relation
+\[
+  x_{n + 6} \equiv x_{n+1} + x_{n+2} + x_{n+4} \pmod{2}
+\]
+which involves (1,1,0,1,0) (5 bits), a total of 10 bits)  we can generate
+\[
+  101100100011110
+\]
+which has length 15.
+The 15 bits is somewhat random -- we say that the 15 bits are
+\defone{pseudorandom}.
+Therefore LFSR can be used to generate a pseudorandom bit sequence,
+which can 
+used, for instance, as a key for the one-time pad.
+Of course you want to find a LSFR with extremely long periods.
+
+\input{exercises/lfsr-0/main.tex}
+\input{exercises/lfsr-1/main.tex}
+\input{exercises/lfsr-2/main.tex}
+\input{exercises/lfsr-3/main.tex}
+\input{exercises/lfsr-4/main.tex}
+\input{exercises/lfsr-5/main.tex}

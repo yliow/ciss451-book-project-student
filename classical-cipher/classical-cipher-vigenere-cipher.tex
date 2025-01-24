@@ -1,0 +1,456 @@
+\sectionthree{Vigen\`ere cipher}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\newcommand\aaa{\texttt{a}}
+\newcommand\yy{\texttt{y}}
+
+The shift, affine, substitution ciphers are called
+\defone{monoalphabetic}
+ciphers --
+each letter can be mapped to only one letter.
+
+A
+\defone{polyalphabetic}
+ciphers is the opposite
+of monoalphabetic ciphers.
+
+
+The Vigenere cipher is basically a collection of shifts.
+Here's an example.
+
+My key is going to be the word \verb!fun!.
+Note that when I translate \verb!fun! to numbers
+(with
+\verb!a! $\rightarrow 0$,
+\verb!b! $\rightarrow 1$,
+\verb!c! $\rightarrow 2$, ...)
+I get $5, 20, 13$.
+So all I need to do is to encrypt the characters by doing
+\begin{tightlist}
+  \li shift by 5
+  \li shift by 20
+  \li shift by 13
+  \li shift by 5
+  \li shift by 20
+  \li shift by 13
+  \li ...
+\end{tightlist}
+  For instance suppose the plaintext is
+
+\verb!    It's a dangerous business, Frodo, going out your door.!
+
+I change everything to lowercase and throwing away non a-z
+and our plaintext \verb!x! is:
+
+\verb!    itsadangerousbusinessfrodogoingoutyourdoor!
+
+Suppose the encrypted text is
+\[
+  y =
+  \texttt{y}_1
+  \texttt{y}_2
+  \texttt{y}_3
+  \texttt{y}_4
+  \texttt{y}_5
+  \texttt{y}_6
+  ...
+\]
+Then
+\begin{tightlist}
+  \li $\yy_1$ = shift \verb!i! by 5 = \verb!n!
+  \li $\yy_2$ = shift \verb!t! by 20 = \verb!n!
+  \li $\yy_3$ = shift \verb!s! by 13 = \verb!f!
+  \li $\yy_4$ = shift \verb!a! by 5 = \verb!f!
+  \li $\yy_5$ = shift \verb!d! by 20 = \verb!x!
+  \li $\yy_6$ = shift \verb!a! by 13 = \verb!n!
+  \li $\yy_4$ = shift \verb!n! by 5 = \verb!s!
+  \li $\yy_5$ = shift \verb!g! by 20 = \verb!a!
+  \li $\yy_6$ = shift \verb!e! by 13 = \verb!r!
+  \li ...
+\end{tightlist}
+i.e.,
+\[
+  y =
+  \texttt{nnffxnsar}...
+\]
+
+\input{exercises/vigenere-0/main.tex}
+
+Now let's attack the Vignere cipher.
+
+Suppose the length of the key is $m$.
+Then you can think of your message as being chopped up
+into $m$ strings and each is encrypted
+by the shift of a character and then everything is
+put together.
+For instance if the ciphertext is
+\[
+  y =
+  \texttt{y}_1
+  \texttt{y}_2
+  \texttt{y}_3
+  ...
+\]
+and the key is \texttt{fun}, i.e. $m$ is 3, then the 3 strings are
+\begin{align*}
+  z_1 =
+  \texttt{y}_1
+  \texttt{y}_4
+  \texttt{y}_7
+  \ldots \\
+  z_2 =
+  \texttt{y}_2
+  \texttt{y}_5
+  \texttt{y}_8
+  \ldots \\
+  z_3 =
+  \texttt{y}_3
+  \texttt{y}_6
+  \texttt{y}_9
+  \ldots 
+\end{align*}
+Now, the above of course is the encryption process
+and you know that the key has length 3, therefore
+you are three different shifts.
+If you do know the key has length 3, then each
+of the above $z_i$ is encrypted using the same shift
+and therefore you can use frequency analysis to decrypt
+each of them separately.
+
+The problem is when you do \textit{not} have the length of the
+key.
+So
+the first step is always to figure out the length of the
+key, i.e.
+$m$.
+
+\textsc{Method 1.}
+Here's a strategy. Look at the substrings of the ciphertext of
+length 3. Think about it.
+Suppose you see the following in your
+ciphertext:
+\[
+  \ldots \texttt{etu} \ldots \texttt{etu}\ldots
+\]
+What can you do? One might guess that if the distance between the
+first \texttt{e} to the next is $d$, then $m$ divides
+$d$ right?
+Think about it. So you need to scan for all possible substrings of
+length 3 and look for such distances. Suppose you have a bunch of
+such distances $d_1, d_2, \ldots, d_k$. Then $m$ must divide all
+these $d_i$'s. This means that $m$ divides
+$\gcd(d_1,d_2,\ldots,d_k)$. Obviously the more $d_i$'s you have
+the better.
+
+\input{exercises/vigenere-1/main.tex}
+\input{exercises/vigenere-2/main.tex}
+\input{exercises/vigenere-3/main.tex}
+\input{exercises/vigenere-4/main.tex}
+
+Once you have a probabilistic guess of the length, say $m$,
+you break up the encrypted string into $m$
+pieces.
+Each piece is a shift ciphertext.
+So you just use whatever we talked about
+in the sections on shift cipher.
+
+Done!
+
+\textsc{Method 2.}
+Here's another technique. It involves some simple counting from
+discrete math. Suppose again the length of the key of $m$
+and you cut up your string into $m$ pieces so that the characters
+in each substring is shifted by the same amount. Clearly the
+probabilities of the letters for each substring is preserved. In
+other words if \texttt{e} is encrypted as \texttt{g} for the first
+string and to \texttt{n} for the second, etc., then the
+probability of \texttt{g} in the first string and of \texttt{n} in
+the second string must be approximately the same as the
+probability of $\texttt{e}$. On the other hand, if we assumed that
+the length wrongly, say $m+1$, then the probabilities must be
+different. As a matter of fact the substrings would appear very
+random. OK. So let's do some math.
+
+Suppose the frequencies of the letters in a string $s$ are
+$f_0$,
+$f_1$, $\ldots$, $f_{25}$,
+i.e., $f_0$ is the frequency of
+\texttt{a}, etc.
+Suppose the length of the $s$ is $n$.
+Therefore
+\[
+\sum_{i=0}^{25} f_i = n
+\]
+In this string $s$, the probability $p_0$ that a randomly chosen
+character of $s$ is the character \texttt{a} is just $f_0/n$.
+Etc.
+In the following I might write $f(0)$ instead of $f_0$.
+So in the following discussion if you see $p_0$ you can think of $f_0/n$.
+
+In python or C\texttt{++}, for statistical computation
+of frequencies of characters (or substrings), you can use a hashtable.
+(Details in assignment.)
+For instance in python you can do this.
+A hashtable in python is called a python dictionary.
+In C\texttt{++} a hashtable is called an unordered map.
+Try this for python:
+\begin{Verbatim}[frame=single,fontsize=\small]
+s = "tobeornottobethatisthequestionandtheanswerisfortytwo"
+f = {}
+for c in s:
+    if c not in f:
+        f[c] = 1
+    else:
+        f[c] += 1    
+for c,count in f:
+    print(c, count)    
+\end{Verbatim}
+or
+\begin{Verbatim}[frame=single,fontsize=\small]
+s = "tobeornottobethatisthequestionandtheanswerisfortytwo"
+f = {}
+for c in s:
+    f[c] = f.get(c, 0) + 1
+for c,count in f.items():
+    print(c, count)    
+\end{Verbatim}
+Make sure you run the above.
+(For those of you who have taken CISS350, 
+check my notes on hashtables and review \verb!std::unordered_map!.)
+A lot more information on python dictionary is found in the assignment.
+Moving on ...
+
+Now the
+probability of two randomly chosen characters being the same must
+be \sidenote{ $\binom{n}{k}$ is the $n$--choose--$k$ binomial
+coefficient, i.e. $n!/((n-k)!k!)$. In particular $\binom{n}{2} =
+n(n-1)/2$.}
+\[
+  I(s) = \frac{\binom{f_0}{2} + \ldots + \binom{f_{25}}{2}}{\binom{n}{2}} =
+  \frac{\sum_{i=0}^{25}f_i(f_i-1)}{n(n-1)}
+\]
+
+One thing nice about the above formula is that if any substitution
+has been applied to the string,
+\textit{the above value remains the same}.
+
+\input{exercises/vigenere-5/main.tex}
+
+So $I(s)$ is approximately $\sum_{i=0}^{25} p_i^2$ where $p_i$ is
+the probability of a character of the string being the $i$--th
+letter.
+
+On the other hand if there is no pattern and everything is random,
+for instance you cut up your ciphertext, which was encrypted by a
+substitution with a string of length $m$, into $m+1$ substrings,
+then the probabilities of the characters would be almost the same
+since the string is gibberish. In other words, the probabilities
+would be about $f_i/n = 1/26$.
+
+\input{exercises/vigenere-6/main.tex}
+\input{exercises/vigenere-7/main.tex}
+
+So the question is this: Is the $I$ value sufficiently different
+for a meaningful string and a random string? Is so, then we have
+an algorithm for determining $m$:
+
+Test $m = 1$:
+You get one piece (the complete string) from the ciphertext
+$y$.
+Compute $I(y)$.
+If $I(y)$ is approximately $0.065$, $m = 1$.
+
+Test $m = 2$:
+Cut up your ciphertext $y$ into two pieces
+$z_1, z_2$.
+Compute
+$I(z_1)$,
+$I(z_1)$.
+If they are approximately $0.065$ (you can use the average of
+$I(z_1)$ and 
+$I(z_1)$), then $m = 2$.
+
+Test $m = 3$:
+Cut up your ciphertext $y$ into three pieces
+$z_1, z_2, z_3$.
+Compute
+$I(z_1)$,
+$I(z_2)$,
+$I(z_3)$.
+If they are approximately $0.065$ (you can use the average of all three),
+then $m = 3$.
+
+Etc.
+
+So now we know how to compute the length of the key.
+Suppose the plaintext is $x$ and the $m$ pieces of $x$ are
+$x_1, x_2, x_3, ..., x_m$.
+Recall $y$ is the ciphertext and the $m$ pieces of $y$ are
+$z_1, z_2, z_3, ..., z_m$.
+Suppose the
+shifts are by $k_1, k_2, \ldots k_m$.
+So 
+$z_1$ is a shift of $x_1$ by $k_1$, $z_2$ is a shift of
+$x_2$ by $k_2$, etc.
+
+Suppose $p_0$ is the probability of \texttt{a}, $p_1$ is the
+probability of \texttt{b}, etc. in unencrypted English.  Look at
+$y_1$. If you look at the probability of $\texttt{a}$ in $z_1$,
+then you're really looking at the $p_\alpha$ where $\alpha$ is
+encrypted as $\texttt{a}$. For instance suppose the shift is by 3.
+In other words \text{x} is encrypted as \texttt{a}. So the
+probability of \texttt{a} in $z_1$ is the same as the probability
+of \texttt{x} which is $p_{26-3}$. For simplicity, from now on all the indices
+will be considered mod 26. So when I write $p_{-3}$ I really mean
+$p_{26-3}$. In general, if the shift is $k$, then the probability
+must be $p_{-k}$. Similarly, the probability of \texttt{b} in
+$y_1$ must be $p_{1-k}$. In general, the probability of the
+$i$--th character in $z_1$ must be $p_{i-k}$.
+
+Now we make the following observation: What is the probability
+that a randomly chosen character from $z_1$ and a randomly chosen
+character from $z_2$ are both \texttt{a}? It is approximately
+\[
+ M(y_i,y_j) = \sum_{\ell=0}^{25} p_{\ell-k_1} p_{\ell-k_2}
+\]
+For any $z_i$ and $z_j$, this is then
+\[
+ \sum_{\ell=0}^{25} p_{\ell-k_i} p_{\ell-k_j}
+\]
+You now notice that the above is the same as
+\[
+ \sum_{\ell=0}^{25} p_{\ell} p_{\ell-k_j+k_i}
+\]
+or
+\[
+ \sum_{\ell=0}^{25} p_{\ell} p_{\ell+k_i-k_j}
+\]
+
+The number $k_i - k_j$ is called the
+\defone{relative shift}
+of $z_i$ and
+$z_j$.
+
+\input{exercises/vigenere-8/main.tex}
+
+You notice that when there is no shift, the $M$ value is
+approximately $0.065$. Otherwise it is much smaller, around 0.04.
+So this what you can do. Take $z_1$ and $z_2$ as examples. Compute
+the $M$ value for $z_1$ and $z_2$. Next you shift $z_2$ by 1 to
+get $E_1(z_2)$ ($E_1$ is the encryption for the shift cipher). Now
+compute the $M$ value for $y_1$ and $E_1(y_2)$, i.e. $M(y_1,
+E_1(y_2))$. Next you compute $M(y_1, E_2(y_2))$. Continue until
+you have the $M$ value of $y_1$ and $E_{25}(y_1)$. If the $M$
+value for $y_1$ and $E_{17}(y_2)$ is approximately $0.065$, then
+the relative shift is very likely 17. In other words
+\[
+  k_1 - k_2 = 17
+\]
+
+Now perform the same for different pairs of $y_i$, $y_j$. You have
+$\binom{m}{2}$ pairs and you hope to get as many equations as
+possible.
+
+You should be able to write your shifts in terms of one shift, say
+the first $k_1$. For instance the second shift might be $k_1+3$,
+the third is $k_1+2$, etc. You still have the unknown $k_1$.
+
+But that's only one unknown!!!
+
+You can then easily solve it with 26
+different values for $k_1$. Alternatively, for a Vigenere cipher,
+the shifts come from a sequence of letters and the letters usually
+make up a meaningful word. You can scan for meaningful words using
+your sequence of shifts. For instance if the shifts are
+$(k_1,k_1+17,k_1+4,k_1+21,k_1+10)$, then when $k_1=9$ you get the
+word \texttt{janet}.
+
+Notice that the cryptanalysis as above already hints at the fact
+that algebra and probability theory are extremely important in
+this area of study. In particular, there is an area of study
+called information theory that studies the amount of randomness or
+lack of information in random variables encoded within something
+called the entropy of random variables.  Using information theory
+one can prove that a substitution ciphertext has a unique
+decryption if the string has a length of at least 25. 
+
+In case the above proof hurts your head too much, let
+me give you an informal proof.
+
+Suppose I have a sequence of numbers:
+\[
+[0.1, 0.2, 0.3, 0.4]
+\]
+Think of these as the probabilities of a language that involves
+only 4 letters, say the probabilities of the symbols $a,b,c,d$.
+Now I rotate the numbers in a circle by 1 step to get this:
+\[
+[0.4, 0.1, 0.2, 0.3]
+\]
+and by 3 steps to get this:
+\[
+[0.2, 0.3, 0.4, 0.1]
+\]
+These corresponds to a shift cipher of 1 and of 3.
+The relative shift between the 1st and 2nd is 2 steps:
+you can see that 0.1 is 2 steps away between the two sequences.
+One way to compute the relative shift (i.e. 2) is to 
+compute the sum of products of the corresponding terms:
+\begin{enumerate}
+\li Relative shift the second by 0:
+\begin{align*}
+&[0.4, 0.1, 0.2, 0.3] \\
+&[0.2, 0.3, 0.4, 0.1]
+\end{align*}
+and compute:
+\[
+0.4 \times 0.2 + 0.1 \times 0.3 + 0.2 \times 0.4 + 0.3 \times 0.1 = 0.2200...
+\]
+\li Relative shift the second by -1:
+\begin{align*}
+&[0.4, 0.1, 0.2, 0.3] \\
+&[0.3, 0.4, 0.1, 0.2]
+\end{align*}
+and compute:
+\[
+0.4 \times 0.3 + 0.1 \times 0.4 + 0.2 \times 0.1 + 0.3 \times 0.2 = 0.2399...
+\]
+\li Relative shift the second by -2
+\begin{align*}
+&[0.4, 0.1, 0.2, 0.3]\\
+&[0.4, 0.1, 0.2, 0.3]
+\end{align*}
+and compute
+\[
+0.4 \times 0.4 + 0.1 \times 0.1 + 0.2 \times 0.2 + 0.3 \times 0.2 = 0.3000...
+\]
+\li Relative shift the second by -3:
+\begin{align*}
+&[0.4, 0.1, 0.2, 0.3]\\
+&[0.1, 0.2, 0.3, 0.4]
+\end{align*}
+and compute
+\[
+0.4 \times 0.1 + 0.1 \times 0.2 + 0.2 \times 0.3 + 0.3 \times 0.4 = 0.2399...
+\]
+\end{enumerate}
+You see that the largest value gives you the correct relative shift.
+
+Of course if the probabilities were from ciphertexts,
+the numbers will only be
+\textit{close} to $0.1,0.2,0.3,0.4$
+if the lengths are large enough.
+   
+(By the way, the reason why you get the largest value
+when the numbers line up nicely is because the
+above sum of product of corresponding term is called
+the inner product and the inner product
+is largest when the two sequence of positive numbers, 
+think vectors, are pointing in the same direction.)
+
+\input{exercises/vigenere-9/main.tex}
+\input{exercises/vigenere-10/main.tex}
+\input{exercises/vigenere-11/main.tex}
+

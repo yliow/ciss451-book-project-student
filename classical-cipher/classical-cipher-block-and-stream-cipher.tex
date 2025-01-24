@@ -1,0 +1,78 @@
+%-*-latex-*-
+\sectionthree{Block and stream ciphers}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Recall that in Caesar cipher, you only define the encryption and decryption
+for single characters.
+
+The encryption/decryption is then extended to a whole string by 
+encrypting/decrypting character-by-character.
+
+So if you're encrypting the string \verb!cat! with the encryption function
+$E_K$, you just do
+\[
+E_K(\texttt{cat}) = E_K(\texttt{c}) E_K(\texttt{a}) E_K(\texttt{t})
+\]
+Another thing you should know is that, instead of
+writing
+\[
+\texttt{cat}
+\]
+might write
+\[
+\texttt{c} || \texttt{a} || \texttt{t}
+\]
+i.e., it's common to use $||$ to denote concatenation of data.
+
+
+A \textbf{block} cipher is a cipher system where more than one
+character (a block) is encrypted together at the time same.
+
+But why encrypt a block of characters at a time?
+
+In the case of shift and affine cipher,
+the frequency of the plaintext character is the same as the
+frequency of the corresponding ciphertext character.
+Sure, an \texttt{a} might become a \texttt{t} which looks different from
+\texttt{a}.
+But guess what?
+\texttt{a}'s fingerprint -- its frequency -- follows it to the ciphertext.
+
+The same idea is the same for Vigenere as long as you have
+the length of the key.
+
+The next cipher, Hill cipher,  is different.
+We're going to encrypt several characters at the same time.
+For instance Hill cipher (depending on the key)
+can encrypt 2 characters at the same time to produce 2 new characters.
+
+\begin{comment}
+On the other hand a \textbf{stream} cipher is one where the key continually
+changes for each block, i.e. you might have something like this:
+\[
+E_{K_1}(\texttt{cat}) =
+E_{K_1}(\texttt{c})
+E_{K_2}(\texttt{a})
+E_{K_3}(\texttt{t})
+\]
+i.e. you start with key $K_1$, but after using $K_1$ for the first
+character, you obtain a second key $K_2$, and use
+\textit{that}, etc.
+In other words, the encryption process takes in
+$\texttt{c}$ and $K_1$ and produces
+the encrypted $\texttt{c}$, i.e.,
+$E_{K_1}(\texttt{c})$ and also a new key $K_2$, i.e., 
+the encryption process also produces keys.
+In general, if the plaintext is $x_1 x_2 x_3 \cdots x_n$ 
+then $K_i$ is produced from 
+\[
+x_1, x_2, ..., x_{i-1}, K_1, K_2, ..., K_{i-1}
+\]
+\end{comment}
+
+\begin{ex}
+Is Caesar's cipher a block or stream cipher?
+\end{ex}
+

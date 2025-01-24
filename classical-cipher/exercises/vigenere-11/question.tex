@@ -1,0 +1,34 @@
+\tinysidebar{\debug{exercises/{vigenere-11/question.tex}}}
+Let
+$x = \langle x_1, x_2, ..., x_n \rangle$
+$y = \langle y_1, y_2, ..., y_n \rangle$
+be two sequences of real numbers.
+Let
+\[
+\lVert x \rVert = \sqrt{\sum_{i = 1}^n x_i^2}
+\]
+and likewise for $\lVert y \rVert$.
+Also, let
+\[
+x \cdot y = \sum_{i = 1}^n x_i y_i
+\]
+Note that
+\[
+x \cdot x = \lVert x \rVert^2
+\]
+\begin{myenum}
+\item Show that
+\[
+|x \cdot y| \leq  \lVert x \rVert \cdot \lVert y \rVert
+\]
+and equality holds iff $y = cx = \langle cx_1, ..., cx_n \rangle$ for some
+$c \in \R$.
+\item
+In particular if $x$ is made up of real numbers $\geq 0$ which
+are not all zeros and not all the same and $y$ is a permutation of $x$, then
+$x \cdot y$ is maximum iff $y = x$
+(i.e., the permutation used to create $y$ is the identity permutation
+that does not move the values of $x$).
+\end{myenum}
+The above        is the justification of the method used in breaking
+Vigen\`ere's cipher.

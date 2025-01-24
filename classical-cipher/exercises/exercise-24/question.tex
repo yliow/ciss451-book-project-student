@@ -1,0 +1,34 @@
+\tinysidebar{\debug{exercises/{exercise-24/question.tex}}}
+\mbox{}
+  \begin{myenum}
+    \item
+      Solve the following
+      \begin{align*}
+        9x + 5y \equiv 3 \pmod{26} \\
+        5x + 7y \equiv 1 \pmod{26}
+      \end{align*}
+      First solving by writing a program that performs a brute force search for solutions.
+      Next, try to solve it algebraically by hand.
+    \item What about this one:
+      \begin{align*}
+        3x - y &\equiv 2 \pmod{26} \\
+        2x + 19y &\equiv 14 \pmod{26}
+      \end{align*}
+    \item And this one:
+      \begin{align*}
+        9x + y &\equiv 2 \pmod{26} \\
+        19x + 5y &\equiv 7 \pmod{26}
+      \end{align*}
+
+    \item Write a program that solves
+      \begin{align*}
+        ax + b &\equiv c \pmod{26} \\
+        dx + ey &\equiv f \pmod{26}
+      \end{align*}
+      for $a,b,c,d,e,f$ in $\Z/26$ by brute force search.
+      Then write a program that randomly
+      picks $a,b,c,d,e,f$ in $\Z/26$ and ask you to solve it.
+      Print all the cases where $a,b,c,d,e,f$ provides a linear system of
+      two equations or two unknowns where there is no solution.
+      Do you notice a pattern in these degenerate cases?
+\end{myenum}

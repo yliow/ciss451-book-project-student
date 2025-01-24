@@ -1,0 +1,62 @@
+\sectionthree{One-time pad cipher}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+The one time pad is easy:
+Suppose Bob wants to send a message.
+Bob will need to translate this into bits.
+(For instance use the ASCII code or some other agreed upon format.)
+Say the plaintext (in bits) is $00101011$.
+
+The key is a very long sequence of random bits that
+Bob and Alice has agreed upon.
+Suppose the sequence is $0101101011101110001010101100110101001$.
+
+Bob takes his message $00101011$ and exclusive-or with the first eight bits of
+the key $0101101011101110001$:
+\begin{align*}
+  &\texttt{00101011} \\
+  &\texttt{\underline{01011010}11101110001010101100110101001} \\
+  &\texttt{\underline{01110001}}
+\end{align*}
+He then removes the 8 bits used:
+\[
+  \texttt{\textso{01011010}11101110001010101100110101001} \\
+\]
+and sends the ciphertex (in bits) 01110001 to Alice.
+
+Once Alice received 01110001, she exclusive-or with her key:
+\begin{align*}
+  &\texttt{01110001} \\
+  &\texttt{\underline{01011010}11101110001010101100110101001} \\
+  &\texttt{\underline{00101011}}
+\end{align*}
+which is the plaintext.
+She also removes the bits in her key used in the decryption:
+\texttt{\textso{01011010}11101110001010101100110101001}.
+
+The next time the communicate, they will start with the remaining bits
+of their key.
+
+That's it.
+
+It's a very simple cipher.
+We don't have enough math (yet) to prove it, but you can sense the this
+cipher is extremely secure.
+Why?
+
+\input{exercises/otp-0/main.tex}
+
+There's a rumor that during the Cold War, Washington D.C. communicates with
+Moscow using one time pad.
+
+To be secure the key must be a random sequence.
+Furthermore, the key cannot be reused.
+The other problem is that the key is really long.
+
+(Using the concept of entropy of information theory, Claude Shannon can prove that
+the ciphertext contains no information about the plaintext, other than the length.)
+
+
+

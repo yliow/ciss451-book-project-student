@@ -1,0 +1,87 @@
+\sectionthree{Attacks}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+OK. Now it's time to attack some of the classical cryptosystems.
+Before we do that we want to know exactly what is it we want to
+achieve.
+
+
+Recall that a cryptosystems is made up of the encryption and
+decryption function $E$ and $D$.
+
+Suppose Alice wants to send a message $m$ to Bob. She encrypts the
+message to get $E_k(m)$ and delivers $E_k(m)$ to Bob. Bob decrypts
+$E_k(m)$ by applying $D_k$ and get $D_k(E_k(m)) = m$.
+
+Now let's think about the rogue agent Eve. What does she want?
+
+The most common mode of attack assumes Eve receives a copy of
+$E_k(m)$ and she wants to derive $m$. It's even better if she can
+derive $k$ because in that case she actually has $D_k$ and hence
+can decrypt all future ciphertexts. (Don't forget we assume that
+the encryption and decryption algorithm is known. That means if
+Eve has $k$, she has $D_k$ and in fact also $E_k$. Only the key(s)
+is secret). Not only that. If she has $k$, she also has $E_k$ and
+therefore she can actually impersonate Alice!
+
+The various assumptions of what Eve has are called
+\defone{attack models}
+or
+\defone{attack modes}
+Here are some standard ones.
+
+\begin{myenum}
+
+\item The
+  \defone{known ciphertext attack}
+  is an attack where the
+  ciphertext of a plaintext is available to the attacker. In other words, this
+  attack involves computing $k$ from $E_k(m)$:
+  \[
+  E_k(m) \mapsto k
+  \]
+  This include the case when there is more than one ciphertext.
+  
+\item
+  The
+  \defone{known plaintext attack}
+    is an attack where the
+  Eve has some messages and their ciphertext.
+  So her goal is this:
+  \[
+  m_1, m_2, ..., m_n, E_k(m_1), E_k(m_2), ...,  E_k(m_n)  \mapsto k
+  \]
+  This does happen.
+  For instance the breaking of Germany's Enigma ciphers during WWII
+  is based on this assumption.
+  
+\item
+  The
+  \defone{chosen plaintext attack}
+   is an attack where the
+  Eve can actually encrypt messages/plaintexts that she
+  chooses.
+  Make sure you see that this is different from known plaintext.
+  
+\item
+  The
+  \defone{chosen ciphertext attack}
+  is an attack where the
+  Eve has access to the decryptions of ciphertexts that she chooses.
+  Her goal is to compute the key.
+  Make sure you see that this is different from known plaintext.
+  For instance suppose Eve chooses (a meaningless) ciphertext $x$
+  and sends it to the decryption machine.
+  Suppose the decryption of $x$ is $y$.
+  It's very likely that $y$ is totally meaningless.
+  Bob then calls Alice and ask her why she sends the gibberish $y$ message.
+  On listening to their phone conversation, she now knows that
+  \[
+  D_k(x) = y
+  \]
+  Eve then attempts to find $k$.
+  
+  
+\end{myenum}

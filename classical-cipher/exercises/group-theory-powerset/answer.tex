@@ -1,0 +1,98 @@
+\tinysidebar{\debug{exercises/{group-theory-powerset/answer.tex}}}
+
+%% \text{Union}:
+%% \begin{myenum}
+%% \item If $A, B \in P(X)$, then $A \cup B \subseteq X$ and therefore
+%% $A \cup B \in P(X)$.
+%% \item If $A, B, C \in P(X)$, then $A \cup (B \cup C) = (A \cup B) \cup C$.
+%% \end{myenum}
+%% For the identity, we need $e$ to satisfy
+%% \begin{myenum}
+%% \item If $A \in P(X)$, $A \cup e = A = e \cup A$.
+%% \end{myenum}
+%% The only reasonable set for $e$ is $\emptyset$.
+%% But with that, for the inverse axiom I need
+%% \begin{myenum}
+%% \item If $A \in P(X)$, there exists some $B \in P(X)$
+%% such that $A \cup B = \emptyset = B \cup A$.
+%% \end{myenum}
+%% But this is not possible since $A \cup B$ contains $A$.
+%% The only way for this to be possible is when $A = \emptyset$,
+%% which means the only way for this axiom to hold is when $X = \emptyset$.
+%% Hence $(P(X), \cup, \emptyset)$ is a group (in fact abelian group)
+%% if $X = \emptyset$.
+%% Otherwise $(P(X), \cup, \emptyset)$
+%% satisfies all group axioms except for the inverse axiom.
+
+$(P(X), \cup, \emptyset)$ satisfies all group axioms except for the inverse axiom.
+
+%% \textsc{Intersection}:
+%% \begin{myenum}
+%% \item If $A, B \in P(X)$, then $A \cap B \subset X$ and therefore
+%% $A cap B \in P(X)$.
+%% \item If $A, B, C \in P(X)$, then $A \cap (B \cap C) = (A \cap B) \cap C$.
+%% \end{myenum}
+%% For the identity, we need $e$ to satisfy
+%% \begin{myenum}
+%% \item If $A \in P(X)$, $A \cap e = A = e \cap A$.
+%% \end{myenum}
+%% The only reasonable set for $e$ is $X$.
+%% But with that, for the inverse axiom I need
+%% \begin{myenum}
+%% \item If $A \in P(X)$, there exists some $B \in P(X)$
+%% such that $A \cap B = X = B \cap A$.
+%% \end{myenum}
+%% But this is not possible since $A \cap B$ is a subset of $A$.
+%% The only way for this to be possible is $X = \emptyset$.
+%% Hence $(P(X), \cap, X)$ is a group (in fact abelian group)
+%% if $X = \emptyset$.
+$(P(X), \cap, X)$ satisfies all group axioms except for the inverse axiom.
+
+
+
+%% \textsc{Difference}:
+%% Set difference is not associative.
+%% For instance if $A = \{a, b\}, B = \{b\} = C$,
+%% then
+%% \[
+%% (A - B) - C = \{a\}
+%% \]
+%% while
+%% \[
+%% A - (B - C) = \{a, b\}
+%% \]
+%% Therefore set difference cannot be a group law.
+Set difference is not associative.
+
+%% \textsc{Symmetric difference}:
+%% If $A, B$ are subsets of X, then the symmetric difference of $A$ and $B$ is 
+%% \[
+%% A \triangle B = (A \cap \overline B) \cup (\overline A \cap B)
+%% \]
+%% $\triangle$ is closed (on $P(X)$) and abelian.
+%% It is also associative
+%% \begin{align*}
+%% (A \triangle B) \triangle C
+%% &= ((A \cap \overline B) \cup (\overline A \cap B)) \triangle C \\
+%% &=
+%% \left(((A \cap \overline B) \cup (B \cap \overline A)) \cap \overline{C}\right)
+%% \cup
+%% \left(\overline{((A \cap \overline B) \cup (B \cap \overline A))} \cap C\right)
+%% \\
+%% &=
+%% \\
+%% &= A \triangle (B \triangle C)
+%% \end{align*}
+%% Also
+%% \[
+%% A \triangle \emptyset = A = \emptyset \triangle A 
+%% \]
+%% and
+%% \[
+%% A \triangle \overline{A} = \emptyset = \overline{A} \triangle A 
+%% \]
+%% Therefore $(P(X), \triangle, \emptyset)$ is an abelian group.
+
+$(P(X), \triangle, \emptyset)$ is an abelian group
+where $\triangle$ is symmetric difference.
+

@@ -1,0 +1,153 @@
+\tinysidebar{\debug{exercises/{semigroup-general-associative-rule/answer.tex}}}
+
+Let $e$ be a fully parenthesized expression of $x_1, ..., x_n$.
+Then (of course) there has to be a last $*$ to be evaluated in $e$ if
+$e$ has more than one term.
+Suppose the two subexpression for this last $*$ are $e_1, e_2$, i.e.,
+\[
+e = e_1 * e_2
+\]
+then clearly $e_1, e_2$ will both involve $< n$ terms from $\{x_1, ..., x_n\}$.
+Therefore we should use induction so that some induction hypothesis can be applied to
+$e_1$ and $e_2$.
+Note that instead of proving all fully parenthesized expressions evaluate to the
+same value, we can fix one preferred expression and prove that
+all fully parenthesized expressions evaluate to this preferred expression.
+For instance I can choose the left-associative expression
+\[
+\prod_{i=1}^n x_i = ( \cdots ((x_1 * x_2) * x_3) * \cdots * x_n)
+\]
+Then for
+\[
+e = e_1 * e_2
+\]
+I want to say $e$ evaluates to the same value as the left associative form
+$\prod_{i=1}^n x_i$.
+$e_1$ and $e_2$ are shorter than $e$.
+Therefore with a suitable induction $e_1$ and $e_2$ are in the left associative
+form.
+Now what?
+Well I need to reparenthesize $e_1 * e_2$ to get \textit{one} left associative
+form for $e$.
+I don't want two.
+If $e_2$ has only one term, then $e_1 * e_2$ is already in the left associative
+form from the recursive definition of $\prod$.
+But what if not?
+For instance say
+\[
+e_1 * e_2 = ((x_1 * x_2) * x_3) * ((x_4 * x_5) * x_6)
+\]
+Aha ... since $e_2$ is in the left associative form,
+$e_2 = e_2' * x_6$
+where $e_2'$ is in the left associative form (but the fact that it's
+in the left associative form is not important -- the important
+thing is $e_2'$ must have at least one term.)
+Then I have
+\[
+e_1 * e_2 = A * (B * x_6)
+\]
+where $A = (x_1 * x_2) * x_3$ and $B = x_4 * x_5$.
+By the associative axiom,
+\[
+e_1 * e_2 = (A * B) * x_6
+\]
+By induction magic, $A*B$ has $n - 1$ terms,
+which means that it evaluates to the same value as the left
+associate form for $x_1 * x_2 * x_3 * x_4 * x_5$.
+And as above adding $x_6$ to this is also in the left associate form.
+Done!
+Now I'm ready to write the proof properly.
+
+Note the technique in the proof strategy above.
+I could have proven that given \textit{two} fully parenthesized expressions,
+I can slowly adjust the parenthesization from one to match the other.
+But I prefer to compare \textit{one} fully parenthesized to a \lq\lq standard"
+one (the left associative version).
+This is a very common technique.
+For instance many fraction have the same value: $1/2 = 2/4 = 3/6 = \ldots$.
+In the proof of the irrationality of $\sqrt{2}$, we prove this by
+contradiction that if $\sqrt{2}$ is a fraction $m/n$, something will go wrong.
+And we deliberately chose $m/n$ to be \textit{in reduced form}.
+
+\proof
+Let $(G, *)$ be a semigroup. Let $P(n)$ be the proposition
+\[
+P(n) = \left[
+\text{a fully parenthesized product of } x_1, x_2, ..., x_n \in G
+\text{ has the same value as }
+\prod_{i = 1}^n x_i
+\right]
+\]
+We will prove $P(n)$ holds for all $n \geq 1$ by strong induction.
+($P(0)$ is actually also true since the product of an empty collection
+of group elements is defined to be $e$.)
+
+\textsc{Base case}. $P(1)$ is clearly true.
+
+\textsc{Inductive case}.
+Assume $n \geq 1$ and $P(k)$ holds for $1 \leq k \leq n$.
+We want to prove that $P(n + 1)$ holds.
+Let $e$ be some fully parenthesized product of $x_1, \ldots x_{n + 1}$
+(in that order).
+Then
+\[
+e = e_1 * e_2
+\]
+where
+$e_1$ is a fully parenthesized product of $x_1, \ldots, x_k$
+and
+$e_2$ is a fully parenthesized product of $x_{k+1}, \ldots x_{n+1}$
+where $1 \leq k \leq n$.
+Note that each of $e_1$ and $e_2$ contains $< n + 1$ group elements.
+($e_2$ has $n + 1 - k$ terms.
+From $k \leq n$, we have $0 \leq n - k$ and hence $1 \leq n - k + 1$.
+From $k \geq 1$, $n - k + 1 \leq n - 1 + 1 = n$.
+Hence $1 \leq n - k + 1 \leq n$.)
+By induction hypothesis, 
+\begin{align*}
+e_1 = \prod_{i = 1}^k x_i, \,\,\,\,\, e_2 = \prod_{i = k + 1}^{n + 1} x_i
+\end{align*}
+
+\textsc{Case 1:} $e_2$ contains one term.
+In this case
+\begin{align*}
+e_1 = \prod_{i = 1}^n x_i, \,\,\,\,\, e_2 = \prod_{i = n + 1}^{n + 1} x_i = x_{n+1}
+\end{align*}
+Hence
+\[
+e = e_1*e_2 = \left( \prod_{i = 1}^n x_i \right) * x_{n+1} = \prod_{i = 1}^{n+1} x_i
+\]
+
+\textsc{Case 2:} $e_2$ contains more than two terms.
+In this case
+\[
+e_2 = \left(\prod_{i = k + 1}^{n} x_i\right) * x_{n + 1} = e_2' * x_{n + 1}
+\]
+where
+\[
+e_2' = \prod_{i = k + 1}^{n} x_i
+\]
+Then
+\begin{align*}
+e
+&= e_1 * e_2 \\
+&= e_1 * (e_2' * x_{n + 1}) \\
+&= (e_1 * e_2') * x_{n + 1} & & \text{ by associative axiom}\\
+\end{align*}
+Note that $e_1 * e_2'$ is a product of $n$ terms.
+Therefore by $P(n)$
+\[
+e_1 * e_2' = \prod_{i=1}^n x_i
+\]
+Hence
+\begin{align*}
+e
+&= \left( \prod_{i=1}^n x_i  \right) * x_{n + 1} \\
+&= \prod_{i=1}^{n+1} x_i
+\end{align*}
+Hence $P(n+1)$ in both cases
+
+Therefore by strong induction $P(n)$ holds for all $n \geq 1$.
+Hence any fully parenthesized product of $x_1, x_2, ..., x_n \in G$
+has the same value as $\prod_{i = 1}^n x_i$.
+\qed

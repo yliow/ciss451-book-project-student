@@ -1,0 +1,98 @@
+\tinysidebar{\debug{exercises/{exercise-12/question.tex}}}
+\mbox{}
+  \begin{myenum}
+  \item
+    Solve
+    \[
+      5x^2 + y^2 = 3
+    \]
+    % mod 5, squares = 0^2=0, 1^2=1, 2^2=4, 3^2=4, 4^2=1
+    (HINT: You don't really need number theory for this one. Why?
+    But if you want to, imitate the solution for the previous
+    problem.)
+  \item
+    Solve
+    \[
+      11y^2 - 5x^2 = 3
+    \]
+    % mod 5, squares = 0,1,4
+    (HINT: This is just a slight change from the
+    previous problem. \textit{But} now you need number theory. Try mod 4.
+    If it does not work, try mod 5. Repeat.)
+    % 3x^2 + y^2 = 3
+    % {0,3} + {0,1} = 3
+    % 0, 1, 3, 0 = 3
+    % So x = 1, y = 0 (4)
+    %
+    % y^2=3 (5)
+  \item
+    Solve
+    \[
+      y^2 - 5x^2 = 2
+    \]
+    % mod 5, squares = 0^2=0, 1^2=1, 2^2=4, 3^2=4, 4^2=1    
+
+  \item
+    What about this one:
+    \[
+      x^2 - 5y^2 = 1
+    \]    
+  \end{myenum}
+  {\scriptsize
+[\textsc{Aside.}
+Integer solutions to $x^2 - dy^2 = 1$ has been studied since at least 400BC.
+This equation appear the Cattle Problem of Archimedes:
+
+\begin{itemize}
+  \item[]
+If thou art diligent and wise, O stranger, compute the number of
+cattle of the Sun, who once upon a time grazed on the fields of the
+Thrinacian isle of Sicily, divided into four herds of different colours,
+one milk white, another a glossy black, the third yellow and the last
+dappled. In each herd were bulls, mighty in number according to these
+proportions: Understand, stranger, that the white bulls were equal to
+a half and a third of the black together with the whole of the yellow,
+while the black were equal to the fourth part of the dappled and
+a fifth, together with, once more, the whole of the yellow. Observe
+further that the remaining bulls, the dappled, were equal to a sixth
+part of the white and a seventh, together with all the yellow. These
+were the proportions of the cows: The white were precisely equal to the
+third part and a fourth of the whole herd of the black; while the black
+were equal to the fourth part once more of the dappled and with it a
+fifth part, when all, including the bulls went to pasture together. Now
+the dappled in four parts8 were equal in number to a fifth part and a
+sixth of the yellow herd. Finally the yellow were in number equal to
+a sixth part and a seventh of the white herd. If thou canst accurately
+tell, O stranger, the number of cattle of the Sun, giving separately the
+number of well-fed bulls and again the number of females according
+to each colour, thou wouldst not be called unskilled or ignorant of
+numbers, but not yet shall thou be numbered among the wise. But
+come, understand also all these conditions regarding the cows of the
+Sun. When the white bulls mingled their number with the black, they
+stood firm, equal in depth and breadth, and the plains of Thrinacia,
+stretching far in all ways, were filled with their multitude. Again,
+when the yellow and the dappled bulls were gathered into one herd
+they stood in such a manner that their number, beginning from one,
+grew slowly greater till it completed a triangular figure, there being
+no bulls of other colours in their midst nor none of them lacking.
+If thou art able, O stranger, to find out all these things and gather
+them together in your mind, giving all the relations, thou shalt depart
+crowned with glory and knowing that thou hast been adjudged perfect
+in this species of wisdom.
+\end{itemize}
+
+If $W,X,Y,Z$ represents the number of white, black, yellow,
+dappled bulls, you will get 
+a systems of 7 linear equations, the first two being 
+\begin{align*}
+  W &= (1/2 + 1/3)X + Z \\
+  X &= (1/4 + 1/5)Y + Z
+\end{align*}
+together with some constraints such as $W + X$ must be a square.
+After some manipulations, it can be shown that the equation to solve looks like
+\[
+  x^2 - 410286423278424 y^2 = 1
+\]
+What was Archimedes thinking? You are find information on the Archimedes Cattle Problem on the web.]
+}
+

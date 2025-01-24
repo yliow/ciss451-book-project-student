@@ -1,0 +1,225 @@
+\tinysidebar{\debug{exercises/{vigenere-9/question.tex}}}
+Here's another example. 
+Say this is the plaintext:
+\begin{console}
+This is a test. This tutorial is aimed at getting 
+familiar with the bare bones of LaTeX. First, ensure
+that you have LaTeX installed on your computer (see
+Installation for instructions of what you will 
+need). We will begin with creating the actual source 
+LaTeX, and then take you through how to feed this 
+through the LaTeX system to produce quality output, 
+such as postscript or PDF.
+\end{console}
+We use the key of \verb!fun! to obtain the ciphertext
+\begin{console}
+ybvxcffnrxngmcfyogtlvffvxuvryqfntjngnhtkuznfvfljnnuy
+brguejvbsyftzyfnrczvwmgjhfzlrybnysbzbnayyfnrccaxnnqf
+riiadihwwbrjhyyexyrnhfyuyqugniakienhfylhhnvthftzjmug
+dihbcyqhrjxjjqvqfojavsqvybpwynycalnujupyonqmbzlpjfny
+ykfhqybrsnnpyltogmlbzaumijyisjyqybvxnuwihlbgmyyfnrcm
+lxnrrnbulbiopjkhffvysbzncznfzwufmctmgxwenjgtlciz
+\end{console}
+The key \verb!fun! gives us the shifts $(5, 20, 13)$.
+Let's try to re-discover the shifts.
+
+The (sorted) incidence values $I$ for up to length 6 are
+\begin{console}
+Average I-values     keylength
+-------------------- ---------
+0.06467025914470374  3
+0.06262443438914027  6
+0.04968484284445197  1
+0.04938482570061517  4
+0.04908514013749339  5
+0.048510313216195575 2
+\end{console}
+Therefore we conjecture that the length is 3.
+(It shouldn't be surprising that multiples of 3 will
+also give high $I$-values, right?)
+In more details, for the case of testing a keylength of 3,
+the 3 strings are:
+\begin{console}
+yxfxmytfxrfjnknfnygjstfcwjzyyzafcxqidwryxnyqnknyhttm
+dbqjjqjsywyljyqzjyfysptmzmyjyxwlmfcxruijfyzzzftxnti
+
+bcnncolfuynnhuflnbuvyznzmhlbsbyncnfiiwjyyhuuiihlnhzu
+ichxqfaqbycnuomlfyhbnyolaiiybnibynmnnlokfsnnwmmwjlz
+
+vfrgfgvvvqtgtzvjurebfyrvgfrnbnyranrahbherfygaefhvfjg
+hyrjvovvpnaupnbpnkqrnlgbujsqvuhgyrlrbbphvbcfucgegc
+\end{console}
+with respective $I$-values 
+\begin{console}
+0.0651056539121
+0.0687226346849
+0.0601824888371
+\end{console}
+The $I$--values are computed with
+\[
+\frac{\sum_{i=0}^{25} f(i)f(i-1)}{n(n-1)}
+\]
+where $f$ is the frequency function for the string
+(for instance $f(0)$ is the frequency of \verb!a!) 
+and $n$ is the length of the string.
+The average of the above 3 $I$-values for keylength 3 is
+$0.0646702591447$.
+
+Next we compute the $M$-values. 
+This means that for each distinct pair of strings
+(from the 3), let $f_1$ and $f_2$ be their frequencies
+and $n,n'$ be their length, we compute
+\[
+\frac{\sum_{i=0}^{25} f_1(i)f_2((i - g) \operatorname{mod} 26) }
+     {nn'}
+\]
+with all possible relative shifts $g = 0, 1, 2, ..., 25$.
+($f(0)$ means the frequency of \verb!a! in the first string, etc.)
+
+\begin{Verbatim}[fontsize=\scriptsize,frame=single]
+M-values        Index of 1st string Index of 2nd string Relative shift g
+--------------- ------------------- ------------------- ----------------
+0.0498633235932                   1                   2                0
+0.0344990102743                   1                   2                1
+0.0310114054105                   1                   2                2
+0.0330851164106                   1                   2                3
+0.0452446036384                   1                   2                4
+0.0342162315016                   1                   2                5
+0.0333678951833                   1                   2                6
+0.0332736355924                   1                   2                7
+0.0331793760015                   1                   2                8
+0.0291262135922                   1                   2                9
+0.0398718069564                   1                   2               10
+0.0707889527759                   1                   2               11
+ 0.044584786502                   1                   2               12
+0.0329908568197                   1                   2               13
+0.0328023376379                   1                   2               14
+0.0415684795928                   1                   2               15
+0.0334621547742                   1                   2               16
+0.0401545857291                   1                   2               17
+0.0454331228202                   1                   2               18
+ 0.031576962956                   1                   2               19
+0.0286549156377                   1                   2               20
+0.0325195588651                   1                   2               21
+0.0441134885475                   1                   2               22
+0.0446790460929                   1                   2               23
+0.0419455179565                   1                   2               24
+0.0379866151381                   1                   2               25
+0.0355035217971                   1                   3                0
+0.0272225395012                   1                   3                1
+0.0371216447744                   1                   3                2
+0.0509232819341                   1                   3                3
+ 0.046925566343                   1                   3                4
+0.0324576432515                   1                   3                5
+0.0341709499334                   1                   3                6
+0.0503521797068                   1                   3                7
+0.0397867885018                   1                   3                8
+0.0293165810013                   1                   3                9
+0.0390253188654                   1                   3               10
+0.0426422996383                   1                   3               11
+0.0329335617742                   1                   3               12
+0.0278888254331                   1                   3               13
+0.0438796877974                   1                   3               14
+0.0348372358652                   1                   3               15
+ 0.028745478774                   1                   3               16
+0.0399771559109                   1                   3               17
+0.0667237768894                   1                   3               18
+0.0402627070246                   1                   3               19
+ 0.029602132115                   1                   3               20
+0.0323624595469                   1                   3               21
+0.0442604226156                   1                   3               22
+0.0345516847516                   1                   3               23
+0.0413097277746                   1                   3               24
+ 0.037216828479                   1                   3               25
+0.0413097277746                   2                   3                0
+ 0.035313154388                   2                   3                1
+0.0286502950695                   2                   3                2
+0.0434989529792                   2                   3                3
+0.0369312773653                   2                   3                4
+0.0317913573196                   2                   3                5
+0.0440700552065                   2                   3                6
+0.0655815724348                   2                   3                7
+0.0368360936608                   2                   3                8
+ 0.031505806206                   2                   3                9
+0.0355987055016                   2                   3               10
+0.0369312773653                   2                   3               11
+ 0.037216828479                   2                   3               12
+0.0395012373882                   2                   3               13
+0.0356938892062                   2                   3               14
+0.0318865410242                   2                   3               15
+0.0336950314106                   2                   3               16
+0.0343613173425                   2                   3               17
+ 0.055396916048                   2                   3               18
+0.0403578907291                   2                   3               19
+  0.04016752332                   2                   3               20
+0.0357890729107                   2                   3               21
+0.0484485056158                   2                   3               22
+0.0339805825243                   2                   3               23
+0.0326480106606                   2                   3               24
+0.0328383780697                   2                   3               25
+\end{Verbatim}
+We sort and list 6 rows with the highest M-values:
+\begin{Verbatim}[frame=single, fontsize=\scriptsize]
+M-values        Index of 1st string Index of 2nd string Relative shift g
+--------------- ------------------- ------------------- ----------------
+0.0707889527759                   1                   2               11
+0.0667237768894                   1                   3               18
+0.0655815724348                   2                   3                7
+ 0.055396916048                   2                   3               18
+0.0509232819341                   1                   3                3
+0.0503521797068                   1                   3                7
+\end{Verbatim} 
+For the first row, if the $M$-value using index 1 and index 2 string
+(i.e., $z_1, z_2$)
+with a relative shift of 11. The computed $M$--value is 0.0707....
+In other words if $f_1$ and $f_2$  denote the frequency data of
+$z_1$ and $z_2$ respectively,
+then the $M$--value shown in the first row above is
+\[
+\frac{\sum_{i=0}^{25} f(i)f'((i - 11) \operatorname{mod} 26) }
+     {n_1n_2}
+\]
+where $n_1$ and $n_2$ are the lengths of $z_1, z_2$ respectively
+and
+$f_1(0)$ is the frequency of $a$ in $z_1$,
+$f_1(1)$ is the frequency of $b$ in $z_1$,
+etc.
+From the top 2 entries of $M$-values:
+\begin{Verbatim}[frame=single, fontsize=\scriptsize]
+M-values        Index of 1st string Index of 2nd string Relative shift g
+--------------- ------------------- ------------------- ----------------
+0.0707889527759                   1                   2               11
+0.0667237768894                   1                   3               18
+\end{Verbatim} 
+we get
+\begin{align*}
+k_1 - k_2 &\equiv 11 \pmod{26} \\
+k_1 - k_3 &\equiv 18 \pmod{26} 
+\end{align*}
+or
+\begin{align*}
+k_2 &\equiv k_1 - 11 \equiv k_1 + 15\pmod{26} \\
+k_3 &\equiv k_1 - 18 \equiv k_1 + 8 \pmod{26} 
+\end{align*}
+At this point, even though we don't have the 3 shifts yet,
+we at least know that the shifts are probably of the form
+\[
+(k_1, \,\,\,\,\, (k_1 + 15)\bmod{26}, \,\,\,\,\, (k_1 + 8) \bmod{26})
+\]
+There is now \textit{one} unknown.
+Now trying different values of $k_1$, we see that when
+$k_1 = 5$, we get
+\[
+k_1 = 5, \,\,\,\,\, k_2 = 20, \,\,\,\,\, k_3 = 13 
+\]
+which corresponds to the word \verb!fun!.
+V\'oila! ... we have discovered the key.
+
+Note that without any of the above techniques, the key space can be any
+string, i.e., the size of the key space is infinite.
+The first step was finding (probabilistically) the length of the key.
+Once this is found, say the (probable) length of the key is $m$,
+then the (probable) size of the key space becomes $26^m$.
+The second step reduces the search down to search for $k_1$
+(basically the search for the first letter of the key)
+which is in a search space of size $26$.

@@ -1,0 +1,236 @@
+\sectionthree{Affine cipher}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Suppose we use $\Z/26$ instead of \verb!'a'! to \verb!'z'! again.
+Recall that the shift cipher is
+\[
+  E(k, x) = (x + k) \pmod{26}
+\]
+and
+\[
+    D(k, x) = (x - k) \pmod{26}
+\]
+
+The benefit of translating our encryption/decryption
+\lq\lq shift up" and \lq\lq shift down" into
+mathematical operations in $\Z/26$, is that
+we can now generalize and use different mathematical formulas!
+
+Here's the affine cipher.
+The encryption algorithm for the affine cipher looks like this:
+\[
+E((a,b), x) = (ax + b) \pmod{26}
+\]
+Note that the key is not one single number -- the key
+is $(a, b)$ mod 26 which is made up of two numbers.
+Why is that important?
+
+Because this means that there are more key values!
+Which means that Eve has to try more key!!!!
+Get it??
+
+But what is the decryption function?
+Of course we know that
+\[
+D((a,b), E((a,b), x)) = x \pmod{26}
+\]
+This means that
+\[
+D((a,b), ax + b) = x \pmod{26}
+\]
+Suppose I make a guess ...
+When I look at the shift cipher, I notice that the
+decryption function is similar in form to the encryption function.
+Maybe the decryption function for the affine cipher
+is similar in form to the encryption function???
+
+Let's try
+\[
+  D((a,b), x) = cx + d \pmod{26}
+\]
+In that case, from 
+\[
+D((a,b), ax + b) \equiv x \pmod{26}
+\]
+we would get
+\[
+c(ax + b)) + d \equiv x \pmod{26}
+\]
+which gives us
+\[
+cax + cb + d \equiv x \pmod{26}
+\]
+Now what?
+Well maybe
+\[
+cax \equiv x \pmod{26}
+\]
+and
+\[
+cb + d \equiv 0 \pmod{26}
+\]
+
+The first condition
+\[
+cax \equiv x \pmod{26}
+\]
+is achieved if we have
+\[
+ca \equiv 1 \pmod{26}
+\]
+
+Can this be done?
+
+\input{exercises/exercise-30/main.tex}
+
+
+Given an integer $a$, if $c$ satisfies
+\[
+  ca \equiv 1 \pmod{26}
+\]
+we say that $c$ is a
+\defone{multiplicative inverse}
+of $a$ mod 26.
+We usually write $c$ as $a^{-1} \mod 26$.
+Note that $a^{-1} \mod 26$ is NOT a fraction!!!
+It's a whole number.
+If $a$ has a multiplicative inverse mod 26, we say that
+$a$ is
+\defone{invertible}
+mod 26.
+
+Recall from a previous section, you already
+have a table of $a^{-1} \mod 26$ for all $a$'s in mod 26.
+
+\input{exercises/exercise-31/main.tex}
+
+
+Therefore to
+satisfy
+\[
+ca \equiv 1 \pmod{26}
+\]
+we can't just pick any $a$.
+We have to pick an $a$ with a multiplicative inverse mod 26.
+
+After we have chosen a good $a$, what do we do?
+We then have
+\[
+  D((a,b), x) = cx + d \pmod{26}
+\]
+where $c$ is the multiplicative inverse of $a$ mod 26.
+But what about $d$???
+
+Remember we still have the condition
+\[
+cb + d \equiv 0 \pmod{26}
+\]
+Writing $a^{-1} \mod 26$ for $c$, we get
+\[
+a^{-1}b + d \equiv 0 \pmod{26}
+\]
+we get
+\[
+d \equiv -a^{-1}b \pmod{26}
+\]
+
+Therefore we have the following:
+The affine cipher is
+\[
+E((a,b), x) = (ax + b) \pmod{26}
+\]
+where $a$ is invertible mod 26 and
+\begin{align*}
+  D((a,b), x)
+  \equiv a^{-1}x - a^{-1}b\pmod{26} \\
+  \equiv a^{-1}(x - b)\pmod{26} \\
+\end{align*}
+
+\input{exercises/exercise-32/main.tex}
+
+
+The above however uses a lot of \lq\lq iffy'' math.
+For instance we used the fact
+\[
+  a(b + c) \equiv ab + ac \pmod{26}
+\]
+(where?)
+We also use the fact that if 
+\[
+  a + b \equiv 0 \pmod{26}
+\]
+then
+\[
+  a \equiv -b \pmod{26}
+\]
+We seem to be treated math in mod 26 like math in $\Z$
+and $\R$!!!
+Is that justifiable?
+It turns out that the above algebra is actually correct.
+I'll have to come back to that later otherwise people will think
+we are rambling nonsense and making things up.
+
+\input{exercises/exercise-33/main.tex}
+
+Now let's look at attacking the affine cipher.
+
+Recall the encryption and decryption of the affine cipher looks
+like
+\[
+ E_{a,b}(x) \equiv (ax + b) \,\,\,(\operatorname{mod} 26),
+ \,\,\,\,\,\,\,\,\,\,
+ D_{a,b}(x) \equiv a^{-1}(x - b) \,\,\,(\operatorname{mod} 26)
+\]
+Note that the key is $(a,b)$. 
+Note also that $a$ must be invertible mod 26.
+
+Therefore (by the multiplication principle in discrete mathematics),
+the total numbers of keys is
+\[
+\phi(26) \cdot 26 = 312
+\]
+This is not that big, but it's definitely bigger than the number of keys
+for the shift cipher (which is 26).
+This means that to carry out a brute force attack on an affine
+cipher, assume the attacker has the cipher,
+he/she must try 312 possible keys.
+
+\input{exercises/affine-0/main.tex}
+
+Again you can do a brute force search for $a,b$. After all there are
+not that many possibilities for $a$ and $b$. But we can do better if
+we use letter (1--gram) frequencies again. Again suppose you have
+computed the frequencies of the letters of the ciphertext and say
+that \texttt{g} is the most common letter. So you assume \texttt{e}
+is encrypted as \texttt{g}. This is the same as saying $4$ is
+encrypted as $6$, i.e.,
+\[
+ E_{a,b}(4) = 6
+\]
+right? Now using the formula for $E_{a,b}$ we get
+\[
+ 4a + b = 6
+ \]
+ To be accurate the equation should be
+\[
+ 4a + b \equiv 6 \pmod{26}
+ \]
+ 
+Now suppose the second most common letter in the ciphertext is
+\texttt{y}. So you assume that \texttt{t} is encrypted as
+\texttt{y}. This means
+\[
+ 20a + b \equiv 24 \pmod{26}
+\]
+Right? Yes, no? Think about it. So you can solve for $a$ and $b$
+from the linear equations
+\begin{alignat*}
+ 4a + b  &\equiv   6 &&\pmod{26}\\
+ 20a + b &\equiv 24  &&\pmod{26}
+\end{alignat*}
+
+\input{exercises/affine-1/main.tex}
+\input{exercises/affine-2/main.tex}
+\input{exercises/affine-3/main.tex}

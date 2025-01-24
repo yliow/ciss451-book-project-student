@@ -1,0 +1,355 @@
+\sectionthree{Modular arithmetic}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Number theory is basically the study of whole numbers.
+That however is an over-simplification.
+The study of number theory involves almost all areas of mathematics.
+In fact many areas of mathematics were created just to study 
+certain problems in number theory.
+
+Number theory is an extremely huge area of study in Mathematics and Computer
+Science. It is also extremely fascinating. Many problems is number theory can
+be stated very simply so that even a high school student can understand the
+statement of the problem. And yet the techniques used to solve some of these
+problems require the mathematical tools from almost every area of Math. Gauss
+once said that ``Mathematics is the queen of sciences and number theory is the
+queen of mathematics".
+
+Although there are many branches within Number Theory, right now
+we only need to know a little bit about Elementary Number Theory.
+``Elementary" here does not mean simple (although it will be for
+us since you're only seeing a small part of Elementary Number
+Theory). It means we are studying Number Theory using only
+properties of whole numbers (integers). Research in Number Theory
+requires real numbers, complex numbers, calculus, geometry,
+complex analysis, etc.
+
+This will be a very short introduction to the vast area of Number
+Theory. In fact this is only a tiny fraction of Elementary Number
+Theory. This is one of the oldest area of Mathematics and one of
+the fascinating because of its history. If you want to learn more
+about number theory, just let me know. I can easily find a project
+for you to work on.
+
+For now, we will look at modular arithmetic.
+Besides cryptography,
+modular arithmetic is also used in
+data compression and error correction codes.
+
+The set of integers $\{..., -3, -2, -1, 0, 1, 2, 3, ...\}$
+denoted $\Z$ has two operations $+$ and $\cdot$.
+In terms of the algebraic structure (i.e. the operations), $\Z$ is known as
+a \textbf{commutative ring}.
+Basically a commutative ring is a set of \lq\lq things'' with
+two operations, addition and multiplication, with rules that
+look like the addition and multiplication rules for $\Z$.
+For instance one such rule in $\Z$ is
+\[
+  a (b + c) = ab + ac
+\]
+This same rule holds true for $\Q$, $\R$, $\C$ and polynomials with coefficients in $\Z$.
+
+The reason why mathematicians even bother defining this concept
+of \lq\lq commutative ring"
+is more or less
+the same reason why we write functions in programs: for re-use.
+There are \textit{many} naturally occurring rings.
+So if while developing the theory for 
+$\token{\operatorname{blah_1}}$
+and
+$\token{\operatorname{blah_2}}$
+and they are both rings, then it's enough to prove a general fact that applies
+to both and quote the fact.
+This is also related to the concept of inheritance and abstract base classes.
+You can think of $\Z, \Q, \R, \C$ as subclasses of \verb!CommutativeRing!.
+Therefore if you have a function
+\begin{console}
+void f(CommutativeRing & r)
+{
+  ...
+}
+\end{console}
+then \verb!f! can work with \verb!x! if \verb!x! is a object of $\Z, \Q, \R, \C$.
+
+The mathematician develop  general results while the programmer
+write general functions working on abstract base class objects.
+The idea is the same.
+The reason for generality is efficiency.
+
+Here's a very important advice on studying rings, groups, fields, math, etc.
+(in fact this applies to any area of study where there is a great deal of 
+generalization):
+Although the definition and theorems are general, you
+\textit{always} keep a
+couple of standard examples in your mind as you read the statements.
+While reading them, mentally substitute your examples into the facts so that 
+you can associate it to something more concrete.
+This is not just a learn technique for undergraduate students.
+Even researchers do that when they read research papers.
+For the definition of ring below, think of the ring of integers.
+
+I will try to be as informal as possible for now
+so that you can develop some feel/intuition for what we need for now.
+Later I'm going to come back to this topic and redo the whole thing rigorously.
+The focus for now is to understand modulo 26 arithmetic.
+
+Anyway, a \textbf{commutatative ring} $R$ 
+\sidenote{
+Example: the integer $\Z$,...$+$ and $\cdot$ of $\Z$ ...
+}
+is a set of \lq\lq things''
+with two operations abstractly denoted by 
+$\oplus$ and $\odot$ (\lq\lq addition'' and \lq\lq multiplication'')
+Furthermore there are two special \lq\lq things'' in $R$ which we will call
+$0_R$ and $1_R$.
+The properties satisfied by $R,0_R,1_R,\oplus,\odot$ 
+\sidebar{
+0 and 1 of $\Z$ ...
+}
+(of course there must be
+something satisfied by them!) are as follows.
+For $\oplus$ the properties are:
+\begin{myenum}
+\item $r \oplus s$ is in $R$ for all $r,s$ in $R$
+\sidebar{$i + j$ is in $\Z$ for integers $i$, $j$, ...}
+\item 
+$(r \oplus s) \oplus t
+=
+r \oplus (s \oplus t)$
+for all $r,s,t$ in $R$
+\sidebar{
+$(i + j) + k = i + (j + k)$
+for integers $i,j,k$ ...
+}
+\item
+$r \oplus 0_R = r = 0_R \oplus r$ 
+for all
+$r$ in $R$
+\sidebar{
+$i + 0 = i = 0 + i$
+for integer $i$ ...
+}
+\item For 
+\sidebar{
+If $i$ is an integer, then $-i$ is also an integer and 
+$i + (-i)= 0 =$
+$(-i)+ i$.
+}
+all $r$ in $R$ there is something in $R$ which we will call $r'$
+such that $r \oplus r' =$ $0_R = r' \oplus r$
+\end{myenum}
+For $\odot$ the properties are:
+\begin{myenum}
+\item $r \odot s$ is in $R$ for all $r, s$ in $R$
+\sidebar{$ij = ji$ for integer $i,j$,...}
+\item $(r \odot s) \odot t = r \odot (s \odot t)$ for all $r,s,t$ in $R$
+\sidebar{
+$(ij)k = i(jk)$ for integers $i,j,k$
+}
+\item $r \odot 1_R = r = 1_R \odot r$ for all $r$ in $R$
+\sidebar{
+$i1 = i = 1i$ for integer $i$ ...
+}
+\item $r \odot s = s \odot r$ for all $r,s$ in $R$ 
+\sidebar{
+$ij = ji$ for integers $i,j$
+}
+\end{myenum}
+The property involving both $\oplus$ and $\odot$ is
+\begin{myenum}
+\item 
+$r \odot (s \oplus t) =$
+$r \odot s \oplus r\odot t$
+\sidebar{
+$i(j + k) = ij + ik$ for integers $i,j,k$.
+Phew! So $\Z$ is a commutative ring.
+}
+\end{myenum}
+
+Just remember this: 
+A ring is a set of things with addition and multiplication.
+And when you're lost just think of the set of integers and its operations.
+
+Now we'll be working with the alphabet a,b,...,z.
+We'll call them by their new identities: $0,1,...,25$.
+This is not exactly all of $\Z$.
+The formulas for the encryption and decryption of Caesar's cipher
+involves addition and
+substraction.
+What if we go beyond? 
+What is 3 + 25 (i.e., d + z)?
+No problem, we will take remainders mod 26.
+\sidebar{In C\texttt{++}-speak, we take $\% 26$.}
+So instead of 3 + 25 we think of (3 + 25) mod 26 instead.
+Of course the remainders are 0, 1, ..., 25 which is exactly what we want. 
+
+To indicate that we're only interested in remainders or more accurately, we ignore multiples of 26, we write
+\begin{align*}
+3 + 25 
+&= 28 \\
+&\equiv 2 \pmod{26}
+\end{align*}
+In general, if $x$ and $y$ are integers, we write
+\[
+x \equiv y \pmod{26}
+\]
+if 26 divides $x - y$.
+It does not mean that $x$ is equal to $y$.
+It means that $x$ and $y$ are the same if you ignore additive multiples of 26, i.e.,
+\[
+x \equiv y \pmod{26}
+\]
+is the same as saying
+\[
+  x = y + (\text{... some multiple of 26 ...})
+\]
+This is the same as saying the remainder when $x$ is divided by 26
+is the same as the remainder when $y$ is divided by 26.
+
+If two numbers differ by a multiple of 26, we say that they are
+\defone{congruent} mod 26.
+
+Note that
+\begin{align*}
+26 &\equiv 0 \pmod{26} \\   
+27 &\equiv 1 \pmod{26} \\
+  28 &\equiv 2 \pmod{26} \\
+  ...
+\end{align*}
+and
+\begin{align*}
+-1 &\equiv 25 \pmod{26} \\   
+-2 &\equiv 24 \pmod{26} \\
+-3 &\equiv 23 \pmod{26} \\
+  ...
+\end{align*}
+So in the mod 26 world, since you are ignoring multiples of 26,
+\textit{in some sense} there are only 26 numbers:
+\[
+  0, 1, 2, 3, ..., 25
+\]
+I'll write $\Z/26$ for this world of 26 values.
+Remember that in this world, you can write the symbol
+\[
+  28
+\]
+but this is the same as 2 in $\Z/26$:
+\[
+  28 \equiv 2 \pmod{26}
+\]
+Of course in $\Z$, these symbols, i.e. $28$ and $2$, are different.
+
+Most of the algebraic rules involving $+, -, *, 0, 1$ applies when
+working with integers mod 26.
+For instance suppose 
+\[
+  x \equiv y \pmod{26}
+\]
+where $x$ and $y$ are integers
+(i.e., $x$ differs from $y$ by a multiple of 26), then
+\[
+  x + z \equiv y + z\pmod{26}
+\]
+where $z$ is an integer.
+Likewise
+from
+\[
+  x \equiv y \pmod{26}
+\]
+we get
+\[
+  x z \equiv y z \pmod{26}
+\]
+It's also true that
+\[
+  0 + x \equiv x \pmod{26}
+\]
+and 
+\[
+  1 \cdot x \equiv x \pmod{26}
+\]
+
+To be more precise, $\Z/26$ is a commutative ring.
+It's a finite commutative ring with 26 values.
+Let me rewrite the axioms for a commutative ring for $\Z/26$.
+
+For $+$ on $\Z/26$, the properties are:
+\begin{myenum}
+\item $(r + s) \pmod{26}$ is in $\Z/26$ for all $r,s$ in $\Z/26$
+\item 
+  $(r + s) + t
+  \equiv
+  r + (s + t) \pmod{26}$
+for all $r,s,t$ in $\Z/26$
+\item
+$r + 0 \equiv r \equiv 0 + r \pmod{26}$ 
+for all
+$r$ in $\Z/26$.
+In fact $r'$ is just $(26 - r) \pmod{26}$.
+For instance for $r = 2 \pmod{26}$, $r' = 26 - 2 = 24 \pmod{26}$.
+\item For 
+all $r$ in $\Z/26$ there is something in $\Z/26$ which we will call $r'$
+such that $r + r' \equiv 0 \equiv r' \oplus r \pmod{26}$
+\end{myenum}
+
+For $\cdot$ the properties are:
+\begin{myenum}
+\item $r \cdot s \pmod{26}$ is in $\Z/26$ for all $r, s$ in $\Z/26$
+\item $(r \cdot s) \cdot t \equiv r \cdot (s \cdot t) \pmod{26}$ for all $r,s,t$ in $\Z/26$
+\item $r \cdot 1 \equiv r \equiv 1 \cdot r \pmod{26}$ for all $r$ in $\Z/26$
+\item $r \cdot s \equiv s \cdot r \pmod{26}$ for all $r,s$ in $\Z/26$ 
+\end{myenum}
+The property involving both $+$ and $\cdot$ is
+\begin{myenum}
+\item 
+$r \cdot (s + t) \equiv$
+$r \cdot s + r \cdot t \pmod{26}$
+\end{myenum}
+
+It's also not too surprising that you can talk about mod $n$ for any
+positive integer $n$.
+
+If I don't say so, when I want you write some $x \pmod{26}$, I mean the $x$
+such that $0 \leq x < 26$.
+Of course there's no difference in mod 26 between 2 and 28.
+But in mod 26, the values in $[0, 26)$ is the preferred range.
+Also, when I say simplify $27 \pmod{26}$, I mean $1 \pmod{26}$.
+
+Note that since $\Z/26$ is \textit{finite}, you can always solve
+any equation in mod 26.
+This is similar to boolean values: there are only two.
+To solve a boolean equation, you just try all possible boolean values.
+So to solve a $\Z/26$ equation, you just try all the 26 possible
+values on all the variables that appear in the equation.
+
+\input{exercises/exercise-0/main.tex}
+\input{exercises/exercise-1/main.tex}
+\input{exercises/exercise-2/main.tex}
+\input{exercises/exercise-3/main.tex}
+\input{exercises/exercise-4/main.tex}
+\input{exercises/exercise-5/main.tex}
+\input{exercises/exercise-6/main.tex}
+\input{exercises/exercise-7/main.tex}
+\input{exercises/exercise-8/main.tex}
+\input{exercises/exercise-9/main.tex}
+\input{exercises/exercise-10/main.tex}
+\input{exercises/exercise-11/main.tex}
+\input{exercises/exercise-12/main.tex}
+\input{exercises/exercise-13/main.tex}
+\input{exercises/exercise-14/main.tex}
+\input{exercises/exercise-15/main.tex}
+\input{exercises/exercise-16/main.tex}
+\input{exercises/exercise-17/main.tex}
+\input{exercises/exercise-18/main.tex}
+\input{exercises/exercise-19/main.tex}
+\input{exercises/exercise-20/main.tex}
+\input{exercises/exercise-21/main.tex}
+\input{exercises/exercise-22/main.tex}
+\input{exercises/exercise-23/main.tex}
+\input{exercises/exercise-24/main.tex}
+\input{exercises/exercise-25/main.tex}
+\input{exercises/exercise-26/main.tex}
+
+

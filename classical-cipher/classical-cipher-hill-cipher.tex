@@ -1,0 +1,409 @@
+\sectionthree{Hill cipher}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\defone{Hill's cipher}
+was announced in 1929.
+This cipher works with a block of $n$ characters at a time.
+For both encryption and decryption, you 
+treat each block of $n$ characters (or mod 26 integers) as a column
+vector
+and we multiply it with an $n$--by--$n$ matrix.
+Of course everything is done in mod 26.
+Here are more details.
+
+Recall how to multiple a $n$--by--$n$ matrix with a column vector of
+size $n$.
+I'll do this for $n = 2$.
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\begin{pmatrix}
+  x \\
+  y 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  ax + by \\
+  cx + dy 
+\end{pmatrix}
+\]
+(If you have not seen this before take the computer graphics class CISS380.
+You can't call yourself a serious computer scienctist if you can't do matrix
+multiplication.
+Most top CS programs actually has a linear algebra requirement.) 
+That's matrix multiplication where all numbers are in $\R$.
+The (multiplicative)
+\defone{inverse matrix}
+of
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\]
+is
+given by
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}^{-1}
+=
+\frac{1}{ad - bc}
+\begin{pmatrix}
+  d & -b \\
+  -c & a 
+\end{pmatrix}
+\]
+The expression $ad - bc$ is called the
+\defone{determinant}
+of
+$\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}$ and is written
+\[
+\det
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+= ad - bc
+\]
+If a matrix has an inverse, we say that the matrix is
+\defone{invertible}.
+
+Not only can you multiply a 2-by-2 matrix
+with a 2-by-1, you can actually also multiply
+a 2-by-2 matrix
+with a 2-by-2.
+Here's how you do it:
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  aA + bB &   aC + bD \\
+  cA + dB &   cC + dD \\
+\end{pmatrix}
+\]
+
+
+\input{exercises/hill-0/main.tex}
+
+Define the following:
+  \[
+  I =
+  \begin{pmatrix}
+    1 & 0 \\
+    0 & 1 
+  \end{pmatrix}
+  \]
+  This is called the
+  (2-by-2)
+  \defone{identity matrix}.
+
+
+\input{exercises/hill-1/main.tex}
+\input{exercises/hill-2/main.tex}
+
+The set of $n$--by--$n$ matrices with $\R$ values is usually denoted by
+$\operatorname{M}_{n}(\R)$.
+The set of invertible matrices is usually denoted by
+$\operatorname{GL}_{n}(\R)$. This is called the
+\defone{general linear group} of $n$-by-$n$ matrices over $\R$.
+
+It turns out that everything works just as fine if the numbers are
+in mod 26.
+You just need to be careful with the determinant of the inverse
+computation.
+Recall that
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}^{-1}
+=
+\frac{1}{ad - bc}
+\begin{pmatrix}
+  d & -b \\
+  -c & a 
+\end{pmatrix}
+\]
+for values in $\R$.
+This is the same for values in $\Z/26$ as long as you think of
+\[
+\frac{1}{ad - bc}
+\]
+as the multiplicative inverse of $ad - bd$ in $\Z/26$.
+
+\input{exercises/hill-3/main.tex}
+\input{exercises/hill-4/main.tex}
+
+This should not be surprising:
+The set of $n$--by--$n$ matrices with mod 26 values is usually denoted by
+$\operatorname{M}_{n}(\Z/26)$.
+The set of invertible matrices is usually denoted by
+$\operatorname{GL}_{n}(\Z/26)$.
+
+\input{exercises/hill-5/main.tex}
+
+Note that in the above, since the block size is 2, you would need to
+encrypt a string with a string length that is a multiple of $2$.
+If it's not, you can (for instance) pad with some character.
+
+The important thing to observe is that if
+\[
+  E(M, (x, y)) = (x', y')
+  \]
+  ($M$ is a matrix key)
+note that $x$ takes part in the value $x'$ \textit{and} $y'$.
+Same thing for $y'$.
+This means that if I change one character in my plaintext, \textit{two}
+character in the ciphertext is changed.
+Informally this means that the statistical behavior of $x$
+is spread out across multiple characters.
+Note only that $x'$ also depends on several values of the key (the matrix).
+This makes it much hard to analyze the key one part at a time when
+studying ciphertexts.
+This makes it a lot harder to break Hill's cipher, especially when
+the matrice size is larger, say the matrix is 32-by-32.
+
+The above two important observations
+were later formalized and studied by Claude Shannon in 1945.
+\begin{enumerate}[nosep]
+\item The fact that a character of the ciphertext
+depends on several parts of the key is the
+concept of
+\defone{confusion}
+and
+\item the fact that one character in the plaintext
+influences multiple characters in the ciphertext
+is called the concept of
+\defone{diffusion}
+\end{enumerate}
+More on that in a much later chapter.
+\input{exercises/hill-6/main.tex}
+\input{exercises/hill-7/main.tex}
+\input{exercises/hill-8/main.tex}
+\input{exercises/hill-9/main.tex}
+\input{exercises/hill-10/main.tex}
+
+Collecting up all the information above,
+formally, the Hill's cipher of block size $n$ (just think of $n = 2$)
+is defined as follows:
+Let
+\[
+P = C = \{0,...,25\}^n = (\Z/26)^n
+\]
+and
+\[
+K = \operatorname{GL}_n(\Z/26)
+\]
+The encryption function $E$
+\[
+E : K \times P \rightarrow C
+\]
+is defined to be
+\[
+E(M, x) = Mx
+\]
+and
+\[
+D : K \times C \rightarrow P
+\]
+is defined to be
+\[
+D(M, x) = M^{-1}x
+\]
+And $(E,D)$ is a cipher because
+\[
+D(M, E(M, x)) = D(M, Mx) = M^{-1}Mx = Ix = x
+\]
+
+\input{exercises/hill-11/main.tex}
+
+\newpage
+\textsc{Breaking Hill's cipher}
+
+Now how do you break the Hill's cipher?
+
+Let's stick to a 2-by-2 key.
+Suppose you have the following:
+you have the two plaintexts
+$x_1 = (A, B)$ and $x_2 = (C, D)$
+and their encryptions
+$y_1 = (A', B')$ and $y_2 = (C', D')$.
+Therefore
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\begin{pmatrix}
+  A \\
+  B 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  aA + bB \\
+  cA + dB 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  A' \\
+  B' 
+\end{pmatrix}
+\]
+and
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\begin{pmatrix}
+  C \\
+  D 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  aC + bD \\
+  cC + dD 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  A' \\
+  B' 
+\end{pmatrix}
+\]
+In the above, the unknowns are $a,b,c,d$, i.e., the key.
+These two equations can be combined to get an equation involving
+the product of 2-by-2 matrices:
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  aA + bB & aC + bD \\
+  cA + dB & cC + dD \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+  A' & C' \\
+  B' & D'
+\end{pmatrix}
+\]
+You now have this matrix equation
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  A' & C' \\
+  B' & D'
+\end{pmatrix}
+\]
+Note that you have the values of $A,B,C,D,A',B',C',D'$.
+The unknowns are $a,b,c,d$.
+What do you do?
+You multiply on the right by the inverse matrix of
+$\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}
+$
+to get
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}^{-1}
+=
+\begin{pmatrix}
+  A' & C' \\
+  B' & D'
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}^{-1}
+\]
+which gives you
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+I
+=
+\begin{pmatrix}
+  A' & C' \\
+  B' & D'
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}^{-1}
+\]
+which finally gives you the key
+\[
+\begin{pmatrix}
+  a & b \\
+  c & d 
+\end{pmatrix}
+=
+\begin{pmatrix}
+  A' & C' \\
+  B' & D'
+\end{pmatrix}
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}^{-1}
+\]
+There's an assumption above:
+we have to assume that
+$
+\begin{pmatrix}
+  A & C \\
+  B & D 
+\end{pmatrix}
+$
+is invertible.
+It's possible the first 4 characters of the original message
+does not form an invertible matrix.
+But if you have enough pairs of plaintext and corresponding ciphertext blocks,
+you hope to be able to get an invertible matrix and perform
+the above computation.
+Therefore we are assuming the known plaintext attack model.
+Or we are assuming the chosen plaintext attack model.

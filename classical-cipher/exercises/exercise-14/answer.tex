@@ -1,0 +1,160 @@
+\tinysidebar{\debug{exercises/{exercise-14/answer.tex}}}
+
+
+    
+Of course $(x,y,z) = (0,0,0)$ is a solution since, for instance, the polynomial is
+homogeneous.
+If any two of $x,y,z$ are 0s, then the third must also be 0.
+
+Now consider the case where exactly one of $x,y,z$ is 0.
+\begin{myenum}
+\item
+  If $x = 0$, then $4y^2 = 5z^2$.
+  We can assume that all common factors between $y,z$ are removed so that
+  $\gcd(y,z) = 1$.
+  (Suppose $g = \gcd(y, z)$. Let $y' = y/g$ and $z' = z/g$,
+  We again would arrive at $4y'^2 = 5z'^2$.)
+  Since $5 \mid 5z^2$, we have $5 \mid 4y^2$, and hence $5 \mid y$.
+  Therefore $y = 5y'$.
+  Hence $4(5y')^2 = 5z^2$, i.e.,
+  $4(5)y'^2 = z^2$, which implies that $5 \mid z$.
+  This contradicts $\gcd(y, z) = 1$.
+
+\item
+  If $y = 0$, then $3 x^2 = 5 z^2$.
+  We can assume that all common factors between $x,z$ are removed so that $\gcd(x, z) = 1$.
+  Since $3 \mid 3 x^2$,
+  we obtain $3 \mid 5z^2$, which implies that $3 \mid z$.
+  Therefore $z = 3z'$ and hence $3x^2 = 5(3z')^2$.
+  This implies that $x^2 = 5(3)z'^2$.
+  Therefore $3 \mid x^2$, and hence $3 \mid x$.
+  This contradicts $\gcd(x, z) = 1$.
+  
+\item
+  If $z = 0$, then $3x^2 + 4y^2 = 0$.
+  Since $3 \mid 3 x^2$, we get $3 \mid 4 y^2$,
+  which implies that $3 \mid y$.
+  Let $y = 3y'$.
+  Then $3x^2 + 4(3y')^2 = 0$ and hence $x^2 = 4(3)y'^2$.
+  Therefore $3 \mid x^2$ and hence $3 \mid x$.
+  This contradicts $\gcd(x, y) = 1$.
+\end{myenum}
+
+Now suppose $(x, y, z) \neq (0,0,0)$.
+
+Let $x,y,z$ be a solution with $x > 0, y > 0, z > 0$.
+We may assume $\gcd(x,y,z) = 1$.
+
+\textsc{Method 1.}
+Taking mod 3,
+\[
+  y^2 \equiv 2 z^2 \pmod{3}
+\]
+Squares in mod 3 are $0$ or $1$ mod 3.
+If $z^2 \equiv 1 \pmod{3}$, then $y^2 \equiv 2 \pmod{3}$
+which is impossible.
+Hence $z^2 \equiv 0 \pmod{3}$ and therefore $y^2 \equiv 0 \pmod{3}$.
+This implies that $3 \mid z^2$ and $3 \mid y^2$.
+Therefore
+\[
+  3 \mid y, \,\,\,\,\, 3 \mid z
+\]
+Let $y = 3y'$ and $z = 3z'$.
+Then
+\[
+3x^2 + 4(3y')^2 = 5(3z')^2  
+\]
+i.e.,
+\[
+x^2 + 12y'^2 = 15z'^2  
+\]
+which implies that $3 \mid x$.
+This is a contradiction since $\gcd(x, y, z) = 1$.
+
+
+\textsc{Method 2.}
+Taking mod 4, we get
+\[
+  3x^2 \equiv z^2 \pmod{4}
+\]
+Then $2 \mid x$ and $2 \mid z$.
+Let $x = 2x'$ and $z = 2z'$.
+Then
+\[
+  3(2x')^2 + 4y^2 = 5(2z')^2
+\]
+i.e.,
+\[
+  3x'^2 + y^2 = 5z'^2
+\]
+Taking mod 4,
+\[
+  3x'^2 + y^2 \equiv z'^2 \pmod{4}
+\]
+Then
+\begin{tightlist}
+  \li Assume $z'$ is even. Then either $x',y$ are even or $x'^2 \equiv 1 \equiv y^2 \pmod{4}$.
+  If $x',y$ are even and $z'$ is also even, then $\gcd(x, y, z) \neq 1$ which is a contradiction.
+  For the other case
+  \[
+    3(4m + 1)^2 + (4n + 1)^2 = (2z'')^2
+  \]
+  i.e.,
+  \[
+    3(16m^2 + 8m + 1) + (16n^2 + 8n + 1) = 4z''^2
+  \]
+  i.e.,
+  \[
+    12m^2 + 6m + 4n^2 + 2n  + 1 = z''^2
+  \]
+  All we can say is $z''$ is odd.
+  There's no clear path forward.
+  \li Assume $z'^2 \equiv 1 \pmod{4}$. Then $2 | x'$ and $y'^2 \equiv 1 \pmod{4}$.
+\end{tightlist}
+There are more cases to consider and this seems to be a bad direction to take.
+
+
+\textsc{Method 3.}
+Taking mod 5, we get
+\[
+  3x^2 + 4y^2 \equiv 0 \pmod{5}
+\]
+i.e.
+\[
+  3x^2 \equiv y^2 \pmod{5}
+\]
+Squares in mod 5 are $0,1,4 \pmod{5}$.
+If $x^2 \equiv 1\pmod{5}$, then $y^2 \equiv 3x^2 \equiv 3 \pmod{5}$
+which is impossible.
+If $x^2 \equiv 4\pmod{5}$, then $y^2 \equiv 3x^2 \equiv 12 \equiv 2 \pmod{5}$
+which is again impossible.
+Hence $x^2 \equiv 0 \pmod{5}$ and hence $y^2 \equiv 0 \pmod{5}$.
+Altogether we have
+\[
+  5 \mid x^2, \,\,\,\,\, 5 \mid y^2
+\]
+and therefore
+\[
+  5 \mid x, \,\,\,\,\, 5 \mid y
+\]
+Let $x = 5x'$ and $y = 5y'$. Then we have
+\[
+  3(5x')^2 + 4(5y')^2 = 5z^2
+\]
+i.e.,
+\[
+  3(5)x'^2 + 4(5)y'^2 = z^2
+\]
+which implies that $5 \mid z^2$. Therefore $5 \mid z$.
+This contradicts $\gcd(x, y, z) = 1$.
+\qed
+
+\textsc{Notes.}
+\begin{itemize}
+  \item What about $9x^2 + 4y^2 = 5z^2$? How far can you go using the method above?
+  \item What about $3x^2 + 4y^2 = 25z^2$? How far can you go using the method above?
+  \item What about $9x^2 + 4y^2 = 25z^2$?
+  \item What about $3x^2 + 2y^2 = 5z^2$?
+  \item What about $3x^3 + 4y^3 = 5z^4$?
+\end{itemize}
+
