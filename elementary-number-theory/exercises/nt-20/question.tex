@@ -1,0 +1,28 @@
+\tinysidebar{\debug{exercises/{nt-20/question.tex}}}
+  A positive integer is a \defterm{perfect} number if it is the
+  sum of its positive divisors strictly less than itself.
+  For instance $6$ is perfect since $6 = 1 + 2 + 3$.
+  $28$ is also perfect since $28 = 1 + 2 + 4 + 7 + 14$.
+  Euclid knew that if $p$ is prime and $2^p - 1$ is a prime,
+  then $2^{p-1}(2^p - 1)$ is an even perfect number.
+  If $p$ is a prime and $2^p - 1$ is a also a prime,
+  then $2^p - 1$ is called a \defterm{Mersenne prime}.
+  Almost 2000 years after Euclid, Euler proved the converse, that
+  every even perfect number must be of the form
+  $2^{p-1}(2^p - 1)$ where $2^p - 1$ is a Mersenne prime.
+  There are two famous unsolved problems in number theory on perfect
+  numbers:
+  \begin{enumerate}[nosep]
+  \item Are there odd perfect numbers?
+  \item Are there infinitely many perfect numbers?
+  \end{enumerate}
+  (See \url{https://en.wikipedia.org/wiki/Perfect_number}.)
+  There is an ongoing search for primes and Mersenne primes using
+  computers.
+  At this point (2023), the top 8 largest known primes are all
+  Mersenne primes.
+  (See \url{https://en.wikipedia.org/wiki/Great_Internet_Mersenne_Prime_Search}.)
+  As of Feb 2023, the largest known prime is $2^{82,589,933} - 1$.
+  (See \url{https://en.wikipedia.org/wiki/Largest_known_prime_number}.)
+  Write a program that prints perfect numbers, printing the time between pairs of
+  perfect numbers discovered.

@@ -1,0 +1,39 @@
+\tinysidebar{\debug{exercises/{rsa-40/question.tex}}}
+  Base on $x^2 - n$ and $(x + 1)^2 - n$, is there a way to guestimate
+  $k$ such that
+  $(x + k)^2 - n$ is a square or closed to a square?
+%  \begin{comment}
+%    Suppose
+%    \begin{tightlist}
+%    \item $y^2 \leq x^2 - n < (y + 1)^2$ (with LHS in fact $<$)
+%    \item $z^2 \leq (x + 1)^2 - n < (z + 1)^2$
+%    \end{tightlist}
+%  \end{comment}
+%  \begin{comment}
+%    Suppose $y^2 < x^2 - n < (y + 1)^2$, i.e., $x^2 - n$ is not a square.
+%    We have $x$ and $y$ and therefore know $x - y$.
+%    Suppose $(x + 1)^2 - n$ is a square.
+%    Will it be $(y + 1)^2$?
+%    According to the test case earlier, it's not $y + 1$.
+%    Suppose it is:
+%    \[
+%    (y+1)^2 = (x+1)^2 - n
+%    \]
+%    \[
+%    y^2 + 2y + 1 = x^2 + 2x + 1 - n 
+%    \]
+%    \[
+%    y^2 + 2y = x^2 + 2x - n 
+%    \]
+%    \[
+%    y^2  = x^2 - n + 2(x - y) 
+%    \]
+%    We have
+%    \[
+%    y^2 < x^2 - n
+%    \]
+%    and we have $x$ and $y$.
+%    We compute $2(x - y)$ quickly and check if $(x^2 - n) + 2(x - y)$ is $y^2$.
+%    But $x > y$. So $2(x - y) > 0$.
+%    So the $(y + 1)^2$ won't work.
+%  \end{comment}

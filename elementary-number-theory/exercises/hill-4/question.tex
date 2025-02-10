@@ -1,0 +1,26 @@
+\tinysidebar{\debug{exercises/{hill-4/question.tex}}}
+  Say the key is
+  \[
+  M = 
+    \begin{pmatrix}
+      11 & 8 \\
+      3 & 7 
+    \end{pmatrix}
+    \]
+    Here $n = 2$, i.e., the block size is $2$.
+    \begin{enumerate}[nosep]
+      \item
+        What is the encryption of $x = $ \verb!fortytwo!?
+        Call the ciphertext $y$.
+      \item What is the inverse matrix $M^{-1}$ of $M$?
+        (Note: we are in mod 26.)
+        Check that $MM^{-1} = I = M^{-1}M$.
+      \item Decrypt your $y$ and make sure you get $x$.
+      \item
+        Look for the probability of 2-grams.
+        Take a long enough string, encrypt it using Hill cipher
+        and with the above key. Look at the probability of 2-grams
+        in the ciphertext.
+        Compare the two probabilities of the 2-grams from the plaintext
+        and from teh cipherptext.
+    \end{enumerate}

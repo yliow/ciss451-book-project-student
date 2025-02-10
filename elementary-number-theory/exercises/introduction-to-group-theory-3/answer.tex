@@ -1,0 +1,31 @@
+\tinysidebar{\debug{exercises/{introduction-to-group-theory-3/answer.tex}}}
+
+  \proof
+  (a)
+  Let $x \in G$.
+  $x^1, x^2, x^3, ...$ are in $G$ (by the closure axiom).
+  Since $G$ is finite $x^1, x^2, x^3, ...$ cannot all be pairwise distinct. 
+  Suppose $x^i = x^j$ for $i < j$.
+  Then $e = x^j (x^{i})^{-1} = x^{j} (x^{-i}) = x^{j - i}$ and $j - i > 0$.
+  Hence $x$ has finite order.
+
+
+  (b)
+  Let $G = \{(x_1, x_2, ...) \mid x_i = 0, 1 \text{ for } i = 1, 2, ...\}$
+  and
+  \[
+  (x_1, x_2, ...) * (y_1, y_2, ...)
+  =
+  (
+  x_1 + y_1 \pmod{2},
+  x_2 + y_2 \pmod{2},
+  x_3 + y_3 \pmod{2},
+  ...)
+  \]
+  It's not difficult to show that $G$ is a group.
+  The neutral element is (0, 0, 0, ...).
+  Every non-neutral element has order 2.
+  (Also, see section on product of groups.)
+  
+  (c) $\Z$.     
+  \qed

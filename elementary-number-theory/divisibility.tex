@@ -1,0 +1,41 @@
+%-*-latex-*-
+\sectionthree{Divisibility}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\begin{defn}
+  Let $a, n \in \Z$ with $a \neq 0$.
+  Then we say that $a$ \defterm{divides} $b$, and we write $a \mid b$, if
+  there is some $x \in \Z$ such that $ax = b$, i.e.,
+  \[
+  \exists x \in \Z \cdot [ax = b]
+  \]
+\end{defn}
+(The \lq\lq $\in \Z$" is not necessary as long as it is clear the universe
+is $\Z$.)
+Note that when you write $a \mid b$, the $a$ is always nonzero.
+
+\begin{prop}
+  Let $a, b, c \in \Z$.
+  \begin{myenum}
+  \item $1 \mid a$.
+  \item $a \mid 0$.
+  \item \textnormal{Reflexivity}:
+    $a \mid a$.
+  \item \textnormal{Transitivity}:
+    If $a \mid b$ and $b \mid c$, then $a \mid c$.
+  \item \textnormal{Antisymmetry:}
+    If $a \mid b$ and $b \mid a$, then $a = \pm b$.  
+  \item If $a \mid b$, then $a \mid bc$.
+  \item If $a \mid b$ and $a \mid c$, then $a \mid b + c$.
+  \item \textnormal{Linearity}:
+    If $a \mid b$, $a \mid c$, then $a \mid bx + cy$ for $x,y \in \Z$.
+  \item
+    If $a \mid b$, then $|a| \leq |b|$.
+  \end{myenum}   
+\end{prop}
+\proof
+TODO
+\qed
+

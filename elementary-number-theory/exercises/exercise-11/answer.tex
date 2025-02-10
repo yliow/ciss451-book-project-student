@@ -1,0 +1,37 @@
+\tinysidebar{\debug{exercises/{exercise-11/answer.tex}}}
+
+(a) $0^2, 1^2, 2^2, 3^2 \equiv 0, 1, 4, 9 \equiv 0, 1, 0, 1 \pmod{4}$
+(respectively).
+Therefore a square mod 4 is either 0 or 1 mod 4.
+
+(b)
+$0^2, 1^2, 2^2, 3^2, 4^2 \equiv 0, 1, 4, 9, 16 \equiv 0, 1, 4, 4, 1 \pmod{4}$
+(respectively).
+Therefore a square mod 5 is either 0 or 1 or 4 mod 5.
+
+(c)
+$0^2, 1^2, 2^2, 3^2, 4^2, 5^2, 6^2 \equiv 0, 1, 4, 9, 16, 25, 36 \equiv 0, 1, 4, 2, 2, 4, 1 \pmod{4}$ (respectively).
+Therefore a square mod 7 is either 0 or 1 or 2 or 4 mod 7.
+
+(c)
+Note that $(n - i)^2 \equiv (0 - i)^2 \equiv (-i)^2 \equiv i^2 \pmod{n}$.
+Therefore $14^2 \equiv 1, 13^2 \equiv 2, ..., 8^2 \equiv 7^2 \pmod{15}$.
+$0, 1, 4, 9, 16, 25, 36, 49 \equiv 0, 1, 4, 9, 11, 10, 6 \pmod{15}$ (respectively).
+Therefore a square mod 15 is $0, 1, 4, 6, 9, 10$ or $11$ mod $15$.
+
+(e)
+I claim that there are no integer solutions to the given equation.
+Assume on the contrary that $(x,y)$ is an integer solution to
+\[
+      5x^2 - 8y^2 = 3
+\]
+Therefore
+\begin{align*}
+      5x^2 - 8y^2 &\equiv 3 \pmod{4} \\
+      \THEREFORE 1 \cdot x^2 - 0 \cdot 8y^2 &\equiv 3 \pmod{4} \\
+      \THEREFORE x^2 &\equiv 3 \pmod{4}
+\end{align*}   
+which is a contradiction since squares mod 4 are either 0 or 1 mod 4.
+Therefore
+$5x^2 - 8y^2 = 3$ does not have any integer solution.
+

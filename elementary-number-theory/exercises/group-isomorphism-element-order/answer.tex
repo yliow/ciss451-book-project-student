@@ -1,0 +1,19 @@
+\tinysidebar{\debug{exercises/{group-isomorphism-element-order/answer.tex}}}
+Suppose $x$ has finite order and $n = |x|$.
+Then $f(x)^n = f(x^n) = f(e) = e'$ where $e'$ is the identity element of $G'$.
+Hence $y$ has order $\leq n$.
+If $y$ has order $m$ and $m < n$, then $y^m = e'$
+and $f(x^m) = f(x)^m = y^m = e' = f(e)$.
+Therefore $x^m = e$ which contradicts the fact that $|x| = n$ and $m < n$.
+Hence $|y| = n = |x|$.
+
+Now suppose that $|x| = \infty$.
+Then $|y|$ is also $\infty$.
+Otherwise $|y| = m < \infty$ and we have
+$y^m = e'$.
+From the same computation as above,
+$f(x^m) = f(x)^m = y^m = e' = f(e)$,
+which implies that $x$ has finite order.
+This is a contradiction.
+Hence $|y| = \infty$.
+    

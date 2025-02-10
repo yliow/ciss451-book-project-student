@@ -1,0 +1,20 @@
+\tinysidebar{\debug{exercises/{nt-62/question.tex}}}
+  Leetcode 1622.\\
+  \url{https://leetcode.com/problems/fancy-sequence/description/}\\
+  Write an API that generates fancy sequences using the
+  \texttt{append}, \texttt{addAll}, and \texttt{multAll} operations.
+  Implement the \texttt{Fancy} class:
+  \begin{enumerate}[nosep]
+    \li \texttt{Fancy()} Initializes the object with an empty sequence.
+    \li \texttt{void append(val)}
+    Appends an integer \texttt{val} to the end of the sequence.
+    \li \texttt{void addAll(inc)}
+    Increments all existing values in the sequence by an integer \texttt{inc}.
+    \li \texttt{void multAll(m)}
+    Multiplies all existing values in the sequence by an integer \texttt{m}.
+    \li \texttt{int getIndex(idx)}
+    Gets the current value at index \texttt{idx} ($0$-indexed)
+    of the sequence modulo $109 + 7$.
+    If the index is greater or equal than the length of the sequence,
+    return $-1$.
+\end{enumerate}

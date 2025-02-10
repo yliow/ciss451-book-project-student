@@ -1,0 +1,69 @@
+\tinysidebar{\debug{exercises/{nt-65/answer.tex}}}
+
+We'll prove (a) by mathematical induction.
+(We'll prove (b) later.)
+So let's form our $P(n)$.
+Let $b$ be fixed.
+Let $P(n)$ be the statement:
+\[
+P(n): \text{There are integer $q,r$ such that $n = bq + r$, $0 \leq r < b$}
+\]
+(I'm thinking of the original $a$ as a variable in the $P(n)$.)
+
+The base case is easy: If $n = 0$, then if we set $q = 0$ and $r = 0$, then we do have
+\[
+0 = b \cdot 0 + 0, \,\,\,\,\, 0 \leq 0 < b
+\]
+Hence $P(0)$ holds.
+
+Now for the inductive case. 
+Assume that $P(n)$ holds.
+Now we consider the statement $P(n+1)$.
+Note that $P(n)$ is true. Therefore there are integers $q,r$ satisfying
+\[
+n = bq + r, \,\,\,\,\, 0 \leq r < b 
+\]
+Therefore
+\[
+n + 1 = bq + r + 1
+\]
+Either $r = b - 1$ or $r < b - 1$.
+(Note that $r$ cannot be greater than $b - 1$ since $r < b$.)
+
+\underline{\textsc{Case}: $r = b - 1$.}
+Then we have
+\begin{align*}
+           n     &= bq + r       \\
+\THEREFORE n + 1 &= bq + r + 1   \\
+\THEREFORE n + 1 &= bq + b       \\
+\THEREFORE n + 1 &= b(q + 1)     \\
+\THEREFORE n + 1 &= b(q + 1) + 0, 0 \leq 0 < b \\
+\end{align*}
+So if we set $q' = q + 1$ and $r' = 0$ we do have
+\[
+n + 1 = bq' + r',\,\,\,\,\, 0 \leq r' < b \\
+\]
+In other words $P(n+1)$ holds.
+
+\underline{\textsc{Case}: $r < b - 1$.}
+Then we have
+\begin{align*}
+n     &= bq + r    , \,\,\,\,\, 0 \leq r, \,\,\,\,\, r < b - 1 \\
+\THEREFORE n + 1 &= bq + r + 1, \,\,\,\,\, 0 \leq r, \,\,\,\,\, r < b - 1 \\
+\THEREFORE n + 1 &= bq + r + 1, \,\,\,\,\, 0 \leq r, \,\,\,\,\, r + 1 < b \\
+\THEREFORE n + 1 &= bq + r + 1, \,\,\,\,\, 0 \leq r + 1, \,\,\,\,\, r + 1 < b \\
+\THEREFORE n + 1 &= bq + r + 1, \,\,\,\,\, 0 \leq r + 1 < b \\
+\end{align*}
+So if we set $q' = q$ and $r' = r + 1$, we have
+\[
+n + 1 = bq' + r', \,\,\,\,\, 0 \leq r' < b
+\]
+
+\underline{\textsc{Case}: $r > b - 1$.}
+This case cannot occur since we have the fact that $r < b$.
+
+Therefore in all cases, $P(n+1)$ holds.
+
+Since $P(0)$ is true and if $P(n)$ holds,
+then so does $P(n+1)$ for $n \geq 0$,
+by mathematical induction, $P(n)$ must be true for all $n \geq 0$.

@@ -1,0 +1,34 @@
+\tinysidebar{\debug{exercises/{nt-49/question.tex}}}
+  \url{https://acm.timus.ru/problem.aspx?space=1&num=1673}\\
+  At the end of the previous semester the students of the
+  Department of Mathematics and Mechanics of the Yekaterinozavodsk State
+  University had to take an exam in network technologies.
+  $N$ professors discussed the curriculum and decided that there would be
+  exactly $N^2$ labs, the first professor would hold labs with numbers
+  $1, N + 1, 2N + 1, ..., N^2 - N + 1$, the second one — labs with numbers
+  $2, N + 2, 2N + 2, ..., N^2 - N + 2$, etc.
+  $N$-th professor would hold labs with numbers
+  $N, 2N, 3N, ..., N^2$.
+  The professors remembered that during the last years lazy students didn't
+  attend labs and as a result got bad marks at the exam.
+  So they decided that a student would be admitted to the exam only if
+  he would attend at least one lab of each professor.
+  $N$ roommates didn't know the number of labs and professors in this semester.
+  These students had different diligence: the first student attended all labs,
+  the second one — only labs which numbers were a multiple of two,
+  the third one — only labs which numbers were a multiple of three, etc…
+  At the end of the semester it turned out that only $K$ of these students
+  were admitted to the exam. Find the minimal $N$ which makes that possible.
+
+  Input:
+  An integer $K$ ($1 \leq K \leq 2 \cdot 10^9$).
+  
+  Output:
+  Output the minimal possible N which satisfies the problem statement.
+  If there is no $N$ for which exactly $K$ students would be admitted to the
+  exam, output 0.
+
+  Example:
+  Input:8, output:15.
+  Input:3, output:0.
+

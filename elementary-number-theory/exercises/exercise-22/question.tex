@@ -1,0 +1,31 @@
+\tinysidebar{\debug{exercises/{exercise-22/question.tex}}}
+(Dr.Liow's magic formula)
+  Suppose I want to simplify $23532 \pmod{26}$.
+  With a calculator or \cpp\ or python, we see quickly that
+  \[
+    23532 \equiv 2 \pmod{26}
+  \]
+  I claim that you can use this magic formula:
+  Suppose the digits of a 5--digit number is $edcba$.
+  For instance $edcba = 23532$ where $e = 2, d = 3, c = 5, b = 3, a = 2$.
+  Then
+  \[
+    edcba \equiv ba + 2(-2c + 6d - 5e) \pmod{26}
+  \]
+  For instance when $edcba = 23532$, we have
+  \[
+    edcba \equiv 32 + 2(-2\cdot 5 + 6 \cdot 3 - 5 \cdot 2) \pmod{26}
+  \]
+  and
+  \[
+    32 + 2(-2\cdot 5 + 6 \cdot 3 - 5 \cdot 2) \equiv 6 + 2(-2) \equiv 2 \pmod{26}
+  \]
+  which is easier to work with than
+  the much larger 23532.
+  So ... is
+  \[
+    edcba \equiv ba + 2(-2c + 6d - 5e) \pmod{26}
+  \]
+  really true for any 5-digit number $edcba$? Write a program to test all cases.
+  Next, write a proof (that does not involve checking all cases like a program).
+

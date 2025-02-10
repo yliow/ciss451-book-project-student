@@ -1,0 +1,17 @@
+\tinysidebar{\debug{exercises/{nt-16/question.tex}}}
+  Let $P = \{p_1, ..., p_n\}$ be a set of distint primes.
+  Carry out the Euclid's construction on all possible subsets of $P$.
+  If a Euclid construction is a prime, put that prime into $P$.
+  If it does not, put the smallest prime factor into $P$.
+  Repeat.
+  For instance if you start with $P = \{\}$,
+  you'll get $2$ and the new $P$ is $\{2\}$.
+  Next you'll get $P = \{2, 3\}$.
+  The Euclid constructions you get from $P$ are $2, 3, 4, 7$.
+  So the next $P$ is $\{2, 3, 7\}$.
+  At the next stage you get $2, 3, 4, 8, 7, 15, 22, 43$.
+  This means that the next $P$ is $\{2, 3, 7, 43\}$.
+  Etc.
+  Does your $P$ always grow?
+  Notice that your $P$'s so far does not capture $5$.
+  When, if at all, will $5$ appear?

@@ -1,0 +1,67 @@
+\tinysidebar{\debug{exercises/{exercise-13/question.tex}}}
+Consider
+  \[
+    5x^2 - 8y^2 = 3 z^2
+  \]
+  where we are only interested in finding integer solutions.
+  Of course $(0,0,0)$ is a solution, but that's easy. (Right?)
+  In general, an equation like
+  \[
+    ax^p + b y^q = c z^r
+  \]
+  where $p,q,r > 0$ always has $(0,0,0)$ as a solution.
+  $(0,0,0)$ is sometimes called the trivial solution.
+  So we might as well assume $(x,y,z) \neq (0,0,0)$, i.e.,
+  assume they are not all zero.
+  By the way the polynomial
+  \[
+    5x^2 - 8y^2 - 3 z^2    
+  \]
+  is a sum of terms where the number of variables appearing in each term is the same, i.e., 2.
+  Such polynomial are is said to be homogeneous of degree 2.
+  
+
+  How many solutions can you find?
+  Is there any at all?
+  Is there a finite number of solutions?
+  If there are infinitely many solutions, can you write them down?
+  If not all of them, maybe an infinite family of them.
+  For instance it would be nice to say:
+  \lq\lq For any integer $n$, $x=n, y = 2n, z = n + 5$ is a solution''.
+  This would be a 1--parameter family of solutions.
+  
+  \begin{myenum} 
+
+  \item What's the first thing you should do?
+    % Write a program to find solution by brute force in [0,50] x [0,50] x [0,50].
+
+  \item Prove that if $x,y,z$ is a solution, then
+    $nx,ny,nz$ is also a solution for any integer $n$.
+    
+  \item
+    In case you can't see a solution right away, do the following.
+    If $(x,y,z)$ are solutions,
+    show that $x$ and $z$ must be even.
+    (HINT: mod 4.)
+    This is helpful since we won't have to check the odd $x$ or odd $z$ caaes.
+    That cuts down a brute force search down by 3/4.
+    
+  \item
+    Continuing the above:
+    let $x = 2a$, $y = b$, and $z = 2c$, substitute,
+    and you'll get a new equation in $a,b,c$.
+
+  \item
+    The equation in $a,b,c$ is easier than the one in $x,y,z$.
+    Why? Because a solution in the equation in $a,b,c$ for the above question
+    would
+    correspond to a solution $x,y,z$ in the original equatison and $a,b,c$
+    solution is smaller. 
+    Can you now find some solutions for the equation in $a,b,c$?
+
+  \item
+    I won't go further. But for those who want to solve this
+    probably complete, let me just say that once you have one
+    one solution, you can parametrize all solutions using
+    two integer parameters.
+  \end{myenum}

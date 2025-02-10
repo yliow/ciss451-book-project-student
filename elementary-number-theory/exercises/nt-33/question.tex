@@ -1,0 +1,45 @@
+\tinysidebar{\debug{exercises/{nt-33/question.tex}}}
+  \mbox{}
+  \begin{enumerate}[nosep]
+    \item[(a)]
+      Solve $\phi(n) = 2$, i.e., find all positive integers $n$ such that
+      $\phi(n) = 2$.
+      (Hint: Write down the prime factorization of
+      $n = p_1^{e_1}\cdots p_g^{e_g}$ and use the
+      equation $\phi(n) = 2$.)
+    \item[(b)] Solve $\phi(n) = 3$.
+    \item[(b)] Solve $\phi(n) = 6$.
+  \end{enumerate}
+\BEGINCOMMENT
+\begin{Verbatim}
+phi(3) = 3 - 1 = 2. 3 works.
+phi(5) = 5 - 1 is too big.
+phi(7) = 7 - 1 is too big.
+phi(n)/n = (1 - 1/p)....
+phi(n)/n = 2/n => 2/n = (1-1/p)...
+If 2 | n:
+  2 = n(1 - 1/2)((p-1)(q-1)(r-1)...)/(pqr...)
+  4 = n((p-1)(q-1)(r-1)...)/(pqr...)
+  if 2 || n:
+     there can only be one other prime dividing n
+     n = 2p^k
+     p^k - p^{k-1} = 2
+     p^{k-1}(p-1) = 2
+     k = 1 and p = 3
+     n = 2x3
+  if 2^m || n, m >= 0
+     2 = (2^m - 2^{m-1})p^(k-1)(p-1)...
+     2 = 2^{m-1} p^(k-1)(p-1)...
+     If m = 0: 2 = p^(k-1)(p-1)... => only one prime p, k = 1, p=3. n=3.
+     If m = 1: 2 = p^(k-1)(p-1)... => only one prime p and k=1, p=3. n=6.
+     If m = 2: 2 = 2xp^(k-1)(p-1)... => no other prime. n = 4.
+     If m = 3: 2 = 4xp^(k-1)(p-1)... => not possible.
+Therefore the only solutions are n = 3, 4, 6.
+
+phi(n) = 3 
+2^{a-1})p^(b-1)(p-1)... = 3. not possible if p > 2.
+
+phi(n) = 6
+2^{a-1}p^(b-1)(p-1)... = 6 => only primes 2, 3, a = 1, b = 2. n = 2x3x3
+\end{Verbatim}
+\ENDCOMMENT

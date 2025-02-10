@@ -1,0 +1,18 @@
+\tinysidebar{\debug{exercises/{nt-44/question.tex}}}
+  In your \verb!Zmod.py! complete the following:
+  \begin{enumerate}[nosep]
+    \li Exponentiation (i.e., \verb!__pow__!)
+  \end{enumerate}
+  Note that $x^{-1000} \pmod{N}$ is $(x^{-1})^{1000} \pmod{N}$.
+  You want to first check if you can use Euler's Theorem.
+  If it is, use the theorem to lower the exponent to say $\ell$.
+  Then use the obvious loop to compute $x^\ell$ and apply $\pmod{N}$
+  as frequently as possible.
+  After you are done with the above,
+  you might want to improve your \texttt{\_\_pow\_\_} by
+  \textit{not} use Euler's theorem
+  if the exponent is \lq\lq small".
+  You can determine for yourself what if \lq\lq small".
+  For instance you can choose to use Euler's Theorem
+  only when the exponent is greater than $10$.
+  (Later in the RSA chapter, we will talk about the squaring method.)

@@ -1,0 +1,38 @@
+%-*-latex-*-
+\tinysidebar{\debug{exercises/{introduction-to-group-theory-0/answer.tex}}}
+To check if $C_2$ is abelian, I need to check that
+\[
+x * y = y * x
+\]
+for all $x, y \in G$.
+Here are checks for all the cases for $C_2$:
+\begin{align*}
+e * e &= e = e * e \\
+e * a &= a = a * e \\
+a * e &= a = e * a \\
+a * a &= e = a * a
+\end{align*}
+Therefore $C_2$ is abelian.
+
+It should be clear that you need not check
+\[
+x * y = y * x
+\]
+for \textit{all} $x, y \in G$.
+Using an example, the only cases that need to be checked are the
+entries marked X for this group table:
+\input{exercises/introduction-to-group-theory-0/group_table_0.tex}
+In particular, you need to check the entries in the group
+table above the main
+diagonal is the same as the corresponding entry below the main
+diagonal when you reflect the group table about the main diagonal.
+In other words, the transpose of the group table as a matrix
+is the same matrix.
+In terms of real wall clock time there are less checks,
+so you should use this idea for hand computation and
+also when implementing code for abelian check.
+
+(However the big-O of number of entries above the diagonal
+is the same as the big-O of $n^2$ where the group has
+$n$ elements.)
+

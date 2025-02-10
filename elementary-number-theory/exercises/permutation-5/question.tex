@@ -1,0 +1,42 @@
+\tinysidebar{\debug{exercises/{permutation-5/question.tex}}}
+  Of course the process is tedious and error prone.
+  So you know what to do:
+  \begin{itemize}
+    \li Write a program to encrypt and decrypt messages for the
+    permutation cipher.
+    For instance you can try this permutation
+    \[
+      \begin{pmatrix}
+        1 & 2 & 3 & 4 & 5 \\
+        2 & 3 & 5 & 4 & 1
+      \end{pmatrix}
+    \]
+    by entering \verb!2,3,5,4,1!.
+    Note that (mathematically speaking) permutations
+    are written as bijection between sets $\{1, 2, 3, ..., m\}$.
+    You might want to start with $0$ instead.
+    In that case, you should tell your user.
+    \li 
+    From the above experience of computation-by-hand,
+    we see that
+    for breaking a permutation cipher, the program accepts
+    a ciphertext and ask you for a permutation.
+    Furthermore your program should allow you to enter a permutation
+    partially.
+    For instance to enter this permutation
+    \[
+      \begin{pmatrix}
+        1 & 2 & 3 & 4 & 5 \\
+        & 3 &   &   & 1
+      \end{pmatrix}
+    \]
+    the user enters \verb!?,3,?,?,1! in your program.
+    You also want to allow the user to modify a permutation.
+    \li 
+    You also want the program to list commonly occurring digrams
+    that appears in the ciphertext, especially including those
+    that appear within substrings of length $m$ (the length of
+    the permutation).
+    \li With all the above, you can then automate the process
+    to imitate what I did in the previous example.
+  \end{itemize}

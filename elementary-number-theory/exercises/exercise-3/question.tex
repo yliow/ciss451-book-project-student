@@ -1,0 +1,82 @@
+\tinysidebar{\debug{exercises/{exercise-3/question.tex}}}
+  Just like for boolean values, you can write down the complete
+  behavior of the boolean and and boolean or and boolean not operators (these are called truth tables),
+  you can also complete specify the complete behavior of
+  addition in mod 26, \lq\lq negative of'' in mod 26,
+  multiplication in mod 26, and also multiplicative inverse mod 26.
+  The multiplicative inverse of $x$ in mod 26 is just the number $y$ mod 26
+  such that
+  \[
+    xy \equiv 1 \pmod{26}
+  \]
+  The multiplicative inverse of $x \pmod{26}$ is written
+  $x^{-1} \pmod{26}$ -- this is an integer mod 26!!! It's not a fraction in $\R$!!!
+  Sometimes $x^{-1} \pmod{26}$ might not exist. In that case write None.
+  Write down these 4 tables.
+
+Addition table for $\Z/26$:
+\begin{python}
+from latextool_basic import *
+p = Plot()
+m00 = [['$+$']]
+m10 = [['%s' % i] for i in range(26)]
+m01 = [['%s' % i for i in range(26)],
+      ]
+m11 =[['' for i in range(26)] for j in range(26)
+     ]
+M = [[m00, m01],
+[m10, m11]]
+N = table3(p, M, width=0.6, height=0.6)
+print(p)
+\end{python}
+In the above, when I write $5$, I meant of course $5 \pmod{26}$.
+
+
+Multiplication table for $\Z/26$:
+\begin{python}
+from latextool_basic import *
+p = Plot()
+m00 = [[r'$\times$']]
+m10 = [['%s' % i] for i in range(26)]
+m01 = [['%s' % i for i in range(26)],
+      ]
+m11 =[['' for i in range(26)] for j in range(26)
+     ]
+M = [[m00, m01],
+[m10, m11]]
+N = table3(p, M, width=0.6, height=0.6)
+print(p)
+\end{python}
+
+
+Negative of table for $\Z/26$:
+\begin{python}
+from latextool_basic import *
+p = Plot()
+m00 = [['$x \pmod{26}$']]
+m10 = [['%s' % i] for i in range(26)]
+m01 = [['$-x \pmod{26}$']]
+m11 = [[''] for i in range(26)]
+M = [[m00, m01],
+     [m10, m11]]
+N = table3(p, M, width=3, height=0.6)
+print(p)
+\end{python}
+
+
+Multiplicative inverse table for $\Z/26$:
+\begin{python}
+from latextool_basic import *
+p = Plot()
+m00 = [['$x \pmod{26}$']]
+m10 = [['%s' % i] for i in range(26)]
+m01 = [['$x^{-1} \pmod{26}$']]
+m11 = [['None']] + [[''] for i in range(25)]
+M = [[m00, m01],
+     [m10, m11]]
+N = table3(p, M, width=3, height=0.6)
+print(p)
+\end{python}
+It should be clear that $0 \pmod{26}$ does not have an inverse.
+
+    

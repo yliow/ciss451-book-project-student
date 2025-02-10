@@ -1,0 +1,51 @@
+=>PYTHONTEX#py#default#default#0#c#####3#
+from solutions import *; clear()
+=>PYTHONTEX#py#default#default#1#c####classical-cipher-shift-cipher.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#2#c####classical-cipher-modular-arithmetic.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#3#c####classical-cipher-attacks.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#4#c####classical-cipher-attacking-shift-cipher.tex#2#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#5#c####classical-cipher-affine-cipher.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#6#c####classical-cipher-vigenere-cipher.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#7#c####classical-cipher-substitution-cipher.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#8#c####classical-cipher-permutation-cipher.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#9#c####classical-cipher-hill-cipher.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#10#c####classical-cipher-one-time-pad-cipher.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#11#c####classical-cipher-block-and-stream-cipher.tex#2#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#12#c####classical-cipher-lfsr.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX:SETTINGS#
+version=0.16
+outputdir=pythontex-files-main
+workingdir=.
+workingdirset=false
+gobble=none
+rerun=default
+hashdependencies=default
+makestderr=true
+stderrfilename=full
+keeptemps=none
+pyfuture=default
+pyconfuture=none
+pygments=true
+pygglobal=:GLOBAL||
+fvextfile=-1
+pyconbanner=none
+pyconfilename=stdin
+depythontex=false
+pygfamily=py|python|
+pygfamily=pycon|pycon|
+pygfamily=sympy|python|
+pygfamily=sympycon|pycon|
+pygfamily=pylab|python|
+pygfamily=pylabcon|pycon|

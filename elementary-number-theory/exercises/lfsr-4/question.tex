@@ -1,0 +1,46 @@
+\tinysidebar{\debug{exercises/{lfsr-4/question.tex}}}
+  Write a program that generated a sequence of integers with values or 0 and 1
+  using the LFSR method.
+  You want to have a \verb!c! array as a parameter.
+  Your generator also need to remember bits of the sequence $x_1, ...$ needed to
+  generate the next bits.
+  In general, for a fixed $k$, you want to have an array $c$ of size $k$
+  and an array $x$ also of size $k$.
+  When you call your function, the next bit is placed in the array $x$,
+  shifting the bits of $x$ so that one bit is lost.
+  So if you want the full sequence for analysis, you need a very long
+  array to keep the bits before it's removed from $x$.
+  For instance the main program might look like this:
+  \begin{Verbatim}[frame=single, fontsize=\small]
+x = [x1, x2, x3, x4, x5] # the initial bits
+c = [c1, c2, c3, c4, c5] # the coefs of the linear relation
+bits = [x1, x2, x3, x4, x5] # the full sequence
+LSRF(c, x) # append rightmost value of x to the right of bits
+LSRF(c, x) # append rightmost value of x to the right of bits
+etc.
+\end{Verbatim}
+Besides putting the new bit into \verb!x!, it's also a good idea to
+return that bit as well.
+Then the above becomes
+  \begin{Verbatim}[frame=single, fontsize=\small]
+x = [x1, x2, x3, x4, x5] # the initial bits
+c = [c1, c2, c3, c4, c5] # the coefs of the linear relation
+bits = [x1, x2, x3, x4, x5] # the full sequence
+b = LSRF(c, x); append b to the right side of bits
+b = LSRF(c, x); append b to the right side of bits
+etc.
+\end{Verbatim}
+If you like you can also write an LFSR class.
+Then the above becomes
+  \begin{Verbatim}[frame=single, fontsize=\small]
+x = [x1, x2, x3, x4, x5] # the initial bits
+c = [c1, c2, c3, c4, c5] # the coefs of the linear relation
+LFRS = LRFSClass(c, x)
+bits = [x1, x2, x3, x4, x5] # the full sequence
+b = LSRF.run(); append b to the right side of bits
+b = LSRF.run(); append b to the right side of bits
+etc.
+\end{Verbatim}
+In the above, the code works with integers 0 and 1.
+For scenarios where there is a huge number of bits, the
+bits are packed into a register (say of size 64 bits).

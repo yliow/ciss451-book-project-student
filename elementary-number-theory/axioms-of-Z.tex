@@ -1,0 +1,846 @@
+\sectionthree{Axioms of $\Z$}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+We will assume that $(\Z, +, \cdot, 0, 1)$ satisfies the following
+axioms.
+\begin{enumerate}[nosep]
+  \li \textsc{Properties of $+$:}
+  \begin{enumerate}[nosep]
+    \li Closure: If $x, y \in \Z$, then $x + y \in \Z$.
+    \li Associativity: If $x, y, z \in \Z$, then $(x + y) + z = x + (y + z)$.
+    \li Inverse: If $x \in \Z$, then there is some $y$ such that $x + y = 0 = y + x$.
+      The $y$ in the above is an \defone{additive inverse} of $x$.
+    \li Neutrality: If $x \in \Z$, then $0 + x = x = x + 0$.
+    \li Commutativity: If $x, y \in \Z$, then $x + y = y + x$.
+  \end{enumerate}
+  (Memory aid for the first four: CAIN.)
+  \li \textsc{Properties of $\cdot$:}
+  \begin{enumerate}[nosep]
+  \li Closure: If $x, y \in \Z$, then $x \cdot y \in \Z$.
+  \li Associativity: If $x, y, z \in \Z$, then $(x \cdot y) \cdot z = x \cdot (y \cdot z)$.
+  \li Neutrality: If $x \in \Z$, then $1 \cdot x = x = x + 1$.
+  \li Commutativity: If $x, y \in \Z$, then $x \cdot y = y \cdot x$.
+  \end{enumerate}
+  It is common to write $xy$ instead of $x \cdot y$.
+
+  \li \textsc{Distributivity}:
+  If $x, y, z \in \Z$, then
+  $x \cdot (y + z) = x \cdot y + x \cdot z$
+  and
+  $(y + z) \cdot x = y \cdot x + z \cdot x$
+    
+\end{enumerate}
+(In the Inverse axiom above, we say that $y$ is \textit{an} additive inverse of
+$x$.
+Later we will show that $x$ has only one additive inverse.
+Therefore we can say $y$ is \textit{the} additive invers of $x$.)
+Also, it is conventional to write $xy$ for $x \cdot y$.
+
+A set $R$ with operations $+_R, \cdot_R$ and elements $0_R, 1_R$ satisfying
+the above properties is called a \defone{commutative ring}.
+This is an important generalization because there are many
+very useful commutative rings and we want to prove results about
+commutative rings so that these results can be applied to all
+commutative rings, including but not restricted to $\Z$.
+If the commutativity of multiplication is left out, then we have the
+concept of a \defone{non-commutative rings}.
+This is also an important concept since $n \times n$ matrices with $\R$
+entries, $\operatorname{M}_{n \times n}(\R)$, form a non-commutative ring.
+In fact, more generally,
+the set of $n\times n$ matrices with entries in a commutative ring $R$,
+$\operatorname{M}_{n \times n}(R)$,
+is itself a non-commutative ring.
+By convention, \defone{ring} means commutative ring.
+We will return to the concept of commutative and non-commutative rings later.
+
+The next property of $\Z$, integrality,
+is very special and does not apply to all communtative rings and is therefore
+left out of the definition of a commutative ring:
+\begin{enumerate}[nosep]
+  \li \textsc{Integrality}:
+  If $x, y \in \Z$, then
+  $xy = 0 \implies x = 0$ or $y = 0$.
+\end{enumerate}
+In general a ring satisfying the integrality condition is called an
+\defone{integral domain}.
+Therefore $\Z$ is not just a commutative ring -- it is an integral domain.
+Another property of $\Z$ that we will assume is
+\begin{enumerate}[nosep]
+  \li \textsc{Nontriviality}:
+  $0 \neq 1$
+\end{enumerate}
+The nontriviality axiom of $\Z$ is extremely simple, but cannot be deduced from
+the previous axioms.
+
+The above forms the algebraic properties of $\Z$, i.e., properties involving
+addition and multiplication.
+
+It is actually possible to first define axioms for
+$\N = \{0, 1, 2, ...\}$ and then define $\Z$ in terms of $\N$.
+(See my Calculus notes.)
+We will not do that except to mention that the
+axioms for $\N$ are called the
+\href{https://en.wikipedia.org/wiki/Giuseppe_Peano}{Peano}-\href{https://en.wikipedia.org/wiki/Richard_Dedekind}{Dedekind} axioms
+and that one very important Peano-Dedekind axiom of $\N$
+\begin{enumerate}[nosep]
+  \li \textsc{Induction} of $\N$:
+  If $X$ is a subset of $\N$ satisfying
+  \begin{enumerate}[nosep]
+  \li $0 \in X$
+  \li If $n \in X$, then $n + 1 \in X$
+  \end{enumerate}
+  Then $X = \N$.
+\end{enumerate}
+It can be proven that as a consequence of the induction axiom of $\N$,
+we have
+\begin{enumerate}[nosep]
+  \li \textsc{Well-ordering principle (WOP)} for $\N$:
+  If $X$ is a nonempty subset of $\N$, then $X$ contains a
+  \defone{least element},
+  i.e., there is some $m \in X$ such that
+  \[
+  m \leq x
+  \]
+  for all $x \in X$.
+\end{enumerate}
+Without going into details, it can be shown that for $\N$, the WOP
+is equivalent to each of the following axioms:
+\begin{enumerate}[nosep]
+  \li \textsc{Weak Mathematical Induction} for $\N$:
+  Let $X$ be a subset of $\N$ satisyfing the following two conditions:
+  \begin{enumerate}[nosep]
+    \li $0 \in X$ and
+    \li Let $n \in \N$. If $n \in X$, then $n + 1 \in X$.
+  \end{enumerate}
+  Then $X = \N$.
+\end{enumerate}
+and
+\begin{enumerate}[nosep]
+  \li \textsc{Strong Mathematical Induction} for $\N$:
+  Let $X$ be a subset of $\N$ satisyfing the following two conditions:
+  \begin{enumerate}[nosep]
+    \li $0 \in X$ and
+    \li Let $n \in \N$. If $k \in X$ for all $0 \leq k \leq n$,
+    then $n + 1 \in X$.
+  \end{enumerate}
+  Then $X = \N$.
+\end{enumerate}
+  
+In the above two induction properties, if we write $X = \{n \mid P(n)\}$ where
+$P(n)$ is a propositional formula,
+then the induction axioms can be rewritten in the
+following way:
+
+\begin{enumerate}[nosep]
+  \li \textsc{Weak Mathematical Induction} for $\N$:
+  Let $P(n)$ be a proposition for $n \in \N$ satisyfing the following two
+  conditions:
+  \begin{enumerate}[nosep]
+    \li $P(0)$ is true and
+    \li Let $n \in \N$. If $P(n)$ is true, then $P(n+1)$ is true.
+  \end{enumerate}
+  Then $P(n)$ is true for all $n \in \N$.
+\end{enumerate}
+and
+\begin{enumerate}[nosep]
+  \li \textsc{Strong Mathematical Induction} for $\N$:
+  Let $P(n)$ be a proposition for $n \in \N$ satisyfing the following two
+  conditions:
+  \begin{enumerate}[nosep]
+    \li $P(0)$ is true and
+    \li Let $n \in \N$. If $k \in X$ for all $0 \leq k \leq n$,
+    then $n + 1 \in X$.
+    \li Let $n \in \N$. If $P(k)$ is true for $0 \leq k \leq n$,
+    then $P(n+1)$ is true.
+  \end{enumerate}
+  Then $P(n)$ is true for all $n \in \N$.
+\end{enumerate}
+
+There are statements analogous to the above, but for $\Z$:
+
+\begin{enumerate}[nosep]
+  \li WOP for $\Z$:
+  If $X$ is a nonempty subset of $\Z$ that is bounded below, then $X$ contains a
+  \defone{least element},
+  i.e., there is some $m \in X$ such that
+  \[
+  m \leq x
+  \]
+  for all $x \in X$.
+  Here, $X$ is \defone{bounded below} means there is some $b \in \Z$ such that
+  \[
+  b \leq x
+  \]
+  for all $x \in X$.
+  Note that $b$ in the above is in $\Z$ and need not be in $X$.
+  For instance if $X = {-1, 1, 42}$, then the least element of $X$ is $-1$
+  and $b = -3\in Z$ is a lower bound of $X$.
+  However the least element of $X$ must be an element of $X$.
+\end{enumerate}
+\begin{enumerate}[nosep]
+  \li \textsc{Weak Mathematical Induction} for $\Z$:
+  Let $n_0 \in \Z$.
+  Let $P(n)$ be a proposition for $n \in \Z$ and $n \geq n_0$
+  satisyfing the following two conditions:
+  \begin{enumerate}[nosep]
+    \li $P(n_0)$ is true and
+    \li Let $n \in \Z$ with $n \geq n_0$.
+    If $P(n)$ is true, then $P(n+1)$ is true.
+  \end{enumerate}
+  Then $P(n)$ is true for all $n \in \Z$, $n \geq n_0$.
+\end{enumerate}
+\begin{enumerate}[nosep]
+  \li \textsc{Strong Mathematical Induction} for $\Z$:
+  Let $P(n)$ be a proposition for $n \in \Z, n \geq n_0 \in Z$
+  satisyfing the following two
+  conditions:
+  \begin{enumerate}[nosep]
+    \li $P(n_0)$ is true and
+    \li Let $n \in \Z$. If $k \in X$ for all $0 \leq k \leq n$,
+    then $n + 1 \in X$.
+    \li Let $n \in \Z$. If $P(k)$ is true for $0 \leq k \leq n$,
+    then $P(n+1)$ is true.
+  \end{enumerate}
+  Then $P(n)$ is true for all $n \in \Z$, $n \geq n_0$.
+\end{enumerate}
+
+It can be shown that from the induction axiom of $\N$,
+we can prove that the WOP of $\N$, the weak induction of $\N$, and the
+strong induction of $\N$ hold.
+Furthermore, these implies the WOP for $\Z$, the weak induction of $\Z$,
+and the strong induction of $\Z$ holds.
+
+Note that
+obvious statement of \lq\lq WOP for $\R$" does not hold.
+For instance the open interval $X = (0, 1)$ is bounded below
+(for instance by $-42$).
+However there is no $m$ in $X$ such that $m \leq x$ for all $x$ in $X$.
+For instance $m = 0.01 \in X$ is not a least element of $X$
+since $0.0001 \in X$ is smaller than $m$.
+Also, $m = 0.0000001 \in X$ is also not a least element of $X$ since
+$0.0000000001 \in X$ is less than $m$.
+In fact for any $m \in X$, $(1/2)m$ is in $X$ and is less than $m$.
+In other words no value in $X$ can be a minimum value of $X$.
+
+(See end of this section for exercises on WOP and induction.)
+
+The above are the algebraic and inductive-type axioms of $\Z$.
+There are also the order relations such as $<$ and $\leq$
+of $\Z$.
+Technically speaking, the order relation should come before
+the inductive axiom, WOP, and induction (weak and strong) since they use
+order relations.
+
+The following are the order axioms of $\Z$.
+We assume there is a subset $\Z^+$ \index{$\Z^+$}\tinysidebar{$\Z^+$}
+of $\Z$ satisfying the following:
+\begin{enumerate}[nosep]
+  \li \textsc{Trichotomy for $\Z$}:
+  If $x \in \Z$, then exactly one of the following holds:
+  \[
+  -x \in \Z^+,  \,\,\, x = 0, \,\,\, x \in \Z^+
+  \]
+  \li \textsc{Closure of $+$ for $\Z^+$}:
+  If $x,y \in \Z^+$, then $x + y \in \Z^+$.
+  \li \textsc{Closure of $\cdot$ for $\Z^+$}: If $x,y \in \Z^+$, then $x \cdot y \in \Z^+$.
+\end{enumerate}
+With the above, we define
+$<$ \index{$<$}\tinysidebar{$<$} on $\Z$
+as follows:
+If $x, y \in \Z$, then we write $x < y$ if
+\[
+y - x \in \Z^+
+\]
+i.e., there is some $z \in \Z^+$ such that
+\[
+y - x = z
+\]
+i.e.,
+\[
+y = x + z
+\]
+Since $<$ is defined (on $\Z$), we can define
+$x \leq y$ (on $\Z$) \index{$\leq$}\tinysidebar{$\leq$}
+to mean \lq\lq either $x < y$ or $x = y$".
+The above order relation is expressed abstractly without referring to the fact
+that
+$\Z^+$ is $\{1, 2, 3, ...\}$, i.e., the set of positive integers.
+In fact, you can prove $\Z^+ = \{1, 2, 3, ...\}$ from the above axioms.
+Of course you define $x > y$ to be the same as $y < x$ and
+$x \geq y$ to be $y \leq x$.
+Also, we say $x \in \Z$ is \defone{positive} is $x > 0$.
+
+The three axioms in the order relation on $\Z$ can be derived from the order
+relation axioms of $\N$.
+The order relation on $\N$ is defined as follows:
+For $\N = \{0, 1, 2, 3, ...\}$, we simply define
+\[
+x \geq 0
+\]
+for all $x \in \N$.
+For $x, y \in \N$, we define
+\[
+x \geq y
+\]
+if there is some $z \in \N$ such that
+\[
+x = y + z
+\]
+Finally $x > y$ is defined to be $x \geq y$ and $x \neq y$.
+If $x > 0$, we say that $x$ is \defone{positive}.
+Just like positivity in $\Z$,
+if $x \in \N$, we say that $x$ if \defone{positive} if $x > 0$.
+
+Also, we will define $|x|$ in the usual way:
+\[
+|x| =
+\begin{cases}
+x  & \text{if } x \geq 0 \\
+-x & \text{otherwise}
+\end{cases}
+\]
+
+There is one more axiom of $\Z$ that is related to the
+\lq\lq topology" of $\Z$ and uses the order relation:
+
+\begin{enumerate}[nosep]
+  \li \textsc{Topology} for $\Z$:
+  Given any $x \in \Z$, there is no $y \in \Z$ such that
+  \[
+  x < y < x + 1
+  \]
+\end{enumerate}
+
+This can derived from this:
+
+\begin{enumerate}[nosep]
+  \li \textsc{Topology} for $\N$:
+  There is no $x \in \N$ such that
+  \[
+  0 < x < 1
+  \]
+\end{enumerate}
+
+You can think of topology of a set as study of \lq\lq closeness" of values
+in that set.
+For $\Q$, given any two distinct
+rational values $x < y$, there is also some $z \in \Q$ such that
+$x < z < y$.
+This is the same for $\R$.
+Therefore the topology of $\Z$ is very different from the topology
+of $\Q$ and $\R$ because there are \lq\lq holes" in $\Z$ where
+there are no $\Z$ values.
+$\Z$ has what is called a \defone{discrete topology}.
+On the other hand $\Q$ and $\R$ are \lq\lq dense".
+(I won't go further into topology since we won't need it.
+See my notes on topology.)
+The above assumes the existence of an order relation of $\Z$, i.e., $<$.
+
+Now let's prove some algebraic facts about $\Z$ that can be deduced
+from the fact that $\Z$ is a commutative ring.
+
+\begin{prop}
+\label{prop:Z-uniqueness-of-additive-inverse}
+\textnormal{(\defone{Uniqueness of additive inverse})}.
+  The additive inverse for $x$ is unique.
+  In other words, if $y, y'$ satisfy
+  \begin{align*}
+    x + y &= 0 = y + x \tag{$1$}\\
+    x + y' &= 0 = y' + x \tag{$2$}
+  \end{align*}
+  then $y = y'$.
+\end{prop}
+\proof
+\begin{align*}
+y &= 0 + y        & & \text{by Identity of $+$} \\
+  &= (y' + x) + y & & \text{by RHS of $(2)$} \\
+  &= y' + (x + y) & & \text{by Associativity of $+$} \\
+  &= y' + 0       & & \text{by LHS of $(1)$} \\
+  &= y'           & & \text{by Neutrality of $+$}
+\end{align*}
+\qed
+
+Since the additive inverse of $x$ is unique, we can choose to write
+the additive inverse of $x$ in terms of $x$.
+This is usually written $-x$.
+(Had it been the case that the additive inverse of $x$ is not unique,
+we would have to denote the additive inverses of $x$ by
+$(-x)_1$, $(-x)_2$, etc.)
+
+We define the operator $-$ in terms of the additive inverse:
+
+\begin{defn}
+  Let $x,y \in \Z$. We define the subtraction operator as
+  \[
+  x - y = x + (-y)
+  \]
+\end{defn}
+
+Note that every value in $\Z$ has an additive inverse, but we do not
+require values of $\Z$ to have multiplicative inverses:
+
+\begin{defn}
+  Let $x \in \Z$. Then $y$ is a \defone{multiplicative inverse} of $x$ if
+  \[
+  x\cdot y = 1 = y\cdot x
+  \]
+  We say that $x$ is a \defone{unit} if $x$ has a multiplicative inverse.
+  We can also say that $x$ is (multiplicatively) \defone{invertible}.
+\end{defn}
+
+Intuitively, you know that the only values of $\Z$ with multiplicative inverses
+are $1$ and $-1$.
+We will prove this later.
+
+\begin{prop}
+\label{prop:Z-uniqueness-of-multiplicative-inverse}
+\textnormal{(\defone{Uniqueness of multiplicative inverse})}.
+  Let $x \in \Z$.
+  If $x$ is a unit, then the multiplicative inverse of $x$ is unique.
+  In other words if $y,y'$ satisfy
+  \begin{align*}
+    x  y &= 1 = y x \tag{1}\\
+    x  y' &= 1 = y' x \tag{2}
+  \end{align*}
+  then $y = y'$.
+\end{prop}
+\proof
+\begin{align*}
+y &= 1 \cdot y            & & \text{by Identity axiom of $\cdot$} \\
+  &= (y' \cdot x) \cdot y & & \text{by RHS of (1)} \\
+  &= y' \cdot (x \cdot y) & & \text{by Associativity of $\cdot$} \\
+  &= y' \cdot 1           & & \text{by LHS of (2)} \\
+  &= y'                   & & \text{by Neutrality of $\cdot$ }
+\end{align*}
+\qed
+
+\begin{defn}
+  The multiplicative inverse of $x$, if is exists, is denoted by $x^{-1}$.
+  The set of all units of $\Z$ is denoted by either $U(\Z)$ or $\Z^\times$.
+  We will show later that $U(\Z) = \{-1, 1\}$.
+\end{defn}
+
+\begin{prop}
+\label{prop:Z-cancellation-law-for-addition}
+  \textnormal{(\defone{Cancellation law for addition})}.
+  Let $x, y, z \in \Z$.
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+    \item If $x + z = y + z$, then $x = y$.
+    \item If $z + x = z + y$, then $x = y$.
+  \end{enumerate}
+\end{prop}
+\proof
+TODO
+\qed
+
+\begin{prop}
+\label{prop:Z-properties-of-zero}
+  Let $x \in \Z$.
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+  \item $0x = 0 = x0$
+  \item $-0 = 0$
+  \item $x - 0 = x$. 
+  \end{enumerate}
+\end{prop}
+\proof
+(a) 
+We will first prove $0x = 0$:
+\begin{align*}
+  0x &= (0 + 0)x     & & \text{by Neutrality of $+$} \\
+     &= 0x + 0x      & & \text{by Distributivity} \\
+\THEREFORE  0 + 0x &= 0x + 0x  & & \text{by Neutrality of $+$} \\
+  0  &= 0x       & & \text{by Cancellation Law of Addition} 
+\end{align*}
+To prove $0 = x0$, from above
+\begin{align*}
+  0 &= 0x \\
+    &= x0 & & \text{ by Commutativity of $\cdot$}
+\end{align*}
+
+(b)
+TODO
+
+(c)
+TODO
+\qed
+
+\begin{prop}
+\label{prop:Z-properties-of-negative}
+  Let $x, y, c \in \Z$.
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+  \item $-(-1) = 1$
+  \item $-(-x) = x$
+  \item $x(-1) = -x = (-1)x$
+  \item $(-1)(-1) = 1$
+  \item $(-x)(-y) = xy$
+  \item $-(x + y) = -x + -y$
+  \item $-(x - y) = -x + y$
+  \end{enumerate}
+\end{prop}
+\proof
+TODO
+\qed
+
+\begin{prop}
+\label{prop:Z-cancellation-law-for-multiplication}
+  \textnormal{(\defone{Cancellation law for multiplication})}.
+  Let $x, y, z \in \Z$.
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+    \item If $xz = yz$ and $z \neq 0$, then $x = y$.
+    \item If $zx = zy$ and $z \neq 0$, then $x = y$.
+  \end{enumerate}
+\end{prop}
+\proof
+TODO
+\qed
+
+For general expressions involving $n$ terms, instead of writing
+$x_1 + \cdots + x_n$, we formally define
+\index{$\sum_{i=1}^n$}\tinysidebar{$\sum_{i=1}^n$}
+\[
+\sum_{i=1}^n x_i =
+\begin{cases}
+0 & \text{if } n = 0 \\
+\displaystyle\sum_{i=1}^{n-1} x_i + x_n & \text{if } n > 0
+\end{cases}
+\]
+Note that the definition above implies that our summation
+is left associative, i.e.,
+\begin{align*}
+\sum_{i=1}^{3} x_i
+&= \sum_{i=1}^{2} x_i + x_3  \\
+&= \left( \sum_{i=1}^{1} x_i + x_2 \right) + x_3 \\
+&= \left( \left( \sum_{i=1}^{0} x_i + x_1  \right) + x_2 \right) + x_3 \\
+&= \left( \left( 0 + x_1  \right) + x_2 \right) + x_3 \\
+&= \left( x_1 + x_2 \right) + x_3
+\end{align*}
+This conforms with the standard practice.
+Likewise, we define \index{$\prod_{i=1}^n$}\tinysidebar{$\prod_{i=1}^n$}
+\[
+\prod_{i=1}^n x_i =
+\begin{cases}
+1 & \text{if } n = 0 \\
+\displaystyle\prod_{i=1}^{n-1} x_i + x_n & \text{if } n > 0
+\end{cases}
+\]
+
+\begin{prop} \textnormal{(\defone{General associativity})}
+Let $x_1, \ldots, x_n \in \Z$.
+\begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+\item Different fully parenthesized expressions of
+$x_1 + \cdots + x_n$ evaluates to the same value.
+\item Different fully parenthesized expressions of
+$x_1 \cdot \cdots \cdot x_n$ evaluates to the same value.
+\end{enumerate}
+\end{prop}
+\proof
+The proof for both statements are similar.
+We will only prove (b).
+
+TODO
+\qed
+
+Now for the case when the summation or product involves the same value,
+we have the following.
+For convenience, I will write $x^2 = xx$ and in general \index{$()^n$}\tinysidebar{$()^n$}
+\[
+x^n =
+\begin{cases}
+  1       &\text{if } n = 0 \\
+  x^{n-1}x &\text{if } n > 0 
+\end{cases}
+\]
+Note that
+\[
+x^3 = x^2 x = (x^1x) x = ((x^0x)x)x = ((1x)x)x = (xx)x
+\]
+i.e., the above recursive definition of
+$x^n$ is left recursive.
+If $x$ has a multiplicative inverse, i.e., if $x^{-1}$ exists,
+then, for $n \geq 0$, I will define
+\[
+x^{-n} = \left( x^{-1} \right)^n
+\]
+
+Note that $nx$ has two meanings: $nx$ can be the multiplication of $n$
+and $x$ and it can also be $x + \cdots + x$ where the expression
+contains $n$ copies of $x$.
+Of course you would expect them to be the same.
+For now define
+\[
+  [n]x =
+  \begin{cases}
+    0       &\text{if } n = 0 \\
+    [n-1]x + x &\text{if } n > 0 
+  \end{cases}
+\]
+$[n]x$ is just a notation that is easier to write than $\sum_{i=1}^n x$.
+And if $n$ is negative, we define
+\[
+[n]x = -([-n]x)
+\]
+I'll write $[\bullet]$ for the function $\Z \times \Z \rightarrow \Z$
+as defined above.
+
+\begin{prop}
+  Let $x \in \Z$.
+  Then $[n]x = n \cdot x$, i.e.,
+  \lq\lq add $n$ copies of $x$" is the same as \lq\lq multiply $n$ and $x$".
+\end{prop}
+\proof
+We will prove two proofs, using weak induction and WOP.
+
+First we proof the above for $n \geq 0$ using weak induction.
+For $n \geq 0$, let $P(n)$ be the statement that $[n]x = n \cdot x$.
+
+\textsc{Base case:}
+We now prove $P(0)$ holds.
+By definition, $[0]x = 0$.
+By Proposition \ref{prop:Z-properties-of-zero}
+(page \pageref{prop:Z-properties-of-zero}), $0 \cdot x = 0$.
+Hence $[0]x = 0 \cdot x$, i.e., $P(0)$ holds.
+
+\textsc{Inductive case:}
+Now assume $P(n)$ holds, i.e, $[n]x = n \cdot x$.
+We will prove that $P(n + 1)$ holds.
+We have
+\begin{align*}
+[n + 1]x &= [n]x + x        & & \text{by definition of $[\bullet]$} \\
+         &= n \cdot x + x   & & \text{by inductive hypothesis $P(n)$} \\
+         &= n \cdot x + 1 \cdot x & & \text{by Neutrality of $\cdot$} \\
+         &= (n + 1)\cdot x  & & \text{by Distributivity} 
+\end{align*}
+Hence $P(n + 1)$ holds.
+
+Therefore by weak induction $P(n)$ holds for all integers $n \geq 0$.
+
+We now prove $P(n)$ holds for integers $n < 0$:
+\begin{align*}
+[n]x &= -([-n]x)        & & \text{by definition of $[ \bullet ]$} \\
+     &= -((-n) \cdot x) & & \text{by $P(-n)$} \\
+     &= (-1)\cdot ((-n) \cdot x) & & \text{by Proposition \ref{prop:Z-properties-of-negative}(c) (page \pageref{prop:Z-properties-of-negative})} \\
+     &= ((-1)\cdot (-n)) \cdot x) & & \text{by Associativity of $\cdot$} \\
+     &= (1\cdot n) \cdot x & & \text{\text{by Proposition \ref{prop:Z-properties-of-negative}(e) (page \pageref{prop:Z-properties-of-negative})}} \\
+     &= n \cdot x       & & \text{by Neutrality of $\cdot$}
+\end{align*}
+
+Next, we proof the above for $n \geq 0$ using WOP.
+
+TODO
+\qed
+
+Now let us look at order relations on $\Z$.
+
+\begin{prop}
+Let $a, b, c, d \in \Z$ with $x > 0$.
+\begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+\item If $a < b$, then $a + c < b + c$. 
+\item If $a < b$, then $ax < bx$.
+\item If $a < b$, then $a(-x) > b(-x)$.
+\item $a < a + c$
+\item $a \leq ac$
+\end{enumerate}
+There are analogous statements for (a)-(c) where $<$ and $>$
+are replaced by $\leq$ and $\geq$.
+\end{prop}
+\proof
+(a)
+Note that
+\begin{align*}
+(b + c) - (a + c)
+&= (b + c) + (-(a + c)) & & \text{by definition of $-$}\\ 
+&= b + (c + (-(a + c))) & & \text{by Associativity of $+$}\\
+&= b + (c + (-a + -c))  & & \text{by Proposition \ref{prop:Z-properties-of-negative} (page \pageref{prop:Z-properties-of-negative})}\\
+&= b + (c + (-c + -a))  & & \text{by Commutativity of $+$}\\
+&= b + ((c + -c) + -a)  & & \text{by Associativty of $+$}\\
+&= b + (0 + -a))        & & \text{by Inverse of $+$}\\
+&= b + -a               & & \text{by Neutrality of $+$}\\
+&= b - a                & & \text{by definition of $-$} \tag{1}
+\end{align*}
+We have
+\begin{align*}
+           & a < b \\
+\THEREFORE & b - a \in \Z^+                     & & \text{by definition of $<$} \\
+\THEREFORE & (b + c) - (a + c) = b - a \in \Z^+ & & \text{by (1)}\\
+\THEREFORE & b + c > a + c                      & & \text{by definition of $<$}
+\end{align*}
+\qed
+
+\begin{prop}
+$1 \in \Z^+$, i.e., $1$ is positive.
+\end{prop}
+\proof
+TODO
+\qed
+
+\begin{prop}
+$\Z^+ = \{1, 2, 3, ...\} = \N - \{0\}$.
+\end{prop}
+\proof
+TODO
+\qed
+
+\begin{prop}
+The only units of $\Z$ are $-1, 1$, $U(\Z) = \{-1, 1\}$.
+\end{prop}
+\proof
+TODO
+\qed
+
+The following are examples of proofs using WOP and induction.
+
+\begin{ex}
+For $n \in \N$,
+\[
+1 + 2 + \cdots + n = \frac{n(n+1)}{2}
+\]
+Here, when $n = 0$, $1 + 2 + \cdot + n$ is defined to be $0$.
+\begin{enumerate}[nosep]
+\item[(a)] Prove the above using weak induction.
+\item[(b)] Prove the above using WOP.
+\end{enumerate}
+\end{ex}
+\proof
+TODO
+\qed
+
+
+\begin{ex}
+For $n \in \N$,
+\[
+1^2 + 2^2 + \cdots + n^2 = \frac{1}{6}n(n+1)(2n + 1)
+\]
+Here, when $n = 0$, $1 + 2 + \cdot + n$ is defined to be $0$.
+\begin{enumerate}[nosep]
+\item[(a)] Prove the above using weak induction.
+\item[(b)] Prove the above using WOP.
+\end{enumerate}
+\end{ex}
+\proof
+TODO
+\qed
+
+
+\begin{ex}
+What is wrong with this proof?
+I claim that every man wears brown pants.
+I will prove this by weak induction.
+Let $P(n)$ be the statement that every man in a set of $n$
+men wears brown pants.
+Clearly $P(0)$ is true.
+For, if $P(0)$ does not hold, then there is a man in an empty set
+that does not wear brown pants.
+But an empty set cannot contain a man.
+Now, let $n \geq 0$ and assume $P(n)$ hold.
+I will prove that $P(n + 1)$ holds.
+Let $X$ be a set with $n + 1$ men.
+Let $Y$ be a subset of $X$ with exactly $n$ men.
+Since there are $n$ men in $Y$, by induction hypothesis,
+every men in $Y$ wears brown pants.
+Of course $Y$ misses one man from $X$, say John.
+Now form another subset $Z$ of $X$ with exactly $n$ men that contains John.
+Again by induction hypothesis $P(n)$ hold and therefore every men in $Z$
+wears brown pants, including John.
+Since $X$ is made up of men in $Y$ together with John, we have shown
+that every men in $X$ wears brown pants.
+Therefore by weak induction, every men wears brown pants.
+
+(Of course the above cannot possible be true.
+In fact: you can change \lq\lq every man wears brown pants" to
+\lq\lq every man wears the same pair of pants".)
+\end{ex}
+TODO
+
+
+\begin{ex}
+What is wrong with this proof?
+I claim that every man has the same favorite number.
+I will prove this by weak induction.
+Let $P(n)$ be the statement that every man in a set of $n$
+men has the same favorite number as the rest.
+Clearly $P(0)$ is true vacuously like the previous exercise.
+Now, let $n \geq 0$ and assume $P(n)$ hold.
+I will prove that $P(n + 1)$ holds.
+Let $X$ be a set of $n + 1$ men.
+Line the men in $X$ in a line.
+The set $Y$ of the first $n$ men of $X$ must all share the same favorite number
+since there are $n$ men in $Y$.
+Let $Z$ be the set of $n$ men of $X$ that excludes the first man.
+All the men in $Z$ must have the same favorite number as well.
+Clearly every men in $Y$ has the same favorite number as the man in
+the middle of the line and every men in $Z$ also has the same favorite number
+as this man in the middle.
+Therefore all men in $X$ have the same favorite number.
+Hence every men shared the same favorite number.
+\end{ex}
+TODO
+
+\begin{ex}
+What is wrong with this proof?
+I claim that every day is Monday.
+I will prove this by strong induction.
+Let $P(n)$ be the statement that every day in a set of $n$
+days is Monday.
+Clearly $P(0)$ is true.
+For, if $P(0)$ does not hold, then there is a day in an empty set
+that is not Monday.
+But an empty set cannot have a day.
+Now, let $n \geq 0$ and assume $P(0), P(1), ..., P(n)$ hold.
+I will prove that $P(n + 1)$ holds.
+Let $X$ be a set with $n + 1$ days.
+Let $Y$ be a subset of $X$ with exactly $n$ days.
+Since there are $n$ days in $Y$, by induction hypothesis,
+every day in $Y$ in Monday.
+$Y$ misses one day in $X$, say $x$.
+Also by $P(1)$, since $\{x\}$ is a set of size $1$, $x$ is also Monday. 
+Since $X = Y \cup \{x\}$, we have shown
+that every day in $X$ is Monday,
+Therefore by strong induction, every day is Monday.
+\end{ex}
+TODO
+
+\begin{ex}
+What is wrong with this proof?
+I will prove by strong induction that $e^n = 1$ for all $n \geq 0$.
+Let $P(n)$ be the statement that $e^n = 1$.
+Clearly $e^0 = 1$.
+Therefore $P(0)$ holds.
+Now assume $P(0), P(1), ..., P(n)$ holds.
+Since $P(n)$ and $P(1)$ holds,
+we have $e^{n + 1} = e^n \cdot e^1 = 1 \cdot 1 = 1$. 
+Hence $P(n + 1)$ holds.
+Therefore, by strong induction, $P(n)$ holds for all $n$, i.e.,
+$e^n = 1$ for all $n \geq 0$.
+\end{ex}
+TODO
+
+\begin{ex}
+What is wrong with this proof?
+I will prove by strong induction that given $x \in \R$,
+$\sum_{i = 1}^n x = 0$ for $n \geq 0$.
+Let $P(n)$ be the above statement.
+$P(0)$ holds since $\sum_{i = 1}^0 x$ is a sum with no terms and by
+convention is $0$.
+Now assume $P(0), P(1), ..., P(n)$ holds.
+Let $n + 1 = a + b$ with both $a,b$ approximately equal.
+(For instance if $n + 1$ is even, $a = b = (n + 1)/2$.
+And if $n + 1$ is odd, $a = \floor{(n + 1)/2}$ and $b = n + 1 - a$.)
+Since $P(a)$ and $P(b)$ holds, 
+$\sum_{i = 1}^a x = 0$
+and
+$\sum_{i = 1}^b x = 0$.
+Clearly
+$\sum_{i = 1}^{n + 1} x = \sum_{i = 1}^{a} x + \sum_{i = 1}^{b} x$
+since the LHS is a sum of $n + 1$ $x$'s and there are
+$a + b$ $x$'s on the RHS.
+Hence
+\[
+\sum_{i = 1}^{n + 1} x = \sum_{i = 1}^{a} x + \sum_{i = 1}^{b} x = 0 + 0 = 0
+\]
+Therefore $P(n + 1)$ holds.
+By strong induction $P(n)$ holds for all $n \geq 0$, i.e.,
+$\sum_{i = 1}^n x = 0$ for $n \geq 0$.
+\end{ex}
+TODO

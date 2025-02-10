@@ -1,0 +1,6 @@
+\contentsline {chapter}{\numberline {1}Basic number theory}{3}{chapter.1}% 
+\contentsline {section}{\numberline {1.1}Axioms of $\mathbb Z$ \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: axioms-of-Z.tex}}}}{4}{section.1.1}% 
+\contentsline {section}{\numberline {1.2}Divisibility \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: divisibility.tex}}}}{19}{section.1.2}% 
+\contentsline {section}{\numberline {1.3}Congruences \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: congruences.tex}}}}{20}{section.1.3}% 
+\contentsline {chapter}{Index}{23}{mylabelcounter.1}% 
+\contentsline {chapter}{Bibliography}{24}{chapter*.13}% 

@@ -1,0 +1,76 @@
+\tinysidebar{\debug{exercises/{nt-34/question.tex}}}
+  Prove that
+  \[
+  \phi(mn) = \phi(m)\phi(n) \cdot \frac{g}{\phi(g)}
+  \]
+  where $g = \gcd(m,n)$.
+  (Note that the above does \textit{not} assume $m,n$ are coprime.
+  What is the above if $m,n$ are coprime?)
+
+\BEGINCOMMENT
+%  Let
+%  $P$ be the primes dividing $m$,
+%  $Q$ be the primes dividing $n$,
+%  $R$ be the primes dividing $g$.
+%  Note that $P \cup Q \cup R$ are the primes dividing $mn$.
+%  Furthermore
+%  $P \cup Q \cup R$ is a disjoint union of
+%  $P - R$, $Q - R$, and $R$.
+%  Then
+%  \begin{align*}
+%    \frac{\phi(mn)}{mn}
+%    &= \prod_{p \in P\cup Q} \left( 1 - \frac{1}{p} \right) \\
+%    &=
+%    \prod_{p in P - R} (...)
+%    \cdot \prod_{p \in Q - R} (...)
+%    \cdot \prod_{p \in R} (...) \\
+%    \THEREFORE
+%    \frac{\phi(mn)}{mn}
+%    \cdot \prod_{p \in R} (...) 
+%    &=
+%    \prod_{p \in P - R} (...)
+%    \cdot \prod_{p \in Q - R} (...)
+%    \cdot \prod_{p \in R} (...) 
+%    \cdot \prod_{p \in R} (...) \\
+%    &=
+%    \prod_{p \in P - R} (...)
+%    \cdot \prod_{p \in R} (...) 
+%    \times
+%    \prod_{p \in Q - R} (...)
+%    \cdot \prod_{p \in R} (...) \\
+%    &=
+%    \prod_{p \in P} (...)
+%    \times
+%    \prod_{p \in Q} (...) \\
+%    \THEREFORE
+%    \phi(mn)
+%    \cdot \prod_{p \in R} (...) 
+%    &=
+%    m\prod_{p \in P} (...)
+%    \times
+%    n\prod_{p \in Q} (...) \\
+%    \THEREFORE
+%    \phi(mn)
+%    \cdot \prod_{p \in R} (...) 
+%    &=
+%    \phi(m)
+%    \phi(n) \\
+%    \THEREFORE
+%    \phi(mn)
+%    \cdot g\prod_{p \in R} (...) 
+%    &=
+%    \phi(m)
+%    \phi(n) g\\
+%    \THEREFORE
+%    \phi(mn)
+%    \phi(g)
+%    &=
+%    \phi(m)
+%    \phi(n) g\\
+%    \THEREFORE
+%    \phi(mn)
+%    &=
+%    \phi(m)
+%    \phi(n) \frac{g}{\phi(g)}\\
+%  \end{align*}
+\ENDCOMMENT

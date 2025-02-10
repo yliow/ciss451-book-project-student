@@ -1,0 +1,105 @@
+%-*-latex-*-
+\sectionthree{Congruences}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\begin{defn}
+  Let $a, b \in \Z$ and $N \in \Z$ with $N > 0$.
+  Then $a$ is congruent to $b$ mod $N$ and we write
+  \[
+  a \equiv b \pmod{N}
+  \]
+  if $N \mid a - b$.
+  In the above expression
+  \[
+  a \equiv b \pmod{N}
+  \]
+  we say that $N$ is the modulus of the above relation between $a$ and $b$.
+\end{defn}
+
+\begin{prop}
+  Let $a,b,c,a',b' \in \Z$ and $N,N' \geq$ be in $\Z$.
+  \begin{myenum}       
+  \item \textnormal{Reflexivity:}
+    $a \equiv a \pmod{N}$
+  \item \textnormal{Symmetry:}
+    If $a \equiv b \pmod{N}$, then $b \equiv a \pmod{N}$
+  \item \textnormal{Transitivity:}
+    If $a \equiv b, b \equiv c \pmod{N}$, then
+    $a \equiv c \pmod{N}$
+  \item \textnormal{Additivity:}
+    If
+    $a \equiv b$,
+    $a' \equiv b' \pmod{N}$,
+    then
+    $a + a' \equiv b + b' \pmod{N}$.
+  \item \textnormal{Multiplicativity:}
+    If
+    $a \equiv b$,
+    $a' \equiv b' \pmod{N}$,
+    then
+    $a a' \equiv b b' \pmod{N}$.
+  \item
+    If
+    $a \equiv b \pmod{NN'}$, then
+    $a \equiv b \pmod{N}$
+  \end{myenum}
+\end{prop}
+\proof
+TODO
+\qed
+
+The following connects the Euclidean property and the congruence relation:
+
+\begin{prop}
+  Let $a, N \in \Z$ with $N > 0$.
+  Let $q, r \in \Z$ such that
+  \[
+  a = Nq + r, \,\,\, 0 \leq r < N
+  \]
+  Then $a \equiv r \pmod{N}$.
+\end{prop}
+\proof
+TODO
+
+\begin{defn}
+  Let $a, N \in \Z$ with $N > 0$.
+  By the Euclidean property of $\Z$, there exist unique $q,r$ such that
+  \[
+  a = Nq + r, \,\,\, 0 \leq r < N
+  \]
+  $r$ is called the \lq\lq \defterm{residue} of $a$ mod $N$"
+  (\lq\lq residue" = \lq\lq what is left" after $a$ is divided by $N$, i.e.,
+  the remainder after $a$ is divided by $N$).
+  It is common to write $r$ as $a$ mod $N$.
+\end{defn}
+
+Sometimes $a$ mod $N$ is written as $r_N(a)$.
+For instance to find the residue of 15 mod 4, there is some $q$ such that
+\[
+15 = 4q + 3, \,\,\, 0 \leq 1 < 4
+\]
+i.e.
+\[
+15 \equiv 3 \pmod{4}
+\]
+where $0 \leq 1 < 4$.
+Therefore the residue of 15 mod 4 is 1, or we simple write
+\[
+15 \text{ mod } 4 = 3
+\]
+i.e., $r_4(15) = 3$.
+
+\textsc{Warning}: \lq\lq mod" now has two meanings.
+\lq\lq mod $N$", where $N > 0$ is an integer,
+can be used to denote a relation between integers
+\[
+a \equiv b \pmod{N}
+\]
+and \lq\lq mod $N$" can also be used to denote a function
+\[
+a \text{ mod } N = r
+\]
+
+\input{exercises/nt-50/main.tex}
