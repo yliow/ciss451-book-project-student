@@ -2,6 +2,7 @@
 
   \item $()^n$, \hyperpage{13}
   \item $<$, \hyperpage{7}
+  \item equivalence class, \hyperpage{141}
   \item $\Z^+$, \hyperpage{7}
   \item $\leq$, \hyperpage{8}
   \item $\prod_{i=1}^n$, \hyperpage{12}
@@ -9,26 +10,57 @@
 
   \indexspace
 
-  \item additive inverse, \hyperpage{4}
+  \item additive inverse, \hyperpage{4}, \hyperpage{99}
+  \item arithmetic function, \hyperpage{112}
 
   \indexspace
 
+  \item B\'ezout's coefficients, \hyperpage{35}
+  \item B\'ezout's identity, \hyperpage{35}
   \item bounded below, \hyperpage{6}
 
   \indexspace
 
   \item Cancellation law for addition, \hyperpage{10}
   \item Cancellation law for multiplication, \hyperpage{12}
+  \item common divisor, \hyperpage{35}
   \item commutative ring, \hyperpage{4}
+  \item composites, \hyperpage{72}
+  \item composition, \hyperpage{143}
+  \item congruences classes, \hyperpage{146}
+  \item coprime, \hyperpage{101}
 
   \indexspace
 
   \item discrete topology, \hyperpage{9}
   \item divides, \hyperpage{19}
+  \item division algorithm, \hyperpage{23}
 
   \indexspace
 
+  \item equivalence class, \hyperpage{141}
+  \item Euclid's lemma, \hyperpage{73}
+  \item Euclidean Algorithm, \hyperpage{62}
+  \item Euclidean property, \hyperpage{23}
+  \item Euclidean property 2, \hyperpage{23}
+  \item Euclidean property 3, \hyperpage{23}
+  \item Euler's Theorem, \hyperpage{113}
+  \item exponential runtime with linear exponent, \hyperpage{76}
+
+  \indexspace
+
+  \item Fermat's Little Theorem, \hyperpage{112}
+  \item field, \hyperpage{148}
+  \item finer, \hyperpage{142}
+  \item function graph, \hyperpage{138}
+  \item Fundamental Theorem of Arithmetic, \hyperpage{73}
+
+  \indexspace
+
+  \item GCD Lemma, \hyperpage{60}
   \item General associativity, \hyperpage{12}
+  \item Goldbach conjecture, \hyperpage{77}
+  \item greatest common divisor, \hyperpage{35}
 
   \indexspace
 
@@ -38,10 +70,14 @@
   \indexspace
 
   \item least element, \hyperpage{5, 6}
+  \item left relation class, \hyperpage{140}
+  \item lowest common multiple, \hyperpage{74}
 
   \indexspace
 
-  \item multiplicative inverse, \hyperpage{10}
+  \item Mersenne prime, \hyperpage{77}
+  \item multiplicative, \hyperpage{112}
+  \item multiplicative inverse, \hyperpage{10}, \hyperpage{99}
 
   \indexspace
 
@@ -49,17 +85,46 @@
 
   \indexspace
 
+  \item perfect, \hyperpage{77}
   \item positive, \hyperpage{8}
+  \item prime, \hyperpage{72}
+  \item pseudo-polynomial runtime, \hyperpage{76}
 
   \indexspace
 
+  \item quotient, \hyperpage{23}
+
+  \indexspace
+
+  \item reflexive, \hyperpage{138}
+  \item reflexive closure, \hyperpage{143}
+  \item relation, \hyperpage{137}
+  \item remainder, \hyperpage{23}
   \item residue, \hyperpage{20}
+  \item right relation class, \hyperpage{140}
   \item ring, \hyperpage{4}
+
+  \indexspace
+
+  \item symmetric, \hyperpage{138}
+  \item symmetric closure, \hyperpage{143}
+
+  \indexspace
+
+  \item transitive, \hyperpage{138}
+  \item transitive closure, \hyperpage{143}
+  \item twin prime conjecture, \hyperpage{76}
+  \item twin primes, \hyperpage{76}
 
   \indexspace
 
   \item Uniqueness of additive inverse, \hyperpage{9}
   \item Uniqueness of multiplicative inverse, \hyperpage{10}
-  \item unit, \hyperpage{10}
+  \item unit, \hyperpage{10}, \hyperpage{99}
+
+  \indexspace
+
+  \item Well-ordering principle for $\N$, \hyperpage{24}
+  \item WOP for $\Z$, \hyperpage{24}
 
 \end{theindex}

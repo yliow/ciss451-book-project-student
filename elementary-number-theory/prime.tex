@@ -1,0 +1,276 @@
+\sectionthree{Primes}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\begin{defn}
+A prime $p$ is a positive integer greater than 1 that is
+divisible by only 1 and itself.
+In other words $p \in \N$ is a
+\defterm{prime}\index{prime}\tinysidebar{prime}
+if $p > 1$ and 
+if $d \in \Z, d > 0, d \mid p$, then $d = 1$ or $d = p$.
+\end{defn}
+
+Examples of primes are $2, 3, 5, 7, 11, 13, 17, 19, ...$.
+
+Integers at least zero can be divided into the following types:
+\begin{enumerate}[nosep]
+  \li $0$ -- the zero element
+  \li $1$ -- the unit element (i.e. the only invertible element $\geq 0$)
+  \li primes -- $2, 3, 5, 7, 11, ...$
+  \li \defone{composites} -- integers $> 1$ which are not primes 
+\end{enumerate}
+
+(Instead of primes of $\N \cup \{0\}$,
+it's also possible to define primes of $\Z$.
+A prime of $\Z$ is an integer not $-1, 0, 1$
+such that if $d \mid p$, then $d = \pm 1$ or $d = \pm p$.
+In that case primes of $\Z$ are
+$\pm 2, \pm 3, \pm 5, \pm 7, \pm 11, ...$.)
+
+
+For the next few theorems,
+you may assume various properties of integers.
+There is no circular arguments since since these properties
+does not depend on the next few theorems.
+
+\begin{prop} \textnormal{(Euclid)}
+  There are infinitely many primes.
+\end{prop}
+
+\proof
+TODO
+\qed
+
+
+\input{exercises/nt-11/main.tex}
+\input{exercises/nt-12/main.tex}
+\input{exercises/nt-13/main.tex}
+
+The above two exercises are special cases of the following theorem:
+
+\begin{thm} \textnormal{(Dirichlet 1837)}
+If $\gcd(a, b) = 1$, then there are infinitely many primes
+of the form $an + b$.
+\end{thm}
+
+The proof of Dirichlet's theorem above uses group theory and
+complex analysis and is beyond the scope of this book.
+
+\begin{prop} \textnormal{(Euclid)}
+  There are arbitrarily long consecutives integers of composites.
+\end{prop}
+
+\proof
+\BEGINTODO
+$n!+2$,
+$n!+3$,
+$n!+4$,
+$\ldots$,
+$n!+n$
+are all composities for $n \geq 2$.
+This list is therefore a list of consecutive composites of length
+$n - 1$.
+\ENDTODO
+\qed
+
+The follow lemma is extremely important and is used
+for instance in the fundamental theorem of arithmetic to prove
+the uniqueness of prime factorization in $\N$ (or $\Z$).
+To break tradition, we will call this a theorem (instead of a lemma):
+
+\begin{thm}
+  \textnormal{(\defone{Euclid's lemma})}
+  If $p$ is a prime and $p \mid ab$, then either $p \mid a$ or $p \mid b$.
+\end{thm}
+
+\proof
+TODO
+\qed
+
+
+
+The above generalizes easily (by induction) to the following:
+
+
+\begin{cor}
+If $p$ is a prime and $p \mid a_1 a_2 \cdots a_n$, then 
+$p$ divides at least one of the $a_1, \ldots, a_n$.
+\end{cor}
+\proof
+TODO
+\qed
+
+
+\begin{thm} \textnormal{(Euclid's \defone{Fundamental Theorem of Arithmetic})}
+Every positive integer $> 1$ can be written as a unique product of primes
+up to permutation of the prime factors.
+This means
+\begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+\item[\textnormal{(a)}] If $n > 1$ is an integer, then $n$ can be written as a product
+of primes.
+\item[\textnormal{(b)}] If $n$ is written as two products of primes:
+\[
+n = p_1 p_2 \cdots p_k = q_1 q_2 \cdots q_\ell
+\]
+where $p_i$ and $q_j$ are primes arranged in ascending order, i.e.,
+\begin{align*}
+p_1 \leq p_2 \leq \cdots \leq p_k \\
+q_1 \leq q_2 \leq \cdots \leq q_\ell
+\end{align*}
+then $k = \ell$ and 
+\[
+p_1 = q_1, \,\,\,\,\,
+p_2 = q_2, \,\,\,\,\,
+\cdots, \,\,\,\,\,
+p_k = q_k, \,\,\,\,\,
+\]
+\end{enumerate}
+\end{thm}
+
+\proof
+TODO
+\qed
+
+
+The statement of the Fundamental Theorem of Arithmetic can include
+the case of $n = 1$ if we accept that the product of an empty
+tuple of integers is $1$:
+\[
+\prod_{p \in ()} p = 1
+\]
+Furthermore the statement can be slightly modified to include
+negative integers:
+Every nonzero integers can be written uniquely in the form
+\[
+u \prod_{i=1}^g p_i^{e_i}
+\]
+where $u = \pm 1$ (a unit), $p_i$ are distinct primes, $e_i > 0$ are integers.
+
+\begin{prop} Let $a = \prod_{p \in P} p^{a_p}$, $b = \prod_{p
+    \in P} p^{b_p}$ and $c = \prod_{p \in P} p^{c_p}$
+  where $P$ is a finite set of primes. Then
+\begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+ \item $c = ab$ $\implies$ $c_p = a_p + b_p$.
+ \item $a \mid b$ $\implies$ $a_p \leq b_p$ for all $p \in P$.
+ \item $c = \gcd(a,b)$ $\implies$ $c_p = \min(a_p, b_p)$.
+ \item $c = \lcm(a,b)$ $\implies$ $c_p = \max(a_p, b_p)$.
+ \item $\gcd(a,b) \cdot \lcm(a,b) = ab$
+\end{enumerate}
+\end{prop}
+
+
+Here, $\lcm(a b)$ is the \defone{lowest common multiple} of $a,b$, i.e.,
+it is the smallest positive integer $m$ such that $a \mid m, b\mid m$.
+
+The above assumes the easily proven facts that
+\[
+\prod_{p \in P} p^{a_p}
+\prod_{p \in P} p^{b_p}
+=
+\prod_{p \in P} p^{a_p + b_p}
+\]
+(by commutativity of $\cdot$) and
+\[
+\prod_{p \in P} p^{a_p}
+=
+\prod_{p \in P} p^{b_p}
+\implies
+a_p = b_p \text{ for all $p \in P$}
+\]
+by uniqueness of prime factorization from the Fundamental Theorem of Arithmetic.
+Here, $P$ is a set of distinct primes.
+
+
+\begin{prop}
+  If $n > 1$ is not a prime, then there is a prime factor $p$ such that
+  $p \leq \sqrt{n}$.
+\end{prop}
+\proof
+TODO
+\qed
+
+Therefore a very simple primality test algorithm for $n$ is the following:
+  
+\begin{Verbatim}[fontsize=\footnotesize,frame=single]
+ALGORITHM: BRUTE-FORCE-PRIMALITY-TEST
+INPUT: n
+OUTPUT: true if n is prime. If n < 2, false is returned.
+
+if n < 2: return false
+
+d = 2
+while d <= sqrt(n):
+    if n % d == 0:
+        return false
+    d = d + 1
+return true
+\end{Verbatim}
+
+In terms of $n$, the runtime is $O(\sqrt{n})$.
+However in terms of the bits of $b$ of $n$, by Proposition 1.5.2,
+\[
+b = \floor{\log_2 ( n + 1 )} = \log_2(n + 1) - \alpha
+\]
+where $0 \leq \alpha < 1$.
+Hence
+\[
+n = 2^b2^\alpha - 1
+\]
+Hence in terms of the number of bits of $n$,
+the runtime is
+\[
+O(\sqrt{n}) = O(\sqrt{2^b2^\alpha - 1}) = O(2^{b/2})
+\]
+It is common to denote the number of bits of the input by $n$.
+Hence the runtime in number of bits $n$ is
+$O(2^{n/2})$, i.e., it has \defone{exponential runtime with linear exponent}.
+
+$O(\sqrt{n})$ is said to be the \defone{pseudo-polynomial runtime} of the
+algorithm
+to indicate that the $n$ is the numeric input and not a
+correct measure of the complexity of the input,
+which should be in number of bits of the input.
+
+\input{exercises/nt-15/main.tex}
+\input{exercises/nt-16/main.tex}
+\input{exercises/nt-17/main.tex}
+
+The following are some DIY exercises for self-study on famous unsolved problems in
+number theory.
+You might want to write programs to check on the conjectures.
+
+\input{exercises/nt-18/main.tex}
+\input{exercises/nt-19/main.tex}
+\input{exercises/nt-20/main.tex}
+\input{exercises/nt-21/main.tex}
+\input{exercises/nt-22/main.tex}
+\input{exercises/nt-23/main.tex}
+\input{exercises/nt-24/main.tex}
+\input{exercises/nt-25/main.tex}
+\input{exercises/nt-26/main.tex}
+\input{exercises/nt-27/main.tex}
+\input{exercises/nt-28/main.tex}
+\input{exercises/nt-29/main.tex}
+
+\begin{ex}
+Verify by hand or by using a program that if
+\[
+P(x) = x^2 - x + 41
+\]
+then $P(0), P(1), ..., P(40)$ are all primes.
+This \lq\lq prime generating" polynomial was first discovered by
+Euler.
+Find positive integer $n$ such that
+$x^2 - x + n$ are primes for $0 \leq x < n$.
+Such an $n$ is called an Euler lucky number.
+41 is an example of an Euler lucky number.
+\end{ex}
+
+\begin{ex}
+Prove that if $P(x)$ is a non-constant polynomial, then
+it is impossible for all $P(0)$, $P(1)$, $P(2)$, ... to be prime.
+In fact there are infinitely many $n$ such that $P(n)$ are all
+composites.
+\end{ex}

@@ -1,0 +1,429 @@
+\sectionthree{Relations}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Let $X, Y$ be two set.
+A \defone{relation} $R$ on $X,Y$ is a subset of $X \times Y$.
+For instance for $X = \{0, 1, 2\}$ and $Y = \{a, b\}$,
+\[
+R = \{(0, b), (2, a), (2, b)\}
+\]
+is a relation on $X \times Y$.
+Instead of writing
+\[
+(2, a) \in R
+\]
+and say \lq\lq $(2, a)$ is an $R$",
+I can also write
+\[
+2 R a
+\]
+and say
+\lq\lq"$2$ is related to $a$ (for relation $R$)".
+Note that $(0, a) \not\in R$.
+In this case, I will also say \lq\lq $0$ is not related to $a$" (through $R$)
+and will write
+\[
+0 \not \mathrel{R} a
+\]
+It's convenient to draw a relation as a directed graph.
+For instance for the above relation
+\[
+R = \{(0, b), (2, a), (2, b)\}
+\]
+I can draw
+\begin{python}
+from latextool_basic import *
+p = Plot()
+def node(x, y, s):
+    return Graph.node(x=x, y=y, r=0.25, label=r'$%s$' % s, name=s)
+
+p += node(x=0, y=0,  s='0')
+p += node(x=0, y=-1, s='1')
+p += node(x=0, y=-2, s='2')
+p += node(x=2, y=0,  s='a')
+p += node(x=2, y=-1, s='b')
+
+for (a,b) in ["0b", "2a", "2b"]:
+    p += Graph.arc(names=[a,b])
+
+print(p)
+\end{python}
+You can represent $R$ as a 2D array (matrix):
+\begin{python}
+from latextool_basic import *
+p = Plot()
+m = [[0,1],
+     [0,0],
+     [1,1],
+]
+table2(p, m, width=0.7, height=0.7,
+rownames=[0,1,2],
+colnames=['$a$', '$b$'],
+rowlabel=None, collabel=None)
+print(p)
+\end{python}
+This version of the $R$ is more suitable for computations
+with a program, especially after the column names $a$,$b$ are changed to
+$0$, $1$.
+A $0$ in the matrix at row $r$, column $c$ means \lq\lq not related"
+while a $1$ means \lq\lq is related".
+
+If $X = Y$, then
+instead of saying
+\lq\lq $R$ is a relation on $X$ and $X$",
+I will just say \lq\lq $R$ is a relation on $X$".
+
+For instance $\equiv \pmod{N}$ is a relation on $\Z$.
+This is (of course) defined by
+\[
+a \equiv b \pmod{N} \text{ if } N \mid a - b
+\]
+
+\begin{defn}
+Let $R$ be a relation on set $X$.
+\begin{myenum}
+\item $R$ is \defone{reflexive} if for all $x \in X$, we have $x R x$.
+\item $R$ is \defone{symmetric} if for all $x, y \in X$, if $x R y$, then $y R x$.
+\item $R$ is \defone{transitive} if for all $x, y,z \in X$, if $x R y$ and $y R z$, then $x R z$.
+\end{myenum}
+$R$ is said to be \defone{transitive} if $R$ is reflexive, symmetric and transitive.
+\end{defn}
+
+The following are examples of relations.
+
+\begin{eg}
+  For a general set $X$ you have the \lq\lq $=$" and \lq\lq $\neq$" relation.
+  A function $f:X \rightarrow Y$ can be viewed as a relation since $f$
+  gives us the set
+  \[
+  \{ (x, f(x)) \mid x \in X \}
+  \]
+  This set is usually called the \defone{function graph} of $f$.
+\end{eg}
+
+\begin{eg}
+  For a set of sets (for instance a powerset), besides $\lq\lq ="$
+  and \lq\lq$\neq$", you also have the following relations: 
+  \begin{myenum}
+    \item  $\subseteq$, $\subsetneq$
+    \item \lq\lq intersects (nontrivally)".
+      $X$ intersects $Y$ means $X \cap Y \neq \emptyset$.
+    \item \lq\lq disjoint from" where
+    $X$ is disjoint from $Y$ means $X \cap Y = \emptyset$.
+    \item \lq\lq same cardinality" where
+    $|X| = |Y|$ means there is a bijection $X \rightarrow Y$.
+  \end{myenum}
+\end{eg}
+
+\begin{eg}
+  Besides \lq\lq $=$" and \lq\lq $\neq$",
+  here are some relations on $\R$:
+  \begin{myenum}
+  \item the \lq\lq $<$" and the \lq\lq $\leq$" relation.
+  \item the \lq\lq $>$" and the \lq\lq $\geq$" relation.
+  \item \lq\lq less than 1 apart" is a relation, i.e., for $x,y \in \R$,
+    define $x R y$ if $|x - y| < 1$.
+    Of course changing \lq\lq $1$" in the above to another fixed real number
+    also
+    gives you a relation.
+  \item \lq\lq Has the same fractional part as" is a relation.
+    For instance $1.25$ is related to $7.25$ since they both have fractional
+    part of $0.25$.
+  \item \lq\lq Has the same integer part as" is also a relation. 
+  \end{myenum}
+\end{eg}
+
+\begin{eg}
+On $\Z$ here are some relations:
+\begin{myenum}
+\item Divisibility relation 
+  $a \mid b$ if $ax = b$ for some $x$.
+\item For a fixed $N > 0$, congruence relation mod $N > 0$, i.e.,
+  $a \equiv b \pmod{N}$ if $N \mid a - b$.
+\item
+  \lq\lq has same number of distinct prime factors" is a relation.
+  For instance $100$ has as many prime factors (i.e., $2$) as $35$.
+\item
+  Fix a prime $p$.
+  Then \lq\lq has the same highest power of $p$ factor" is a relation.
+  For instance fixing $p = 5$, $75 = 3 \cdot 5^2$ is related to
+  $3502 \cdot 5^2 \cdot 7$.
+  Sometimes the highest power of $p$ dividing $n$ is
+  denoted by $v_p(n)$.
+\end{myenum}
+\end{eg}
+
+\begin{eg}
+  On the set of strings,
+  \begin{myenum}
+  \item  \lq\lq has the same length" is a relation.
+    For instance \verb!cat! has the same length as \verb!pie!.
+  \item
+    For bitstrings, \lq\lq same number of 1s" is a relation.
+  \item
+    For bitstrings, \lq\lq has the same parity for the number of 1s"
+    is a relation.
+    For instance $10010101000$ and $00001101111$ are related
+    since both have an even number of $1$s.
+  \end{myenum}
+\end{eg}
+
+\begin{eg}
+  From basic geometry you have
+  \begin{myenum}
+    \item
+      The \lq\lq is parallel to" is a relation on the set of lines in $\R^2$.
+    \item
+      The \lq\lq is similar to" is a relation on the set of triangles in $\R^2$.
+    \item
+      The \lq\lq is congruent to" is a relation on the set of triangles in
+      $\R^2$.
+  \end{myenum}
+\end{eg}
+
+\begin{eg}
+  From graph theory, you have the following examples:
+  \begin{myenum}
+  \item \lq\lq Reachability" is relation on the vertex set of a graph:
+    $v R v'$ if there is a path from $v$ to $v'$.
+  \item \lq\lq is isomorphic to" is a relation on graphs.
+  \item \lq\lq is subgraph of" is a relation on graphs.
+  \item \lq\lq is homeomorphic to" is a relation on graphs.
+  \end{myenum}
+\end{eg}
+
+
+
+\begin{defn}
+  Let $R$ be a relation on $X$.
+  Let $a \in X$.
+  The \defone{left relation class} of $a$ is
+  \[
+  aR = aR\bullet = \{x \in X \mid aRx\}
+  \]
+  The \defone{right relation class} of $a$ is
+  \[
+  Ra = \bullet Ra = \{x \in X \mid xRa\}
+  \]
+  Let $X/R$ denote the set of left relation classes of $X$:
+  \[
+  X/R = \{aR \mid a \in X \}
+  \]
+  and $R \backslash X$ denote the set of right relation classes of $X$:
+  \[
+  R\backslash X = \{Ra \mid a \in X \}
+  \]
+\end{defn}
+
+\input{exercises/nt-63/main.tex}
+
+\begin{prop}
+  Let $R$ is an equivalence relation on $X$.
+  Let $a,a'\in X$.
+  \begin{myenum}
+  \item $aR = Ra$
+  \item $a \in aR$
+  \item $aR = a'R$ iff $aRa'$
+  \item $aR \cap a'R = \emptyset$ iff $a \not \mathrel{R} a'$
+  \end{myenum}
+\end{prop}
+\proof
+(a) We have
+\begin{align*}
+  x \in aR
+  &\implies aRx \\
+  &\implies xRa & & \text{because $R$ is symmetric} \\
+  &\implies x \in Ra
+\end{align*}
+Hence $aR \subseteq Ra$.
+Also,
+\begin{align*}
+  x \in Ra
+  &\implies xRa \\
+  &\implies aRx & & \text{because $R$ is symmetric} \\
+  &\implies x \in aR
+\end{align*}
+Hence $Ra \subseteq Ra$.
+Therefore $aR = Ra$.
+
+(b) $aRa$ since $R$ is reflexive. Hence $a \in aR$ and $a \in Ra$.
+
+(c)
+We have
+\begin{align*}
+  aR = a'R
+  &\implies a \in aR = a'R & & \text{by (a)} \\
+  &\implies a \in a'R \\
+  &\implies a'Ra
+\end{align*}
+Now assume $a'Ra$.
+Since $R$ is symmetric, we also have $aRa'$.
+\begin{align*}
+  x \in Ra
+  &\implies x R a \\
+  &\implies x R a' & & \text{by $xRa, aRa'$ and transitivity}\\  
+  &\implies x \in Ra'
+\end{align*}
+Hence $Ra \subseteq Ra'$.
+Also,
+\begin{align*}
+  x \in Ra'
+  &\implies xRa' \\
+  &\implies xRa & & \text{by $xRa', a'Ra$ and transitivity}\\
+  &\implies x \in Ra
+\end{align*}
+Hence $Ra'\subseteq Ra$.
+Therefore $Ra = Ra'$.
+\qed
+
+From (b) above,
+a left equivalence class is a right equivalence class
+and vice versa. 
+Therefore for equivalence relation, we only need the term
+\defone{equivalence class} (no left or right).
+In this case $aR$ and $Ra$ is denoted by
+$[a]_R$\index{$[]_R$@equivalence class}\tinysidebar{$[]_R$, $[]$}
+or simply
+$[a]$ if $R$ is understood.
+
+\begin{prop}
+  \mbox{}
+  \begin{myenum}
+  \item
+    If $R$ is an equivalence relation, then there is a partition
+    of $X$ by equivalence classes.
+  \item
+    If $X$ has a partition $X = \dot{\bigcup}_{i \in I} X_i$, then
+    $X$ has an equivalence relation $R$ such that
+    $X_i$ are equivalence classes, i.e., $R$ defined by
+    \[
+    x R y \text{ if $x,y$ are in the same $X_i$}
+    \]
+  \end{myenum}
+\end{prop}
+
+\begin{prop}
+  Let $N > 0$.
+  Then the relation $\equiv \pmod{N}$ on $\Z$ is an equivalance relation
+\end{prop}
+
+
+Let $R$ be an equivalence relation on $X$.
+Define the function
+\begin{align*}
+  f_R: X &\rightarrow X/R \\
+  f(x) &= [x]_R
+\end{align*}
+
+\begin{prop}
+  \mbox{}
+  \begin{myenum}
+  \item
+    If $x R y$, then $f_R(x) = f_R(y)$.
+ \item
+    $f_R$ is a well-defined onto function.
+  \end{myenum}
+\end{prop}
+
+Let $R, R'$ be two relations on $X$ such that
+$R'$ is \defone{finer} in the sense that
+\[
+x R' y \implies x R y
+\]
+Here are simple examples of the concept of finer relation:
+\begin{myenum}
+\item
+  \lq\lq sibling" is finer than \lq\lq have the same great-grandfather".
+\item
+  \lq\lq divisible by 100" is finer than \lq\lq divisible by $5$".
+\item
+  \lq\lq $\equiv \pmod{100}$" is finer than \lq\lq $\equiv \pmod{5}$".  
+\end{myenum}
+If $R$ is an equivalence relation, we have equivalence classes (through $R$)
+for $X$.
+You can then define a relation $R'$ on $X/R$ as follows:
+\[
+[x]_R R' [y]_R \text{ if } x R' y
+\]
+Watch out: Note that $R'$ is the given relation $X$
+and also $R'$ denotes the new relation on $X/R$.
+Here are simple examples of the concept of finer relation:
+\begin{myenum}
+\item
+  \lq\lq sibling" is finer than \lq\lq have the same great-grandfather".
+  Let $[\text{John}]_{\text{sibling}} = \{\text{John, Sue, Tom}\}$,
+    i.e., John, Sue, Tom are siblings.
+  Also, let $[\text{Mary}]_{\text{sibling}} = \{\text{Bob, Mary}\}$,
+    i.e., Bob, Mary are siblings.
+    We can talk about whether
+    $[\text{John}]$ and $[\text{Mary}]$ are related or not
+    through the same great-grandfather relation.
+    This is determined by whether John and Mary have the same
+    great-grandfather.
+    If John and Mary do have the same great-grandfather,
+    then every $x \in [\text{John}]$ and $y \in [\text{Mary}]$
+    also have the same great-grandfather.
+\item
+  \lq\lq $\equiv \pmod{100}$" is finer than \lq\lq $\equiv \pmod{5}$".
+  Therefore for $x, y \in \Z$, I can define
+  \[
+  [x]_{5} \equiv [y]_5 \pmod{100} \text{ if } x \equiv y \pmod{100}
+  \]
+\end{myenum}
+
+\begin{prop}
+  If $R'$ is finer than $R$, then $R' \subseteq R$.
+\end{prop}
+
+If $R$ is a relation on $X$, you can enlarge the relation by \lq\lq taking
+closure".
+For instance the \defone{reflexive closure} of $R$ is the relation $R$, by
+you add $(x, x)$ to $R$:
+\[
+R' = \{(x, x) \mid x \in X\} \cup R
+\]
+Then $R'$ is reflexive.
+It's the smallest subset of $X \times X$ that is reflexive and contains $R$.
+
+The \defone{symmetric closure} R' of $R$ is the smallest relation
+of $X \times X$ that contains $R$ and is symmetric:
+\[
+R' = R \cup \{(y, x) \mid (x, y) \in R \text{ for } x,y \in X\}
+\]
+
+The \defone{transitive closure} $R'$ of $R$ is the smallest relation
+of $X \times X$ that contains $R$ and is transitive.
+Note that whereas reflexive closure and symmetric closures are easy to
+understand,
+transitive closure is a little bit more complicated.
+For instance the following $R'$ is \textit{not} the transitive closure of $R$:
+\[
+R' = R \cup \{(x, z) \mid (x, y), (y, z) \in R \text{ for } x,y,z \in X\}
+\]
+
+\input{exercises/nt-64/main.tex}
+
+The concept of \lq\lq closure" is very common in math and CS.
+
+Back to the transitive closure, if $R$ is a relation between
+$X, Y$ and $R'$ is a relation between $Y, Z$,
+then we can define the \defone{composition} of $R \circ R'$:
+\[
+R \circ R' =
+\{
+(x, z) \in X \times Z \mid (x, y) \in R, (y, z) \in R' \text{ for some }
+y \in Y
+\}
+\]
+I'll write $R^2$ for $R \circ R$.
+In general $R^1 = R$, $R^{n+1}$ will denote $R^n \circ R$.
+
+\begin{prop}
+  $R$ is transitive if $R^2 \subseteq R$.
+\end{prop}
+
+\begin{prop}
+  $R$ is transitive if $\bigcup_{n = 1}^\infty R^n$.
+\end{prop}

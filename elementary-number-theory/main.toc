@@ -2,5 +2,13 @@
 \contentsline {section}{\numberline {1.1}Axioms of $\mathbb Z$ \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: axioms-of-Z.tex}}}}{4}{section.1.1}% 
 \contentsline {section}{\numberline {1.2}Divisibility \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: divisibility.tex}}}}{19}{section.1.2}% 
 \contentsline {section}{\numberline {1.3}Congruences \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: congruences.tex}}}}{20}{section.1.3}% 
-\contentsline {chapter}{Index}{23}{mylabelcounter.1}% 
-\contentsline {chapter}{Bibliography}{24}{chapter*.13}% 
+\contentsline {section}{\numberline {1.4}Euclidean property \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: euclidean-property.tex}}}}{23}{section.1.4}% 
+\contentsline {section}{\numberline {1.5}B\'ezout's identity and the Extended Euclidean Algorithm \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: extended-euclidean-algorithm.tex}}}}{35}{section.1.5}% 
+\contentsline {section}{\numberline {1.6}Euclidean algorithm -- GCD \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: gcd.tex}}}}{60}{section.1.6}% 
+\contentsline {section}{\numberline {1.7}Primes \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: prime.tex}}}}{72}{section.1.7}% 
+\contentsline {section}{\numberline {1.8}Multiplicative inverse in $\mathbb Z/N$ \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: multiplicative-inverse-mod-N.tex}}}}{98}{section.1.8}% 
+\contentsline {section}{\numberline {1.9}Euler totient function \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: euler-totient-function.tex}}}}{109}{section.1.9}% 
+\contentsline {section}{\numberline {1.10}Relations \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: relations.tex}}}}{137}{section.1.10}% 
+\contentsline {section}{\numberline {1.11}Congruence classes \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: congruence-classes.tex}}}}{146}{section.1.11}% 
+\contentsline {chapter}{Index}{149}{section.1.11}% 
+\contentsline {chapter}{Bibliography}{151}{chapter*.68}% 

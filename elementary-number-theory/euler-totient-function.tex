@@ -1,0 +1,181 @@
+\sectionthree{Euler totient function}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\begin{defn}
+Let $N$ be a positive integer. $\phi(N)$ is the number of positive
+integers from $0$ to $N-1$ which are coprime to $N$, i.e.
+\[
+\phi(N) = | \{ a \,|\, 0 \leq a \leq N - 1, \,\,\,\gcd(a,N) = 1\} |
+\]
+\end{defn}
+
+Note that you can also view $\phi$ in this way:
+\begin{align*}
+\phi(N) 
+&= | \{ a \mid 0 \leq a \leq N - 1, \,\,\,\gcd(a,N) = 1\} | \\
+&= | \{ a \mid 0 \leq a \leq N - 1, \,\,\, a \text{ is invertible mod } N\}|\\
+&= | (\Z/N)^\times |
+\end{align*}
+Recall that
+$\{ a \,|\, 0 \leq a \leq N - 1, \,\,\,\gcd(a,N) = 1\}$
+is the set of units of $\Z/N$ which is denoted by $(\Z/N)^\times$ or $U(\Z/N)$.
+So the above definition is the same as
+\[
+\phi(N) = | U(\Z/N) |
+\]
+
+Note that by definition $\phi(1) = 1$.
+Here are some important properties of $\phi$.
+
+\begin{prop} Let $n > 0$ be a positive integer.
+  \begin{enumerate}[topsep=0in, nosep]
+  \item[\textnormal{(a)}]
+    Then
+    \[
+    \phi(n) = n \prod_{p \mid n} \left( 1 -  \frac{1}{p} \right)
+    \]
+    where \lq\lq $\prod_{p \mid n}$"
+    is
+    \lq\lq product over all primes $p$ dividing $n$".
+  \item[\textnormal{(b)}] If $m,n$ are coprime, i.e. $\gcd(m,n)=1$, then
+    $\phi(mn) = \phi(m)\phi(n)$.
+  \item[\textnormal{(c)}]
+    If $p$ is a prime and $k > 0$, then
+    $\phi(p^k) = p^{k-1}(p-1) = p^k - p^{k-1}$.
+  \end{enumerate}
+\end{prop}
+\proof
+TODO
+\qed
+
+Let's compute $\phi(10)$.
+Note that $10 = 2 \cdot 5$ and $\gcd(2,5) = 1$.
+Therefore using (b) of the above theorem we get
+\[
+\phi(10) = \phi(2^1 \cdot 5^1) = \phi(2^1) \cdot \phi(5^1)
+\]
+since $\gcd(2^1, 5^1) = 1$.
+Using (c) of the above theorem I get
+\[
+\phi(10) = \phi(2^1) \cdot \phi(5^1)
+= (2^1 - 2^{1-1}) \cdot (5^1 - 5^{1-1}) = 1 \cdot 4 = 4
+\]
+Of course you can also use (a) above to get
+\[
+\phi(10) = 10 \cdot (1 - 1/2) \cdot (1 - 1/5)
+= 10 \cdot \frac{1}{2} \cdot \frac{4}{5} = 4
+\]
+In both cases, we get 4.
+This means in $\Z/10$, there are 4 elements which are invertible.
+Running $a$ through $\{0, 1, 2, ..., 9\}$,
+you'll see that invertible $a$'s are $1, 3, 7, 9$
+with inverses $1, 7, 3, 9$ respectively.
+
+\input{exercises/nt-30/main.tex}
+\input{exercises/nt-31/main.tex}
+\input{exercises/nt-32/main.tex}
+\input{exercises/nt-33/main.tex}
+\input{exercises/nt-34/main.tex}
+\input{exercises/nt-35/main.tex}
+\input{exercises/nt-36/main.tex}
+\input{exercises/nt-37/main.tex}
+\input{exercises/nt-38/main.tex}
+
+As an aside, note that $\phi$ as a function has domain of $\N$.
+In this case, we say that $\phi$ is an
+\defterm{arithmetic function}\tinysidebar{arithmetic function}\index{arithmetic function}.
+Furthermore, $\phi$ satisfies the property that
+if $\gcd(m,n) = 1$, then $\phi(mn) = \phi(m)\phi(n)$.
+A function $\N \rightarrow \C$ satisfying this property
+is said to be
+\defterm{multiplicative}
+\index{multiplicative}
+\tinysidebar{multiplicative}.
+The Euler $\phi$ function is one of many multiplicative arithmetic
+functions.
+Multiplicative functions are extremely important in number theory.
+
+The following theorem allows you to compute powers in mod $p$ extremely
+fast:
+
+\begin{thm} \textnormal{(\defone{Fermat's Little Theorem})}.
+  Let $p$ is a prime number
+  and $a$ be a positive integer not divisible by $p$. Then
+  \[
+  a^{p-1} \equiv 1 \,\,\,(\operatorname{mod} p)
+  \]
+  \end{thm}
+\proof
+TODO
+\qed
+
+\input{exercises/nt-39/main.tex}
+
+\begin{cor}
+Let $p$ be a prime. Then $a^p \equiv a
+\,\,\,(\operatorname{mod} p)$.
+\end{cor}
+
+Note that the corollary does not require $p \nmid a$.
+The proof of the corollary is easy.
+
+\proof
+TODO
+\qed
+
+
+
+\input{exercises/nt-40/main.tex}
+
+Note that Fermat's Little Theorem can be used to compute powers
+very rapidly if you work in mod $p$ where $p$ is a prime. What if
+you need to work in mod $N$ where $N$ is not a prime? There is a
+generalization of Fermat's Little Theorem due to Euler. Note that
+since $p-1 = \phi(p)$, Fermat's Little Theorem
+\[
+ a^{p-1} \equiv 1 \,\,\,(\operatorname{mod} p)
+\]
+can be stated as
+\[
+ a^{\phi(p)} \equiv 1 \,\,\,(\operatorname{mod} p)
+\]
+This statement actually holds if $p$ is replaced by any positive
+integer.
+
+\begin{thm} \textnormal{(\defone{Euler's Theorem})}.
+  Let $a$ and $n$ be positive integers such that $\gcd(a, n) = 1$.
+  Then
+  \[
+  a^{\phi(n)} \equiv 1 \,\,\,(\operatorname{mod} n)
+  \]
+\end{thm}
+\proof
+TODO
+\qed
+
+
+Make sure you step back and take in the whole proof and make your
+head one size larger. Look at the place where you used
+$\gcd(a,n)=1$.
+
+Note that for $\Z/N$, a computation of
+\[
+a^k \pmod{N}
+\]
+Euler's Theorem can lower the $k$ if $\gcd(a, N)$.
+But after you have lowered the $k$, say to $\ell$,
+you still need to compute $a^\ell \pmod{N}$.
+See the squaring algorithm in the RSA chapter.
+
+
+\input{exercises/nt-41/main.tex}
+\input{exercises/nt-42/main.tex}
+\input{exercises/nt-43/main.tex}
+\input{exercises/nt-44/main.tex}
+\input{exercises/nt-45/main.tex}
+\input{exercises/nt-46/main.tex}
+\input{exercises/nt-47/main.tex}
+\input{exercises/nt-48/main.tex}
+\input{exercises/nt-49/main.tex}

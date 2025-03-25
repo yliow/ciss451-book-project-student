@@ -1,11 +1,12 @@
-s = r'''
-a = 25
-b = 8
-q, r = divmod(25, 8)
-print("%s = %s * %s + %s" % (a, b, q, r))'''.strip()
-f = open('divmod.py', 'w'); f.write(s); f.close()
 from latextool_basic import *
-print(r'{\footnotesize %s}' % console(s))
-print('The output is')
-print(shell('python divmod.py'))
+p = Plot()
+m = [[0,1],
+     [0,0],
+     [1,1],
+]
+table2(p, m, width=0.7, height=0.7,
+rownames=[0,1,2],
+colnames=['$a$', '$b$'],
+rowlabel=None, collabel=None)
+print(p)
 

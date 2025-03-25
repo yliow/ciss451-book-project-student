@@ -1,0 +1,77 @@
+\begin{center}
+\begin{tikzpicture}
+
+\draw (0.35, -0.35)
+  node[draw, line width=0.02cm, , color=black,
+       rounded corners=0cm, inner sep=0cm] {
+
+\begin{minipage}[t][0.7cm]{0.7cm}
+\mbox{}
+
+\end{minipage}
+
+};\draw (0.35, -0.35) node[color=black] {{\texttt{0}}};
+\draw (1.0499999999999998, -0.35)
+  node[draw, line width=0.02cm, , color=black,
+       rounded corners=0cm, inner sep=0cm] {
+
+\begin{minipage}[t][0.7cm]{0.7cm}
+\mbox{}
+
+\end{minipage}
+
+};\draw (1.0499999999999998, -0.35) node[color=black] {{\texttt{1}}};
+\draw (0.35, -1.0499999999999998)
+  node[draw, line width=0.02cm, , color=black,
+       rounded corners=0cm, inner sep=0cm] {
+
+\begin{minipage}[t][0.7cm]{0.7cm}
+\mbox{}
+
+\end{minipage}
+
+};\draw (0.35, -1.0499999999999998) node[color=black] {{\texttt{0}}};
+\draw (1.0499999999999998, -1.0499999999999998)
+  node[draw, line width=0.02cm, , color=black,
+       rounded corners=0cm, inner sep=0cm] {
+
+\begin{minipage}[t][0.7cm]{0.7cm}
+\mbox{}
+
+\end{minipage}
+
+};\draw (1.0499999999999998, -1.0499999999999998) node[color=black] {{\texttt{0}}};
+\draw (0.35, -1.7499999999999996)
+  node[draw, line width=0.02cm, , color=black,
+       rounded corners=0cm, inner sep=0cm] {
+
+\begin{minipage}[t][0.7cm]{0.7cm}
+\mbox{}
+
+\end{minipage}
+
+};\draw (0.35, -1.7499999999999996) node[color=black] {{\texttt{1}}};
+\draw (1.0499999999999998, -1.7499999999999996)
+  node[draw, line width=0.02cm, , color=black,
+       rounded corners=0cm, inner sep=0cm] {
+
+\begin{minipage}[t][0.7cm]{0.7cm}
+\mbox{}
+
+\end{minipage}
+
+};\draw (1.0499999999999998, -1.7499999999999996) node[color=black] {{\texttt{1}}};\node[anchor=south] at (0.35,0.01) {$a$};\node[anchor=south] at (1.0499999999999998,0.01) {$b$};\node[anchor=east] at (-0.01,-0.35) {0};\node[anchor=east] at (-0.01,-1.0499999999999998) {1};\node[anchor=east] at (-0.01,-1.7499999999999996) {2};
+\draw (0.7, -1.0499999999999996)
+  node[draw, line width=0.06cm, , color=black,
+       rounded corners=0cm, inner sep=0cm] {
+
+\begin{minipage}[t][2.12cm]{1.42cm}
+\mbox{}
+
+\end{minipage}
+
+};
+\end{tikzpicture}
+
+\end{center}
+

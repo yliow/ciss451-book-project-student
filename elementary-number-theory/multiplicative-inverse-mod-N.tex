@@ -1,0 +1,273 @@
+\sectionthree{Multiplicative inverse in $\Z/N$}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Quick review:
+In algebra classes, lots of time is spent on solving equations.
+You usually start with something like: \lq\lq Find the roots of
+$x + b$''. This means finding a value for $x$ such that 
+\[
+x + a = 0
+\]
+Of course this is dead easy.
+As long as you have the concept of $-a$ (additive inverse)
+you just add $-a$ to both sides and 
+voila:
+\begin{align*}
+(x + a) + (-a) &= 0 + (-a) \\
+x + (a + (-a)) &= 0 + (-a) \\
+x + 0 &= 0 + (-a) \\
+x &= 0 + (-a) \\
+x &= -a 
+\end{align*}
+
+Next up, you usually see this: \lq\lq Find the roots of $ax + b$''
+which is the same as finding a value for $x$ such that 
+\[
+ax + b = 0
+\]
+Assuming you are working in $\R$, 
+you would do something like this:
+\begin{align*}
+(ax + b) + (-b) &= 0 + (-b) \\
+ax +  (b + (-b)) &= 0 + (-b) \\
+ax + 0 &= 0 + (-b) \\
+ax &= 0 + (-b) \\
+ax &= -b 
+\end{align*}
+and at this point you would do this:
+\begin{align*}
+ax &= -b \\
+a^{-1}(ax) &= a^{-1}(-b) \\
+(a^{-1}a)x &= a^{-1}(-b) \\
+1x &= a^{-1}(-b) \\
+x &= a^{-1}(-b)
+\end{align*}
+and v\'oila (again) and you're done.
+
+In the case of real numbers (or even just fractions), 
+if you're given a number $a$ (which is not zero), you always have
+another number called $a^{-1}$ (multiplicative inverse) such that 
+\[
+a \cdot a^{-1} = 1 = a^{-1} \cdot a
+\]
+The reason why we like this is exactly because it allows us to solve
+the above equation.
+
+Given a number $a$, the number $-a$ is called an
+\defone{additive inverse}
+if it behaves like this:
+\[
+a + (-a) = 0 = (-a) + a
+\]
+The number $a^{-1}$ is called a \defone{multiplicative inverse} of $a$
+if it does this:
+\[
+a \cdot a^{-1} = 1 = a^{-1} a
+\]
+If $a$ has a multiplicative inverse, we also say that $a$ is invertible.
+
+\begin{defn}
+We also say that $a$ is a \defone{unit} if $a$ has a multiplicative inverse.
+\end{defn}
+
+\begin{defn}
+The set of multiplicatively invertible elements of $\Z/N$
+is denoted by $(\Z/N)^\times$ or $U(\Z/N)$.
+Likewise the multiplicatively invertible elemnts of $\Z$
+is denoted by $\Z^\times$ or $U(\Z)$.
+Likewise we have $\Q^\times$, $\R^\times$, and $\C^\times$.
+\end{defn}
+
+Almost all values in $\R$ are invertible;
+the only exception being $0$.
+Therefore $\R^\times = \R - \{0\}$.
+On the other hand, note that most numbers in $\Z$ do not have multiplicative
+inverses.
+In fact the only numbers in $\Z$ that have inverses are $1$ and $-1$.
+So the only units in $\Z$ are $1, -1$:
+\[
+U(\Z) = \{-1, 1\}
+\]
+
+\begin{prop}
+  The only units of $\Z$ are $1$, $-1$.
+  In particular, $1^{-1} = 1$ and $(-1)^{-1} = -1$.
+\end{prop}
+\proof
+This was already proven earlier.
+The following is a different proof that uses the fundamental theorem
+of arithmetic.
+TODO
+\qed
+
+Recall from the section on congruences, we have a relation $\equiv \pmod{N}$
+that relates values of $\Z$.
+For instance when $N = 26$,
+\[
+3 \equiv 29 \pmod{26}
+\]
+and
+\[
+3 \equiv -26 \pmod{26}
+\]
+You can think of $\equiv \pmod{26}$ as a kind of equality on $\Z$
+so that, in mod $26$, $3$ and $29$ are the same and $3$ and $-26$
+are the same.
+In this context, write $\Z/N$ for the set
+\[
+\Z/N = \{0, 1, 2, ..., N - 1\}
+\]
+We call the set $\Z/N$ \lq\lq $\Z$ mod $N$".
+Note that this set $\Z/N$ also contains $N$, but $N$ is \lq\lq the same as" $0$, i.e.,
+$N$ is just another way to write $0$ in the sense that
+\[
+N \equiv 0 \pmod{N}
+\]
+Note that $\Z/N$ also has $+$, $\cdot$ and has $0$ and $1$.
+
+In fact $(\Z/N, +, \cdot, 0, 1)$ satisfies the algebraic properties of $+$, 
+properties of $\cdot$, and distributivity.
+If $N > 1$, $(\Z/N, +, \cdot, 0, 1)$ also satisfies the nontriviality
+axiom, i.e., $0 \not\equiv 1 \pmod{N}$.
+However $(\Z/N, +, \cdot, 0, 1)$ does not satisfy the integrality
+axiom. Furthermore there's no concept of order $<$ on $\Z/N$
+and hence there's no WOP or induction on $\Z/N$.
+
+The above will be made precise in the section on congruence classes.
+
+Later we will define the concept of commutative rings
+which are exactly sets, each with its own $+$ and $\cdot$ operations,
+satisfying the properties of $+$ and $\cdot$ and distributivity of $\Z$.
+$\Z$ and $\Z/N$ are both commutative rings.
+
+The ability for a number in some commutative ring
+to have a multiplicative inverse (in that ring) is special.
+
+While $\Z$ has only two units, $\Z/N$ ($N > 1$) might contain lots of units.
+For instance look at $\Z/10$.
+Is $3$ invertible mod 10?
+In other words is there some $x$ such that
+\[
+3x \equiv 1 \pmod{10}
+\]
+$x \equiv 7 \pmod{10}$ satisfies the above.
+In other words in mod $10$, $7$ is the multiplicative inverse of $3$.
+
+(You can talk about $\Z/N$ for $N = 1$, but it's not very interesting
+nor useful. $\Z/1$ has only one value, i.e., $0$ which behaves like the
+additive neutral element and the multiplicative neutral element.)
+
+Here's the obvious brute algorithm to find the multiplicative inverse of
+an integer mod $N$:
+
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: brute-force-inverse
+INPUT: a, N
+OUTPUT: x such that a * x % N is 1
+
+for x = 1, 2, 3, ..., N - 1:
+    if a * x % N == 1:
+        return x
+return None
+\end{Verbatim}
+
+Note that in the above algorithm we need not test $0$.
+
+\input{exercises/nt-59/main.tex}
+
+It turns out that in $\Z/N$, you can easily find all the elements
+with multiplicative inverses: $a \in \Z/N$ has a multiplicative
+inverse if $\gcd(a, N) = 1$.
+
+\begin{prop}
+  Let $a, N$ be integers where $N > 0$. Then
+  $a$ is (multiplicatively) invertible in $\Z/N$ iff $\gcd(a, N) = 1$.
+\end{prop}
+
+If $m,n$ are two integers such that $\gcd(m,n) = 1$, we say that
+$m$ and $n$ are
+\defone{coprime}.
+
+\proof
+TODO
+\qed
+
+The above immediately implies that
+\begin{align*}
+(\Z/N)^\times
+&= \{ a \mid 0 \leq a \leq N - 1, \,\,\, \text{$a$ is invertible mod $N$} \}\\
+&= \{ a \mid 0 \leq a \leq N - 1, \,\,\, \gcd(a, N) = 1 \}
+\end{align*}
+(Of course $\gcd(0, N) = N > 0$, so we can throw away $0$ in the above
+if $N > 1$.)
+So the key is the computation of $x,y$ such that
+\[
+1 = \gcd(a, N) = ax + Ny
+\]
+which is achieved by the Extended Euclidean Algorithm.
+But wait a minute. I just need the $x$.
+So I'll just modify the Extended Euclidean Algorithm slightly.
+
+Here's the (earlier) EEA algorithm, slightly modified,
+together with a function to compute the multiplicative inverse of $a \pmod{N}$:
+\begin{Verbatim}[frame=single, fontsize=\footnotesize]
+ALGORITHM: EEA2 (sort of EEA ... without the d, d0)
+INPUTS: a, b
+OUTPUTS:  r, c where r = gcd(a, b) = c*a + d*b for some d
+
+a0, b0 = a, b
+c0, c = 1, 0
+q = a0 // b0
+r = a0 - q * b0
+
+while r > 0:   
+    c, c0 = c0 - q * c, c
+
+    a0, b0 = b0, r
+    q = a0 // b0
+    r = a0 - q * b0
+
+r = b0
+return r, c
+
+
+ALGORITHM: mod-inverse
+INPUTS: a, N
+OUTPUT: x such that  (a * x) % N is 1
+
+g, x = EEA2(a, N)
+if g == 1:
+    return x % N
+else:
+    return None
+\end{Verbatim}
+
+
+\begin{eg}
+Does $135$ have an inverse mod $1673$?
+If it does, find it using the Extended Euclidean Algorithm.
+\end{eg}
+\textsc{Solution}.
+\begin{enumerate}[nosep]
+  \item c0, c, q, r: 1, 0, 0, 135
+  \item c0, c, q, r: 0, 1, 12, 53
+  \item c0, c, q, r: 1, -12, 2, 29
+  \item c0, c, q, r: -12, 25, 1, 24
+  \item c0, c, q, r: 25, -37, 1, 5
+  \item c0, c, q, r: -37, 62, 4 4
+  \item c0, c, q, r: 62, -285, 1, 1
+  \item c0, c, q, r: -285, 347, 4, 0
+  \item r, c: 1, 347
+\end{enumerate}
+Therefore $135^{-1} \pmod{1673}$ is $347$.
+And we check:
+\[
+135 \cdot 347 = 34845 = 1 + 28 \cdot 1673 \equiv 1 \pmod{1673}  
+\]
+
+
+\input{exercises/nt-60/main.tex}
+\input{exercises/nt-61/main.tex}
+\input{exercises/nt-62/main.tex}

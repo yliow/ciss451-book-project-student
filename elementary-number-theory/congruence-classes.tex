@@ -1,0 +1,129 @@
+\sectionthree{Congruence classes}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+I want to view modulo arithmetic in a different way.
+This section requires knowledge of equivalence relations and
+equivalence classes.
+
+Recall that for $N > 1$, we think of $\Z/N$ as the set
+\[
+\Z/N = \{0, 1, 2, ..., N - 1\}
+\]
+where we can add, multiply, etc.
+There are other symbols in this system.
+For instance I can write $N$.
+But in this system,
+\[
+N \equiv 0 \pmod{N}
+\]
+In other words, informally, in this system $N$ is just another notation
+for $0$.
+That's the point of the congrence notation $\equiv \pmod{N}$.
+
+Recall the concept of relations on a set $X$.
+If a relation $R$ is an equivalence relation on $X$,
+then $X$ can be partitioned into subsets.
+
+The $\equiv \pmod N$ relation on $\Z$ is an equivalence relation.
+For instance $\equiv \pmod 6$ is an equivalence relation on $\Z$.
+Therefore this partitions $\Z$ into disjoint subsets.
+In fact the disjoint subsets are
+\begin{align*}
+&\{-12, -6, 0, 6, 12, ...\} \\
+&\{-11, -5, 1, 7, 13, ...\} \\
+&\{-10, -4, 2, 8, 14, ...\} \\
+&\{-9, -3, 3, 9, 15, ...\} \\
+&\{-8, -2, 4, 10, 16, ...\} \\
+&\{-7, -1, 5, 11, 17 ...\} 
+\end{align*}
+I'll give these subsets of $\Z$ names:
+\begin{align*}
+[0]_6 &= \{-12, -6, 0, 6, 12, ...\} \\
+[1]_6 &= \{-11, -5, 1, 7, 13, ...\} \\
+[2]_6 &= \{-10, -4, 2, 8, 14, ...\} \\
+[3]_6 &= \{-9, -3, 3, 9, 15, ...\} \\
+[4]_6 &= \{-8, -2, 4, 10, 16, ...\} \\
+[5]_6 &= \{-7, -1, 5, 11, 17 ...\} 
+\end{align*}
+These sets are called \defone{congruences classes} of $\equiv \pmod{6}$.
+Note that when I write
+\[
+[0]_6
+\]
+I mean the congruence class that contains $0$.
+I could have chosen $6$ and write
+\[
+[6]_6
+\]
+However
+\[
+[0]_6 = [6]_6
+\]
+Right?
+
+You can think of $\Z/6$ as the set of these congruence classes:
+\[
+\Z/6 = \{[0]_6, [1]_6, [2]_6, [3]_6, [4]_6, [5]_6\}
+\]
+When write
+\[
+2 + 4 \equiv 0 \pmod{6}
+\]
+we can rephrase that as 
+\[
+[2]_6 + [4]_6 = [0]_6
+\]
+In other words we define $+_6$ and $\cdot_6$ on these congruence classes
+as
+\begin{align*}
+[a]_6 +_6 [b]_6 &= [a + b]_6 \\
+[a]_6 \cdot_6 [b]_6 &= [a \cdot b]_6 \\
+\end{align*}
+The $+_6$ and $\cdot_6$ on the left are operations on the congruence classes
+of $\Z/6$.
+The $+$ and $\cdot$ on the right are the usual operations in $\Z$.
+I will usually write $+$ for $+_6$
+and $\cdot$ for $\cdot_6$.
+
+With these two operations, the set $Z\/6$ becomes
+\[
+(\Z/6, +_6, \cdot_6, [0]_6, [1]_6)
+\]
+which satisfies the same set of axioms of $(\Z, +, \cdot, 0, 1)$:
+CAIN for addition,
+CAN for multiplication, and distribution.
+But not the integrality, topology axioms.
+In other words
+$(\Z, +, \cdot, 0, 1)$ and 
+$(\Z/6, +_6, \cdot_6, [0]_6, [1]_6)$
+are both ring.
+In particular, since multiplication for both rings are commutative,
+both are called commutative rings.
+Every formula of the form
+\[
+x \equiv y \pmod{6}
+\]
+can be re-expressed as
+\[
+[x]_6 = [y]_6
+\]
+
+The above is true when $6$ is replaced by any $N > 0$.
+
+Note that whereas $\Z$ is an infinite ring, $\Z/N$ is a finite
+ring of size $N$.
+Furthermore, there is a map
+\[
+\Z \rightarrow \Z/N
+\]
+given by
+\[
+x \mapsto [x]_N
+\]
+
+A ring is a \defone{field}
+if every nonzero element has a multiplicative inverse.
+Therefore if $p > 1$, then $\Z/p$ is a field iff $p$ is prime.
+

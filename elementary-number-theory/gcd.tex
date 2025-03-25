@@ -1,0 +1,285 @@
+\sectionthree{Euclidean algorithm -- GCD}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Now let me use the Euclidean property to compute the gcd of two integers.
+
+Let's use the division algorithm on $20$ and $6$.
+\[
+20 = 6 \cdot 3 + 2, \,\,\,\,\, 0 \leq 2 < 6
+\]
+Suppose I want to compute $\gcd(20, 6)$.
+Of course the example is small enough that we know that it is $2$.
+But notice something about this:
+\[
+20 = 6 \cdot 3 + 2, \,\,\,\,\, 0 \leq 2 < 6
+\]
+If $d$ is a divisor of $20$ and $6$, then it must also divide
+$2$.
+Therefore $\gcd(20, 6)$ must divide $2$.
+The converse might not be true.
+In general, we have this crucial
+bridge between Euclidean property and 
+common divisors:
+
+\begin{ex}
+Let $A + B + C = 0$ where $A, B, C \in \Z$ where $(A, B) \neq (0,0)$
+and $(B,C) \neq (0,0)$.
+Prove that $\gcd(A, B) = \gcd(B, C)$.
+\end{ex}
+
+\begin{ex}
+Let $A, B, C, x \in \Z$ with $(A,B) \neq (0,0)$ and $(B,C) \neq (0,0)$.
+If $A + Bx + C = 0$,
+then $\gcd(A, B) = \gcd(B, C)$.
+\end{ex}
+
+\begin{lem}
+  \textnormal{(\defone{GCD Lemma})}
+  Let $a,b,q,r \in \Z$ such that
+  not both $a,b$ are zero and not both $b,r$ are zero.
+  If
+  \[
+  a = bq + r
+  \]
+  then
+  \[
+  \gcd(a,b) = \gcd(b, r)
+  \]
+\end{lem}
+\proof
+TODO
+\qed
+
+
+In particular, 
+given $a, b \in \Z$ where $a > b > 0$.
+By the Euclidean property of $\Z$, there exist $q,r \in \Z$ such that
+\[
+a = bq + r, \,\,\, 0 \leq r < b
+\]
+Hence
+\[
+\gcd(a,b) = \gcd(b, r)
+\]
+
+Note that in the above, I only require $a = bq + r$.
+For instance for to $\gcd(120, 15)$, I can use
+$120 = 1\cdot 15 + (120 - 15)$, i.e., $a = 120, b = 15, q = 1, r = 120-15$.
+Then $\gcd(120, 15) = \gcd(15, 120-15) = \gcd(15, 105)$.
+
+However if I use the division algorithm, then 
+$r$ is \lq\lq small'':
+\[
+0 \leq r < b
+\]
+So if you want to compute $\gcd(a,b)$, make sure $a \geq b$ (otherwise
+swap them).
+Then $\gcd(a, b) = \gcd(b, r)$ and you would have $a \geq b > r$.
+So instead of computing $\gcd(a, b)$, you are better off
+computing $\gcd(b, r)$.
+
+But like I said, we do not need the $q$ and $r$ to be the quotient
+and remainder.
+For instance suppose I want to compute the GCD of 514 and 24.
+\[
+514 = 24 \cdot 1 + (514 - 24)
+\]
+Then 
+\[
+\gcd(514, 24) = \gcd(24, 514 - 24)
+\]
+which gives us
+\[
+\gcd(514, 24) = \gcd(24, 490)
+\]
+
+Note that $\gcd(0, n) = n$ for any positive integer $n$.
+
+Of course this gives rise to the following algorithm
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: GCD
+INPUTS:    a, b
+OTPUT:     gcd(a, b)
+
+if b > a:
+    swap a, b
+
+if b == 0:
+    return a
+else:
+    return GCD(a - b, b) 
+\end{Verbatim}
+
+This only subtracts one copy of $b$ from $a$.
+Suppose we can compute
+\[
+a = bq + r, \,\,\,\,\, 0 \leq r < b
+\]
+Then
+\[
+\gcd(a, b) = \gcd(b, r) 
+\]
+Of course $r$ is the remainder when $a$ is divided by $b$.
+Using this we rewrite the above code to get
+the
+\defterm{Euclidean Algorithm}\index{Euclidean Algorithm}\tinysidebar{Euclidean Algorithm}:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: GCD (Euclidean algorithm)
+INPUTS:    a, b
+OUTPUT:    gcd(a, b)
+
+if b > a:
+    # To make sure that for gcd(a,b), a >= b
+    swap a, b
+
+if b == 0: 
+    return a
+else:
+    return GCD(b, a % b)
+\end{Verbatim}
+Note that if \verb!a! $<$ \verb!b!, then
+\[
+\texttt{GCD(a, b) = GCD(b, a \% b) = GCD(b, a)}
+\]
+Therefore the swap is not necessary:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: GCD (Euclidean algorithm)
+INPUTS:    a, b
+OUTPUT:    gcd(a, b)
+
+if b == 0: 
+    return a
+else:
+    return GCD(b, a % b)
+\end{Verbatim}
+In this case, I'm assuming that \verb!a % b! is available.
+As an example:
+\begin{align*}
+  \gcd(514, 24)
+  &= \gcd(24, 514 \% 24) = \gcd(24, 10) \\
+  &= \gcd(10, 24 \% 10) = \gcd(10, 4) \\
+  &= \gcd(10, 10 \% 4) = \gcd(10, 2) \\
+  &= \gcd(2, 10 \% 2) = \gcd(2, 0) \\
+  &= 2
+\end{align*}
+
+The above can also be done in a loop:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: GCD (Euclidean algorithm)
+INPUTS:    a, b
+OUTPUT:    gcd(a, b)
+
+while 1:
+    if b == 0: 
+        return a
+    else:
+        a, b = b, a % b
+\end{Verbatim}
+
+\input{exercises/nt-06/main.tex}
+\input{exercises/nt-07/main.tex}
+
+Despite the fact that the Euclidean algorithm is one of the fastest
+algorithm to compute the GCD of two numbers and has been discovered
+by
+\href{https://en.wikipedia.org/wiki/Euclid}{Euclid} a long time ago (BC 300),
+the actual runtime was not known until
+\href{https://en.wikipedia.org/wiki/Gabriel_Lam%C3%A9}{Lam\'e}
+proved in 1844 that the number of steps to compute
+$\gcd(a, b)$ using the Euclidean algorithm
+is $\leq 5$ times the number of digits (in base 10 notation)
+of $\min(a, b)$.
+For instance for the example above
+of $\gcd(514, 24)$, the number of digits of $\min(514,24)$ is $2$.
+Lam\'e theorem says that the number of steps made by the
+Euclidean algorithm in the computation of $\gcd(514, 24)$ is
+at most $5 \times 2 = 10$.
+The actual number of steps in the earlier computation
+\begin{align*}
+  \gcd(514, 24)
+  &= \gcd(24, 514 \% 24) = \gcd(24, 10) \\
+  &= \gcd(10, 24 \% 10) = \gcd(10, 4) \\
+  &= \gcd(10, 10 \% 4) = \gcd(10, 2) \\
+  &= \gcd(2, 10 \% 2) = \gcd(2, 0) \\
+  &= 2
+\end{align*}
+is 4 (not counting the base case step), i.e.,
+\[
+  \gcd(514, 24)
+ = \gcd(24, 10) \\
+ = \gcd(10, 4) \\
+ = \gcd(10, 2) \\
+ = \gcd(2, 0) \\
+\]
+Lam\'e's work is generally considered the beginning of
+computational complexity theory, which is the study of
+resources needed (time or space) to execute an algorithm.
+Another fascinating fact about Lam\'e's theorem is that historically
+the proof below is the first ever \lq\lq use" of the Fibonacci sequence.
+
+\begin{thm} \textnormal{(Lam\'e 1844)}
+  Let $a > b > 0$ be integers.
+  If the GCD computation of $a,b$ 
+  using Euclidean algorithm results in $n$ steps:
+  \[
+  \gcd(a_{n+1}, b_{n+1})
+  = \gcd(a_{n}, b_{n})
+  = \cdots
+  = \gcd(a_1, b_1), \,\,\, b_1 = 0
+  \]
+  where $(a_{n+1}, b_{n+1}) = (a, b)$, and $a_i > b_i$, then
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+  \item  $a \geq F_{n+2}$ and
+    $b \geq F_{n+1}$, where $F_n$ are the Fibonacci numbers
+    ($F_1 = 1, F_2 = 1, F_3 = 2, F_4 = 3, F_5 = 5$, etc.
+    Note that the index starts with $1$.)
+  \item $n$ is at most 5 times the number of digits in $b$.
+  \end{enumerate}
+\end{thm}
+\proof
+\input{proof-lame-theorem.tex}
+
+
+\begin{prop}
+  The number of digits of a positive integer $b$ is
+  \[
+  \floor{\log_{10} b + 1}
+  \]
+\end{prop}
+\proof
+TODO
+\qed
+
+On analyzing the proof, the above is in fact true for any base $> 1$.
+In other words the number of base--$B$ symbols to represent $b$ is
+\[
+\floor{\log_{B} b + 1}
+\]
+where $B > 1$.
+For instance the number of bits needed to represent $b$ is
+\[
+\floor{\log_{2} b + 1}
+\]
+For instance, $b = 9_{10} = 1001_2$ which has 4 bits and
+\[
+\floor{\log_{2} 9 + 1}
+= \floor{3.1699... + 1}
+= \floor{4.1699...}
+= 4
+\]
+
+\begin{prop}
+  Let positive integer $b$ be written in base $B$ where $B > 1$ is an integer.
+  Then the number of base-$B$ symbols used to represent $b$ is
+  \[
+  \floor{\log_{B} b + 1}
+  \]
+\end{prop}
+\proof
+TODO
+
+\input{exercises/nt-08/main.tex}
+\input{exercises/nt-09/main.tex}
+\input{exercises/nt-10/main.tex}

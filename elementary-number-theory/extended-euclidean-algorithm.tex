@@ -1,0 +1,686 @@
+\sectionthree{B\'ezout's identity and the Extended Euclidean Algorithm}
+
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+The following theorem is very important and plays a role in
+Euclid's lemma on primes.
+First we will define GCD.
+
+\begin{defn}
+Let $a,b \in \Z$ such that not both $a,b$ are $0$.
+\begin{myenum}
+\item Let $d in \Z$ where $d \neq 0$. $d$ is a \defterm{common divisor}
+of $a$ and $b$ if $d \mid a$ and $d \mid b$.
+\item Let $g \in \Z$. Then $g$ is the \defone{greatest common divisor}
+of $a$ and $b$
+if $g$ is a common divisor of $a,b$ and $g$ is the largest among all
+common divisors of $a,b$.
+The greatest common divisor is an integer if $a,b$ are not both zero
+since in this case $\gcd(a, b)$ divides $\max(|a|, |b|)$
+and hence $\gcd(a, b)$ is finite. 
+\end{myenum}
+\end{defn}
+
+(Note that is $a = 0 = b$, then all integers are common divisors of
+$a,b$. In this case the greatest common divisor of $a,b$ is not defined.)
+
+\begin{thm}
+  \textnormal{(\defterm{B\'ezout's identity}\index{B\'ezout's identity}\tinysidebar{B\'ezout's identity})}
+If $a$ and $b$ be integers which are not both zero,
+then there are integers $x,y$ such that
+\[
+\gcd(a,b) = ax + by
+\]
+\end{thm}
+
+The $x,y$ in the above theorem are called
+\defone{B\'ezout's coefficients}
+of $a,b$.
+They are not unique.
+
+\input{exercises/nt-51/main.tex}
+
+B\'ezout's identity
+\[
+ax + by = \gcd(a, b)
+\]
+does not provide an algorithm to compute the
+B\'ezout's coefficients $x, y$.
+Then I'll do a computational example
+that compute the gcd of $a,b$ as a linear combination of $a$ and $b$.
+The example actually contains the idea behind the algorithm
+to compute the B\'ezout's coefficients.
+The algorithm is called
+the Extended Euclidean Algorithm.
+
+\proof
+For convenience, let
+me write $(a, b)$ as the set of linear combinations of $a$ and $b$, i.e.,
+\[
+(a, b) = \{ax + by \mid x,y \in \Z \}
+\]
+We will also write $(g)$ for the linear combination of $g$, i.e.,
+\[
+(g) = \{gx \mid x \in \Z \}
+\]
+(Such linear combinations are called ideals. They are extremely
+important in of themselves. Historically, they were created
+to study Fermat's last theorem. Since then they are crucial in the
+the study of ring theory.)
+
+TODO
+\qed
+
+The above does not give you an algorithm to compute the
+$x$ and $y$.
+First let me do an example to show you that
+it's possible to compute $\gcd(a,b)$ as a linear combination of $a$ and $b$.
+Then I'll give you the actual algorithm.
+
+Recall that we have computed $\gcd(514, 24) = 2$.
+B\'ezout's theorem says that it's possible to find $x$ and $y$
+such that
+\[
+2 = \gcd(514, 24) = 514x + 24y
+\]
+How do we compute the $x$ and $y$?
+Just like the gcd computation (the Euclidean Algorithm),
+the $x,y$ are computed using the Euclidean property.
+First we have
+\begin{align*}
+514 = 21 \cdot 24 + 10
+\end{align*}
+This implies that 
+\[
+514 \cdot 1 + 24 \cdot (-21) = 10
+\]
+Now it would be nice if the pesky $10$ goes away and is replaced by
+$2$.
+How would we do that?
+Well look at $24$ and $10$ now.
+We have
+\[
+24 = 2 \cdot 10 + 4
+\]
+again by Euclidean algorithm.
+Multiplying the equation
+\[
+514 \cdot 1 + 24 \cdot (-21) = 10
+\]
+throughout by 2 gives us
+\[
+514 \cdot 2 + 24 \cdot (-42) = 2 \cdot 10
+\]
+The previous equation
+\[
+24 = 2 \cdot 10 + 4
+\]
+say that $2 \cdot 10$ can be replaced by $24 - 4$.
+This means that
+\[
+514 \cdot 2 + 24 \cdot (-42) = 24 - 4
+\]
+Hmmm ... this says that we have now
+\[
+514 \cdot 2 + 24 \cdot (-43) = -4
+\]
+or
+\[
+514 \cdot (-2) + 24 \cdot 43 = 4
+\]
+What about 4?
+Well, if we look at $10$ and $4$ just like what we did with $24$ and $10$
+we would get
+\[
+10 = 2 \cdot 4 + 2
+\]
+and the remainder $2$ gives us the GCD!!!
+Rearranging it a bit we have
+\[
+1 \cdot 10 + (-2) \cdot 4 = 2
+\]
+i.e. 2 is a linear combination of 10 and 4.
+But earlier we say that 4 is a linear combination of 514 and 24 ...
+\[
+514 \cdot (-2) + 24 \cdot 43 = 4
+\]
+and even earlier we saw that 10 is also a linear combination of 514 and 24 ...
+\[
+514 \cdot 1 + 24 \cdot (-21) = 10
+\]
+Surely if we substitute all these values into the equation
+\[
+1 \cdot 10 + (-2) \cdot 4 = 2
+\]
+we would get 2 as a linear combination of 514 and 24.
+Let's do it ...
+\begin{align*}
+2 
+&= 1 \cdot 10 + (-2) \cdot 4 \\
+&= 1 \cdot (514 \cdot 1 + 24 \cdot (-21)) + (-2) (514 \cdot (-2) + 24 \cdot 43) \\
+&= 514 \cdot 1 + 24 \cdot (-21) + 514 \cdot 4 + 24 \cdot (-86) \\
+&= 514 \cdot 5 + 24 \cdot (-107)
+\end{align*}
+V\'oila!
+
+\input{exercises/nt-52/main.tex}
+\input{exercises/nt-53/main.tex}
+
+To help you analyze the above computation,
+let me organize our computations a little.
+If we can make the process systematic, then there is hope that we can 
+make the idea work for all $a$ and $b$, i.e., then we would have an
+algorithm and hence can program it and compute it's runtime performance.
+
+We know for sure that we have to continually use
+Euclidean property on pairs of numbers.
+So here we go:
+\begin{align*}
+514 &= 21 \cdot 24 + 10 \\
+24  &= 2 \cdot 10 + 4 \\
+10  &= 2 \cdot 4 + 2 \\
+4   &= 2 \cdot 2 + 0
+\end{align*}
+Note that this corresponds to the $\gcd$ computation
+\begin{align*}
+\gcd(514, 24) 
+&= \gcd(24, 514 - 21 \cdot 24) = \gcd(24, 10) \\
+&= \gcd(10, 24 - 2 \cdot 10) = \gcd(10, 4) \\
+&= \gcd(4, 10 - 2 \cdot 4) = \gcd(4, 2)  \\
+&= \gcd(2, 4 - 2\cdot 2) = \gcd(2, 0) \\
+&= 2
+\end{align*}
+So in the computation
+\begin{align*}
+514 &= 21 \cdot 24 + 10 \\
+24  &= 2 \cdot 10 + 4 \\
+10  &= 2 \cdot 4 + 2 \\
+4   &= 2 \cdot 2 + 0
+\end{align*}
+if the remainder is $0$ (see the last line), 
+then the previous line's remainder must be the gcd.
+
+Let's look at our computation of the gcd of $514$ and $24$:
+\begin{align*}
+514 &= 21 \cdot 24 + 10 \\
+24  &= 2 \cdot 10 + 4 \\
+10  &= 2 \cdot 4 + 2 \\
+4   &= 2 \cdot 2 + 0
+\end{align*}
+Recall that the above computation means that the gcd is 2.
+Note only that through backward substitution, we can rewrite
+$2$ as a linear combination of $514$ and $24$.
+
+Let's try to do this in a more organized way.
+So here's our facts again:
+\begin{align*}
+514 &= 21 \cdot 24 + 10 \\
+24  &= 2 \cdot 10 + 4 \\
+10  &= 2 \cdot 4 + 2 
+\end{align*}
+Let me put the remainders on one side:
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= 24  - 2 \cdot 10  \tag{2} \\
+2  &= 10  - 2 \cdot 4   \tag{3} \\
+\end{align*}
+Note that (1) tells you that
+$10$ is a linear combination of $514,24$.
+(2) tells you that $4$ is a linear combination of $24,10$.
+If we substitute (1) into (2), $4$ will become a linear
+combination of $514,24$.
+(3) says that $2$ is a linear combination of $10,4$.
+But $10$ is a linear combination of $514,24$
+and $4$ is a linear combination of $514,24$.
+Hence $2$ is also a linear combination of $514,24$.
+See it?
+
+OK. Let's do it.
+From
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= 24  - 2 \cdot 10  \tag{2} \\
+2  &= 10  - 2 \cdot 4   \tag{3} \\
+\end{align*}
+if we substitute (1) into (2) and (3) (i.e., rewrite $10$ as a linear
+combination of $514,24$):
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= 24  - 2 \cdot (514 - 21 \cdot 24)  \tag{2} \\
+2  &= (514 - 21 \cdot 24)  - 2 \cdot 4   \tag{3} 
+\end{align*}
+Collecting the multiples of 514 and 24:
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= (-2) \cdot 514 + (1 + (-2)(-21)) \cdot 24  \tag{2'} \\
+2  &= (1) \cdot 514 + (-21) \cdot 24  - 2 \cdot 4   \tag{3'} 
+\end{align*}
+and simplifying:
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= (-2) \cdot 514 + (43) \cdot 24  \tag{2$'$} \\
+2  &= (1) \cdot 514 + (-21) \cdot 24  - 2 \cdot 4   \tag{3$'$} 
+\end{align*}
+Substituting (2$'$) into (3$'$):
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= (-2) \cdot 514 + (43) \cdot 24  \tag{2$'$} \\
+2  &= (1) \cdot 514 + (-21) \cdot 24  - 2 \cdot ((-2) \cdot 514 + (43) \cdot 24)  \tag{3$'$} 
+\end{align*}
+Tidying up:
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= (-2) \cdot 514 + (43) \cdot 24  \tag{2'} \\
+2  &= (1 - 2(-2)) \cdot 514 + (-21 - 2(43)) \cdot 24 \tag{3''} 
+\end{align*}
+Simplifying:
+\begin{align*}
+10 &= 514 - 21 \cdot 24 \tag{1} \\
+4  &= (-2) \cdot 514 + (43) \cdot 24  \tag{2'} \\
+2  &= (5) \cdot 514 + (-107) \cdot 24 \tag{3''}
+\end{align*}
+
+(It's a good idea to check after each substitution that
+the equalities still hold. We all make mistakes, right?)
+
+OK.
+That's great.
+It looks more organized now.
+So much so that you can now easily write a program to compute
+the above.
+
+
+Now let's look at the general case.
+Suppose instead of $514$ and $24$, we write $a$ and $b$.
+The computation will look like this:
+\begin{align*}
+a   &= q_1 \cdot b   + r_1 \\
+b   &= q_2 \cdot r_1 + r_2 \\
+r_1 &= q_3 \cdot r_2 + r_3 \\
+r_2 &= q_4 \cdot r_3 + 0
+\end{align*}
+To make things even more regular and uniform, let me rewrite it this way:
+\begin{align*}
+r_0 &= q_1 \cdot r_1 + r_2 \\
+r_1 &= q_2 \cdot r_2 + r_3 \\
+r_2 &= q_3 \cdot r_3 + r_4 \\
+r_3 &= q_4 \cdot r_4 + 0
+\end{align*}
+In other words let $r_0 = a$ and $r_1 = b$ and do the obvious.
+A lot nicer, right?
+Let me write it this way with the remainder term on the lefts:
+\begin{align*}
+r_2 &= (1) \cdot r_0 + (-q_1) \cdot r_1 \\
+r_3 &= (1) \cdot r_1 + (-q_2) \cdot r_2 \\
+r_4 &= (1) \cdot r_2 + (-q_3) \cdot r_3 
+\end{align*}
+(Remember that $r_4$ is the gcd of $r_0 = 514$ and $r_1 = 24$, right?)
+Organized this way, we have the gcd on one side of the equation.
+Now if we substitute the first equation into the second we get
+\begin{align*}
+r_2 &= (1) \cdot r_0 + (-q_1) \cdot r_1 \text{ ... USED }\\
+r_3 &= (1) \cdot r_1 + (-q_2) \cdot ((1) \cdot r_0 + (-q_1) \cdot r_1) \\
+r_4 &= (1) \cdot r_2 + (-q_3) \cdot r_3 
+\end{align*}
+i.e.,
+\begin{align*}
+r_2 &= (1) \cdot r_0 + (-q_1) \cdot r_1 \text{ ... USED }\\
+r_3 &= (-q_2) \cdot r_0 + (1 + q_1q_2) \cdot r_1 \\
+r_4 &= (1) \cdot r_2 + (-q_3) \cdot r_3  
+\end{align*}
+Note that we cannot throw away the first equation yet.
+We need to keep $r_2$ around since it appears in the third equation!
+So when can we throw the first equation away?
+Look at the general case.
+Suppose we have
+\begin{align*}
+r_2 &= (1) \cdot r_0 + (-q_1) \cdot r_1  \\
+r_3 &= (1) \cdot r_1 + (-q_2) \cdot r_2  \\
+r_4 &= (1) \cdot r_2 + (-q_3) \cdot r_3  \\
+r_5 &= (1) \cdot r_3 + (-q_4) \cdot r_4  \\
+r_6 &= (1) \cdot r_4 + (-q_5) \cdot r_5  \\
+...
+\end{align*}
+Aha! $r_2$ is used only in the next \textit{two} equations.
+
+Suppose we are at equation 3:
+\begin{align*}
+r_3 &= c_1 \cdot r_0 + d_1 \cdot r_1  \\
+r_4 &= c_2 \cdot r_0 + d_2 \cdot r_1 
+\end{align*}
+We have to compute the next equation:
+This requires $r_3, r_4$.
+Then we have
+\[
+r_5 = (1) \cdot r_3 + (-q_4) \cdot r_4
+\]
+where
+\[
+q_4 = \floor{r_3/r_4}, \,\,\,\,\, r_5 = r_3 - q_4r_4
+\]
+Altogether we have
+\begin{align*}
+r_3 &= c_1 \cdot r_0 + d_1 \cdot r_1     \\
+r_4 &= c_2 \cdot r_0 + d_2 \cdot r_1     \\
+r_5 &= (1) \cdot r_3 + (-q_4) \cdot r_4 
+\end{align*}
+The last equation becomes
+\begin{align*}
+r_5 &= c_1 \cdot r_0 + d_1 \cdot r_1  
++ 
+(-q_4) \cdot (c_2 \cdot r_0 + d_2 \cdot r_1)
+\end{align*}
+i.e.
+\begin{align*}
+r_5 &= (c_1 - q_4 c_2) \cdot r_0 + (d_1 - q_4 d_2) \cdot r_1 
+\end{align*}
+
+Let me repeat that in a slightly more general context.
+If we have
+\begin{align*}
+r_3 &= c_1 \cdot r_0 + d_1 \cdot r_1  \\
+r_4 &= c_2 \cdot r_0 + d_2 \cdot r_1 
+\end{align*}
+then we get (throwing away the first equation):
+\begin{align*}
+r_4 &=c_2 \cdot r_0 + d_2 \cdot r_1 \\
+r_5 &= (c_1 - q_4 c_2) \cdot r_0 + (d_1 - q_4 d_2) \cdot r_1 
+\end{align*}
+To put it in terms of numbers instead of equations this is what we get:
+If we have
+\[
+c_1, d_1, c_2, d_2, r_3, r_4
+\]
+then we get
+\[
+c_2, d_2, 
+c_1 - \floor{r_3/r_4} c_2, 
+d_1 - \floor{r_3/r_4}d_2, 
+r_4, r_3 - \floor{r_3/r_4}r_4
+\]
+In general, if we have
+\[
+c, d, c', d', r, r'
+\]
+then we get
+\[
+c', d', 
+c - \floor{r/r'} c', d - \floor{r/r'}d', 
+r', r - \floor{r/r'}r'
+\]
+
+Of course since we start off with $r_0, r_1$ (i.e. what we call $a$ and $b$
+above), we have
+\begin{align*}
+r_0 &= 1 \cdot r_0 + 0 \cdot r_1 \\
+r_1 &= 0 \cdot r_0 + 1 \cdot r_1 \\
+\end{align*}
+i.e., you would start off with
+\[
+c=1, d=0, c'=0, d'=1, r=r_0, r'=r_1
+\]
+Let's check this algorithm with our $r_0 = 514, r_1 = 24$.
+
+STEP 1: The initial numbers are
+\[
+c=1, d=0, c'=0, d'=1, r=514, r'=24
+\]
+Again this corresponds to
+\begin{align*}
+r_3 &= 1 \cdot 514 + 0 \cdot 24  \\
+r_4 &= 0 \cdot 514 + 1 \cdot 24 \\
+\end{align*}
+
+STEP 2: 
+The new numbers (6 of them) are
+\begin{align*}
+ c' &=0 \\
+ d' &=1 \\
+ c - \floor{r/r'} c' &= 1 - \floor{514/24} 0 = 1\\
+ d - \floor{r/r'}d' &= 0 - \floor{514/24}1 = 0 - 21 = -21 \\
+ r' &= 24 \\ 
+ r - \floor{r/r'}r' &= 514 - \floor{514/24}24 = 514 - 504 = 10
+\end{align*}
+So the new numbers (we reset the variables in the algorithm):
+\[
+c=0, d=1, c'=1, d'=-21, r=24, r'= 10
+\]
+These corresponds to the data on the second and third line of the following:
+\begin{align*}
+514 &= 1 \cdot 514 + 0 \cdot 24      \\
+24  &= 0 \cdot 514 + 1 \cdot 24      \\
+10  &= 1 \cdot 514 + (-21) \cdot 24 
+\end{align*}
+
+STEP 3: From the 6 numbers from STEP 2 we get
+\begin{align*}
+ c' &= 1 \\
+ d' &= -21 \\
+ c - \floor{r/r'} c' &= 0 - \floor{24/10} 1 = -2 \\
+ d - \floor{r/r'}d'  &= 1 - \floor{24/10} (-21) = 1 + 42 = 43 \\
+ r' &= 10 \\ 
+ r - \floor{r/r'}r' &= 24 - \floor{24/10}10 = 24 - 20 = 4
+\end{align*}
+So the new numbers (we reset the variables in the algorithm):
+\[
+c=1, d=-21, c'=-2, d'= 43, r=10, r'= 4
+\]
+These corresponds to the data on the third and fourth line of the following:
+\begin{align*}
+514 &= 1 \cdot 514 + 0 \cdot 24     \\
+24  &= 0 \cdot 514 + 1 \cdot 24     \\
+10  &= 1 \cdot 514 + (-21) \cdot 24 \\
+4   &= (-2) \cdot 514 + 43 \cdot 24 
+\end{align*}
+
+STEP 4: From the 6 numbers from STEP 3 we get
+\begin{align*}
+ c' &= -2 \\
+ d' &= 43 \\
+ c - \floor{r/r'} c' &= 1 - \floor{10/4} (-2) = 1 + 4 = 5 \\
+ d - \floor{r/r'}d'  &= -21 - \floor{10/4} (43) = -21 - 86 = -107 \\
+ r' &= 4 \\ 
+ r - \floor{r/r'}r' &= 10 - \floor{10/4} 4 = 10 - 8 = 2
+\end{align*}
+So the new numbers (we reset the variables in the algorithm):
+\[
+c = -2, d = 43, c' = 5, d'= -107, r=4, r'= 2
+\]
+These corresponds to the data on the fourth and fifth line of the following:
+\begin{align*}
+514 &= 1 \cdot 514 + 0 \cdot 24      \\
+24  &= 0 \cdot 514 + 1 \cdot 24      \\
+10  &= 1 \cdot 514 + (-21) \cdot 24  \\
+4   &= (-2) \cdot 514 + 43 \cdot 24  \\
+2   &= 5 \cdot 514 + (-107) \cdot 24 
+\end{align*}
+
+STEP 5: From the 6 numbers from STEP 4 we get
+\begin{align*}
+ c' &= 5 \\
+ d' &= -107 \\
+ c - \floor{r/r'} c' &= -2 - \floor{4/2} 5 = -2 - 10 = -12 \\
+ d - \floor{r/r'} d'  &= 43 - \floor{4/2} (-107) = 43 + 214 = 257 \\
+ r' &= 2 \\ 
+ r - \floor{r/r'}r' &= 4 - \floor{4/2} 2 = 4 - 4 = 0
+\end{align*}
+So the new numbers (we reset the variables in the algorithm):
+\[
+c = 5, d = -107, c' = -12, d'= 257, r=2, r'= 0
+\]
+These corresponds to the data on the fifth and sixth line of the following:
+\begin{align*}
+514 &= 1 \cdot 514 + 0 \cdot 24       \\
+24  &= 0 \cdot 514 + 1 \cdot 24       \\
+10  &= 1 \cdot 514 + (-21) \cdot 24   \\
+4   &= (-2) \cdot 514 + 43 \cdot 24   \\
+2   &= 5 \cdot 514 + (-107) \cdot 24  \\
+0   &= (-12) \cdot 514 + 257 \cdot 24 
+\end{align*}
+
+Of course (as before) at this point, you see that the $r'=0$.
+Therefore 
+\[
+\gcd(514, 24) = 2
+\]
+and furthermore from $c=5, d=-107$, we get
+\[
+5 \cdot 514 + (-107) \cdot 24 = \gcd(514, 24) 
+\]
+
+Here's a Python implementation with some test code:
+\begin{Verbatim}[frame=single, fontsize=\footnotesize]
+ALGORITHM: EEA (Extended Euclidean Algorithm)
+INPUTS:    a, b
+OUTPUTS:   r, c, d where r = gcd(a, b) = c * a + d * b
+
+a0, b0 = a, b
+d0, d = 0, 1
+c0, c = 1, 0
+q = a0 // b0
+r = a0 - q * b0
+
+while r > 0:
+    d, d0 = d0 - q * d, d    
+    c, c0 = c0 - q * c, c
+
+    a0, b0 = b0, r
+    q = a0 // b0
+    r = a0 - q * b0
+
+r = b0
+return r, c, d
+\end{Verbatim}
+You can pound real hard at the Extended Euclidean Algorithm with this:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+for a in range(1, 1000):
+    for b in range(1, 1000):
+        gcd, x, y = EEA(a, b)
+        if gcd != a * x + b * y:
+            print("ERROR! ...", a, b)
+\end{Verbatim}
+
+Note that even if you have to go through 100 lines of 
+Euclidean computations, the number of variables stay the same:
+besides the inputs, there are 7 variables (i.e., \verb!q, c, d, c', d', r, r'!)
+
+By the way, this is somewhat similar to what we call
+\textit{tail recursion} (CISS445)
+an extremely important technique in functional programming.
+All LISP hackers and people working in high performance computing
+and compilers swear by it.
+You don't see recursion in the above code, but you can 
+replace the while-loop with recursion and if
+you have a compiler/interpreter that can perform 
+true tail recursion, then it would run exactly like the above algorithm.
+
+
+Why is this algorithm correct?
+And why does it terminate?
+Here's the earlier list of computations:
+\begin{align*}
+r_2 &= (1) \cdot r_0 + (-q_1) \cdot r_1  \\
+r_3 &= (1) \cdot r_1 + (-q_2) \cdot r_2  \\
+r_4 &= (1) \cdot r_2 + (-q_3) \cdot r_3  \\
+r_5 &= (1) \cdot r_3 + (-q_4) \cdot r_4  \\
+r_6 &= (1) \cdot r_4 + (-q_5) \cdot r_5  \\
+...
+\end{align*}
+where $r_0 = a$ and $r_1 = b$.
+First of all the $r_0, r_1, r_2$ comes from the Euclidean property:
+\[
+r_0 = r_1q_1 + r_2, \,\,\, 0 \leq r_2 < r_1
+\]
+Likewise
+\[
+r_1 = r_2q_2 + r_3, \,\,\, 0 \leq r_3 < r_2
+\]
+Etc.
+Hence
+\[
+0 \leq \ldots < r_3 < r_2 < r_1
+\]
+Clearly at some point some $r_k$ must be $0$ and furthermore
+this is the smallest $k$ such taht $r_k = 0$.
+
+Furthermore
+\begin{align*}
+\gcd(r_0, r_1) = \gcd(r_1, r_2) = \gcd(r_2, r_3) = ... = \gcd(r_{k-1}, r_k)
+\end{align*}
+Assuming $r_k = 0$, then
+\begin{align*}
+\gcd(r_0, r_1) = ... = \gcd(r_{k-1}, r_k) = \gcd(r_{k-1}, 0) = r_{k - 1}
+\end{align*}
+
+Also, from the earlier computation, from
+\begin{align*}
+r_3 &= c_1 \cdot r_0 + d_1 \cdot r_1  \\
+r_4 &= c_2 \cdot r_0 + d_2 \cdot r_1 
+\end{align*}
+we get
+\begin{align*}
+r_4 &=c_2 \cdot r_0 + d_2 \cdot r_1 \\
+r_5 &= (c_1 - q_4 c_2) \cdot r_0 + (d_1 - q_4 d_2) \cdot r_1 
+\end{align*}
+More generally, each $r_i$ is expressed as a linear combination of
+$r_0 = a$ and $r_1 = b$.
+
+
+\input{exercises/nt-54/main.tex}
+
+You'll see that there are times when you're only interested in 
+the value of $x$ and not $y$ (or $y$ and not $x$ -- the above is symmetric
+about $x$ and $y$).
+Do you notice $x$ comes from $c$?
+If you analyze the above algorithm, you see immediately that $c$
+is computed from $c'$ and $c'$ is computed from $c,c',q$, 
+$q$ is computed from $r, r'$, $r$ is computed from $r'$,
+and finally (phew!) $r'$ is computed from $r, q, r'$.
+Therefore if you're interested in $c$, you don't need to compute $d$ 
+or $d'$.
+So you can change the EEA to this:
+
+\begin{Verbatim}[frame=single, fontsize=\small]
+ALGORTHM: EEA2 (sort of EEA ... without the d, d0)
+INPUTS: a >=0, b >=0
+OUTPUTS: r, c where r = gcd(a, b) = c*a + d*b for some d
+
+    a0, b0 = a, b
+    c0, c = 1, 0
+    q = a0 // b0
+    r = a0 - q * b0
+
+    while r > 0:   
+        c, c0 = c0 - q * c, c
+    
+        a0, b0 = b0, r
+        q = a0 // b0
+        r = a0 - q * b0
+
+    r = b0
+    return r, c
+\end{Verbatim}
+
+Let's test this with 514 and 24 again.
+\begin{myenum}
+\item[] STEP 1: $c=1, c'=0, r=514, r'=24$
+\item[] STEP 2: $q=21, c=c'=0, c'=c-qc'=1-21(0)=1, r=24,r'=r-qr'=514-21(24)=10$.
+\item[] STEP 3: $q=2, c=c'=1, c'=c-qc'=0-2(1)=-2, r=10, r'=r-qr'=24-2(10)=4$
+\item[] STEP 4: $q=2, c=c'=-2, c'=c-qc'=1-2(-2)=5, r=4, r'=r-qr'=10-2(4)=2$
+\item[] STEP 5: $q=2, c=c'=5, c'=c-qc'=-2-2(5)=-12, r=2, r'=r-qr'=4-2(2)=0$
+\end{myenum}
+At this point $r'=0$. Therefore the gcd is again 2 and $x=5$.
+Therefore 
+\[
+5 \cdot 514 + y \cdot 24 = 2
+\]
+for some $y$.
+
+Later you'll see why we compute only $x$.
+
+\input{exercises/nt-55/main.tex}
+\input{exercises/nt-56/main.tex}
+\input{exercises/nt-57/main.tex}
+\input{exercises/nt-58/main.tex}

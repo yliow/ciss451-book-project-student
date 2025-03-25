@@ -6,6 +6,22 @@ from solutions import *; prepare_solutions()
 from solutions import *; prepare_solutions()
 =>PYTHONTEX#py#default#default#3#c####congruences.tex#2#
 from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#4#c####euclidean-property.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#5#c####extended-euclidean-algorithm.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#6#c####gcd.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#7#c####prime.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#8#c####multiplicative-inverse-mod-N.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#9#c####euler-totient-function.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#10#c####relations.tex#1#
+from solutions import *; prepare_solutions()
+=>PYTHONTEX#py#default#default#11#c####congruence-classes.tex#1#
+from solutions import *; prepare_solutions()
 =>PYTHONTEX:SETTINGS#
 version=0.16
 outputdir=pythontex-files-main

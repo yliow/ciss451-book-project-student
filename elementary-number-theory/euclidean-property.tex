@@ -96,7 +96,7 @@ for the corresponding remainder, then of course we have
 \]
 
 Although the above Euclidean property is for $\Z$,
-We will first prove it for $a \geq 0$ and $b > 0$.
+we will first prove it for $a \geq 0$ and $b > 0$.
 The $q,r$ will satisfy $q \geq 0$, $r \geq 0$.
 (Furthermore in this setup $q,r$ are unique.)
 Once we have proven the Euclidean property for integer $a \geq 0$,
@@ -115,7 +115,7 @@ well-ordering principle on $\Z$:
 
 \index{WOP for $\Z$}\textsc{Well-ordering principle for $\Z$}\tinysidebar{Well-ordering principle for $\Z$}:
 Let $X$ be a nonempty subset of $\Z$ that is \textit{bounded below}.
-Then $X$ has a minimal element.
+Then $X$ has a least element.
 In other words there is some $m \in X$ such that
 $m \leq x$ for all $x \in X$.
 
@@ -135,47 +135,7 @@ Now we will prove Theorem \ref{euclideanproperty3}.
   
 
 \textit{Proof.}
-        
-Now let me prove Theorem \ref{euclideanproperty3} using
-the well-ordering principle.
-Remember that I'm proving it for $a \geq 0, b > 0, q \geq 0, r \geq 0$.
-
-\textit{Proof 2.}
-Recall that we are assuming that $b > 0$.
-Let $X = \{ a - bx \mid x \in \Z, a - bx \geq 0 \} \subseteq \N \cup \{0\}$.
-$X$ is not empty since $a = a - b \cdot 0 \geq 0$ is in $X$.
-$X$ is bounded below by $0$ (by definition).
-By the well--ordering principle $X$ has a minimal element.
-Call it $r$. Note that $r \in \N \cup \{0\}$ (hence $r \geq 0$).
-Furthermore $r = a - bq$ for some $q \in \Z$ and hence
-\[
-a = bq + r, \,\,\, 0 \leq r
-\]
-I will now prove that $r < b$.
-
-Suppose on the contrary that $r \geq b$.
-Then $0 \leq r - b$.
-\[
-a = bq + r = bq + (r - b + b)
-= b(q + 1) + (r - b)
-\]
-and therefore
-\[
-a - b(q + 1) = (r - b) < r
-\]
-Note that $0 \leq r - b < r$.
-Hence
-\[
-0 \leq a - b(q + 1) = (r - b) < r
-\]
-In other words
-$a - b(q + 1) \in X$
-and is smaller than $a - bq$ which
-contradicts the minimality of $a - bq$.
-
-Note that $q \geq 0$.
-For otherwise $q < 0$ implies that
-$bq + r \leq b(-1) + r < 0$ since $r < b$.
+TODO
 \qed
 
 \input{exercises/nt-65/main.tex}
@@ -198,51 +158,14 @@ $bq + r \leq b(-1) + r < 0$ since $r < b$.
 \end{prop}
 
 \proof
-From $bq + r = a = bq' + r'$, we have
-\begin{align*}
-           bq + r = bq' + r'
-\end{align*}
-If $q = q'$, then $r = r'$.
-We now assume $q \neq q'$.
-Without loss of generality, we'll assume that $q > q'$.
-We have
-\[
-r' = b(q - q') + r > b + r \geq b
-\]
-which contradicts $r' < b$.
+TODO
 \qed
 
 Now I'm going to prove Theorem \ref{euclideanproperty}
 which allows $a$ to be any integer.
 
 \textit{Proof of Theorem \ref{euclideanproperty}}.
-Now I'll use Euclidean Property 3 to prove Euclidean Property 1.
-We just need to handle the case when $a < 0$.
-Let $u$ be $\pm 1$ so that $ua \geq 0$.
-Let $v$ be $\pm 1$ so that $vb > 0$.
-Note that $(\pm 1)^2 = 1$, i.e., $u^{-1} = u, v^{-1} = v$.
-Using Euclidean Property 3, there exist $q' \geq 0, r'$ such that
-\[
-a' = b'q' + r', \,\,\, 0 \leq r' < b'
-\]
-Then
-\[
-ua = vbq' + r', \,\,\, 0 \leq r' < vb = |b|
-\]
-Multiplying by $u^{-1}$
-\[
-a = uvbq' + ur', \,\,\, 0 \leq r' < vb = |b|
-\]
-and hence
-\[
-a = b(uvq') + ur', \,\,\, 0 \leq |ur'| < vb = |b|
-\]
-(Note that $r' \geq 0$ and hence $|ur'| = |u||r'| = r'$.)
-Hence if $q = uvq'$ and $r = ur'$, then
-\[
-a = bq + r, \,\,\, 0 \leq |r| < |b|
-\]
-and we are done.
+TODO
 \qed
 
 \input{exercises/nt-00/main.tex}
