@@ -1,0 +1,18 @@
+\tinysidebar{\debug{exercises/{rsa-23/question.tex}}}
+  Let $n = 18801105946394093459$.
+  Prove that $n$ is composite in three ways:
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+  \item Use division compositeness test.
+    First try to
+    randomly generate a potential divisor and test it.
+    If it fails, try to do a brute force iteration from $2$ to $\sqrt{n}$
+    to locate a divisor.
+  \item Use GCD compositeness test.
+    First try to
+    randomly generate a potential $a$ and test if $\gcd(a, n) > 1$.
+    If it fails, try to do a brute force iterate $a$ from $2$ to $\sqrt{n}$
+    and test if $\gcd(a, n) > 1$.
+  \item
+    Use Fermat primality test with $t = 1$.
+  \end{enumerate}
+

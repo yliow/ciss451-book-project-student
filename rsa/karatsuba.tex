@@ -1,0 +1,444 @@
+\sectionthree{Multiplication: Karatsuba algorithm}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Skip this section if you have already taken CISS358.
+
+It turns out that there is a better way to multiply integers.
+This was only discovered very recently in the 1960s. 
+
+The idea is surprisingly simple.
+Here's a basic formula:
+\[
+(aT + b)(cT + d) = acT^2 + (ad + bc)T + bd
+\]
+For now you can pretend that $T = 10$ and $a,b,c,d$ are digits.
+For instance to multiply $23$ and $45$, you can view it as
+\[
+(2 \cdot 10 + 3)(4 \cdot 10 + 5)
+= (2 \cdot 4) 10^2 + (2 \cdot 5 + 3 \cdot 4) 10 + 3 \cdot 5
+\]
+You can finish up this computation on your own.
+
+But 
+\[
+(aT + b)(cT + d) = acT^2 + (ad + bc)T + bd
+\]
+doesn't really help!!!
+Viewing $T = 10$ and the $a,b,c,d$ as digits, the above
+multiplication of two 2-digit numbers, i.e. 
+$(aT + b)$ and $(cT + d)$, we need
+\textit{ four} multiplications
+\[
+ac, \,\,\, 
+ad, \,\,\,
+bc, \,\,\,
+bd
+\]
+So it's still essentially an $n^2$ algorithm.
+In general if $T(n)$ is runtime of multiplying 2 integers of length $n$,
+then
+\[
+T(n) = 4T(n/2) + An + B
+\]
+If $n = 2^k$, then
+\begin{align*}
+T(2^k) &= 4T(2^{k-1}) + A2^k + B \\
+&= 4(4T(2^{k-2}) + A2^{k-1} + B) + A2^k + B \\
+&= 4^2T(2^{k-2}) + (4 \cdot 2^{k-1} + 2^k)A + (4 + 1) B \\
+&= 4^2(4T(2^{k-3}) + A2^{k-2} + B) + (4 \cdot 2^{k-1} + 2^k)A + (4 + 1)B \\
+&= 4^3T(2^{k-3}) + (4^2 \cdot 2^{k-2} + 4 \cdot 2^{k-1} + 2^k)A + (4^2 + 4 + 1)B \\
+&= ... \\
+&= 4^kT(2^{k-k}) + (4^{k-1} \cdot 2^{1} + ... + 4^2 \cdot 2^{k-2} + 4 \cdot 2^{k-1} + 2^k)A + (4^{k-1} + ... + 4^2 + 4 + 1)B
+\end{align*}
+The coefficient for $B$ is $\displaystyle \frac{4^k - 1}{4 - 1}$.
+The coefficient for $A$ is
+\[
+4^{k-1} \cdot 2^{1} + ... + 4^2 \cdot 2^{k-2} + 4 \cdot 2^{k-1} + 2^k
+=
+2^{2k - 1}
++ 2^{k + 2}
++ 2^{k + 1}
++ 2^k
+= 2^k(1 + 2 + ... + 2^{k-1})
+= 2^k(2^k - 1)
+\]
+Hence
+\[
+T(2^k) = 4^k T(1) + 2^k(2^k - 1) A + \frac{4^k - 1}{3} B
+\]
+Hence $T(1) = C$:
+\[
+T(2^k) = 4^k C + 2^k(2^k - 1) A + \frac{4^k - 1}{3} B
+\]
+Since $n = 2^k$,
+\[
+T(n) = n^2 C + n(n - 1) A + \frac{n^2 - 1}{3} B
+\]
+Clearly $T(n) = O(n^2)$.
+
+But wait ... here's the brilliant (but simple) idea from Karatsuba.
+Note that 
+\begin{align*}
+            (a+b)(c+d) &= ac + ad + bc + bd \\
+\THEREFORE\,\,\,  (a+b)(c+d) - ac - bd &= ad + bc
+\end{align*}
+In other words
+\[
+(aT + b)(cT + d) = (ac)T^2 + [(a+b)(c+d) - (ac) - (bd)]T + (bd)
+\]
+If you count all the operations on the right,
+you would see that there are only
+\textit{ three} multiplications!!!
+
+So we can do this:
+\begin{Verbatim}[frame=single]
+1. Compute A = ac         ... 1 multiplication
+2. Compute B = bd         ... 1 multiplication
+3. Compute C = (a+b)(c+d) ... 2 additions, 1 multiplication
+4. Compute D = C - A - B  ... 2 subtractions
+5. Output AT^2 + DT + B
+\end{Verbatim}
+
+Note that the runtime for subtraction is like addition.
+In other words addition and subtraction are \lq\lq cheap'':
+they are both $O(n)$ where $n$ is the length of the integers.
+
+Practically speaking, how is Karatsuba actually used? 
+Suppose you have to multiply two 8-digit numbers:
+\[
+12345678 \times 13572468
+\]
+We split them up into this (with $T = 10$)
+\[
+(1234T^4 + 5678) \times (1357T^4 + 2468)
+\]
+by Karatsuba
+\begin{align*}
+(a T^4 + b) \times (c T^4 + d) &= A (T^4)^2 + D (T^4) + B \\
+A &= a b \\
+B &= b d \\
+C &= (a + b)(c + d) \\
+D &= C - A - B
+\end{align*}
+Next, we
+\textit{ again} apply Karasuba but this time to the products
+$a b, b d, (a + b)(c + d)$.
+Etc. 
+In other words you recursively use Karatsuba
+until the products involve numbers which are small enough
+that we can perform them quickly without Karatsuba,
+If we starting with the multiplication of two 8-digit numbers.
+We're left with three multiplications of 4-digit numbers.
+On applying Karasuba to the three multiplications of 4-digits numbers,
+each multiplication gives rise to 3 2-digit numbers.
+There are now $3 \times 3$ multiplications of 2-digit
+numbers.
+Going further, we get $3 \times 3 \times 3$ multiplication of 1-digit
+numbers.
+
+In general you see the following.
+Suppose we start off with multiplying two n-digit numbers
+and $n = 2^m$.
+We have:
+\begin{align*}
+&1 \text{ multiplication(s) of } 2^m\text{--digit numbers} \\
+&3 \text{ multiplication(s) of } 2^{m-1}\text{--digit numbers} \\
+&3^2 \text{ multiplication(s) of } 2^{m-2}\text{--digit numbers} \\
+&3^3 \text{ multiplication(s) of } 2^{m-3}\text{--digit numbers} \\
+&3^4 \text{ multiplication(s) of } 2^{m-4}\text{--digit numbers} \\
+&\ldots \\
+&3^m \text{ multiplication(s) of } 2^{m-m} = 1\text{--digit numbers}
+\end{align*}
+Note that we started with $n$-digit numbers, i.e., $n = 2^m$, 
+i.e., $m = \log n$
+($\log$ means $\log_2$, right?)
+This gives rise to $3^m = 3^{\log n}$ multiplications, i.e.
+\[
+3^{\log n} 
+= 3^\frac{\log_3 n}{\log_3 2} 
+= \left(
+3^{\log_3 n}
+\right)^\frac{1}{\log_3 2}
+= n^\frac{1}{\log_3 2}
+= n^\frac{1}{\log 2/\log 3}
+= n^{\log_2 3}
+= n^{1.58496...}
+\]
+multiplications
+which is a lot better than $n^2$ when $n$ is huge.
+(The process of adding the 3 numbers for each stage is no big deal.)
+Some details are missing in the above analysis.
+You can check the details for yourself.
+The big-O is correct. 
+
+Here's an example.
+Suppose we want to multiply
+\[
+1234 \times 1357
+\]
+
+\underline{Step 1: $(1234)(1357)$}.
+\begin{align*}
+(1234)(1357)
+&= (12T^2 + 34) \times (13T^2 + 57) \\
+&= A (T^2)^2 + D T^2 + B
+\end{align*}
+($T = 10$)
+where
+\begin{align*}
+a &= 12, \,\,\, b = 34, \,\,\, c = 13, \,\,\, d = 57 \\
+A &= a c = (12)(13)\\
+B &= b d = (34)(57)\\
+C &= (a + b) (c + d) = (46)(70)\\
+D &= C - A - B
+\end{align*}
+
+\underline{Step 2: $(12)(34)$}.
+\begin{align*}
+(12)(13) 
+&= (1T^1 + 2) \times (1T^1 + 3) \\
+&= A (T^1)^2 + D T^1 + B 
+\end{align*}
+where
+\begin{align*}
+a &= 1, \,\,\, b = 2, \,\,\, c = 1, \,\,\, d = 3 \\
+A &= a c = (1)(1) = 1\\
+B &= b d = (2)(3) = 6\\
+C &= (a + b) (c + d) = (3)(4) = 12\\
+D &= C - A - B = 12 - 1 - 6 = 5
+\end{align*}
+So
+\begin{align*}
+(12)(34) = 1(T^1)^2 + 5T^1 + 6 = 100 + 50 + 6 = 156 
+\end{align*}
+
+\underline{Step 3: $(34)(57)$}
+\[
+(34)(57) = (3T^1 + 4) \times (5T^1 + 7) =  A(T^1)^2 + DT^1 + B 
+\]
+where
+\begin{align*}
+a &= 3, \,\,\, b = 4, \,\,\, c = 5, d = 7 \\
+A &= a c = (3)(5) = 15\\
+B &= b d = (4)(7) = 28\\
+C &= (a + b) (c + d) = (7)(12) = 84\\
+D &= C - A - B = 84 - 15 - 28 = 41
+\end{align*}
+So
+\begin{align*}
+(34)(57) = 15(T^1)^2 + 41T^1 + 28 = 1500 + 410 + 28 = 1938 
+\end{align*}
+
+\underline{Step 4: $(46)(70)$}.
+\[
+(46)(70) 
+= (4T^1 + 6) \times (7T^1 + 0) = A(T^1)^2 + DT^1 + B 
+\]
+where
+\begin{align*}
+a &= 4, \,\,\, b = 6, \,\,\, c = 7, \,\,\, d = 0 \\
+A &= a c = (4)(7) = 28\\
+B &= b d = (6)(0) = 0\\
+C &= (a + b) (c + d) = (10)(7) = 70\\
+D &= C - A - B = 70 - 28 - 0 = 42
+\end{align*}
+So
+\begin{align*}
+(46)(70) = 28(T^1)^2 + 42T^1 + 0 = 2800 + 420 + 0 = 3220 
+\end{align*}
+
+Putting Steps 2,3,4 back into Step 1 ...
+
+\underline{Continuing Step 1: (1234)(1357)}.
+\begin{align*}
+(1234)(1357)
+&= (12T^2 + 34) \times (13T^2 + 57) \\
+&= A (T^2)^2 + D T^2 + B
+\end{align*}
+where
+\begin{align*}
+a &= 12, \,\,\, b = 34, \,\,\, c = 13, \,\,\, d = 57 \\
+A &= (12)(13) = 156    & & \text{from Step 1}\\
+B &= (34)(57) = 1938   & & \text{from Step 2} \\
+C &= (46)(70) = 3220   & & \text{from Step 3} \\
+D &= C - A - B = 3220 - 156 - 1938 = 1126
+\end{align*}
+and
+\begin{align*}
+(1234)(1357)  
+&= A(T^2)^2 + D T^2 + B \\
+&= 156(T^2)^2 + 1126 T^2 + 1938 \\
+&= 1560000 + 112600 + 1938 \\
+&= 1674538
+\end{align*}
+
+Now if you go back and look for the multiplications you see these:
+\begin{align*}
+(1)(1) &= 1\\
+(2)(3) &= 6\\
+(3)(4) &= 12\\
+(3)(5) &= 15\\
+(4)(7) &= 28\\
+(7)(12) &= 84\\
+(4)(7) &= 28\\
+(6)(0) &= 0\\
+(10)(7) &= 70\\
+\end{align*}
+i.e., $9 = 3^2$ multiplications if we multiply two 
+integers of length $n = 2^2$.
+High-school multiplication would require $n^2 = (2^2)^2 = 16$
+multiplications.
+
+
+Now let us compute the runtime of Karatsuba's algorithm:
+
+\begin{prop}
+  The runtime of Karatsuba is $O(n^{\lg 3}) = O(n^{1.5849...})$
+  where $n$ is the length of the integers to be multiplied.
+\end{prop}
+\proof
+From
+\[
+(aT + b)(cT + d) = (ac)T^2 + [(a+b)(c+d) - (ac) - (bd)]T + (bd)
+\]
+if $T(n)$ is the runtime where $n$ is the number of digits in the
+two integers to be multiplied, we have
+\[
+T(n) = 3T(n/2) + An + B
+\]
+Let $n = 2^k$. Then
+\begin{align*}
+  T(2^k)
+  &= 3T(2^{k-1}) + A2^k + B \\
+  &= 3(3T(2^{k-2}) + A2^{k-1} + B) + A2^k + B \\
+  &= 3^2T(2^{k-2}) + (3\cdot 2^{k-1} + 2^k)A + (3 + 1)B \\
+  &= 3^2(3T(2^{k-3}) + A2^{k-2} + B) + (3\cdot 2^{k-1} + 2^k)A + (3 + 1)B \\
+  &= 3^3T(2^{k-3}) + (3^2\cdot 2^{k-2} + 3\cdot 2^{k-1} + 2^k)A + (3^2 + 3 + 1)B \\
+  &= \cdots \\
+  &= 3^kT(2^{k-k})
+  + (3^{k-1}\cdot 2 + \cdots + 3^2\cdot 2^{k-2} + 3\cdot 2^{k-1} + 2^k)A
+  + (3^{k-1} + \cdots + 3^2 + 3 + 1)B 
+\end{align*}
+The coefficient of $B$ is $\displaystyle \frac{3^k - 1}{2}$.
+The coeffcient of $A$ is
+\begin{align*}
+  3^{k-1}\cdot 2 + \cdots + 3^2\cdot 2^{k-2} + 3\cdot 2^{k-1} + 2^k
+  =
+  2 ( 3^{k-1}\cdot 2^0 + \cdots + 3^2\cdot 2^{k-3} + 3^1\cdot 2^{k-2} + 3^0 \cdot 2^{k-1} )
+\end{align*}
+This is a convolution and is the coeffcient of $x^{k - 1}$ of
+\begin{align*}
+  2 \cdot \sum_{n \geq 0} 3^n x^n \cdot \sum_{n \geq 0} 2^n x^n
+  &=
+  2 \cdot \frac{1}{1 - 3x} \cdot \frac{1}{1 - 2x} \\
+  &=
+  2 \left( \frac{3}{1 - 3x} + \frac{-2}{1 - 2x} \right)\\
+  &=
+  2 \left( 3 \sum_{n \geq 0} 3^n x^n -2 \sum_{n \geq 0} 2^n x^n \right) \\
+  &=
+  \sum_{n \geq 0} 2(3^{n+1} - 2^{n+1}) x^n 
+\end{align*}
+Hence
+\[
+T(2^k) = 3^k C + 2(3^k - 2^k) A + \frac{3^k - 1}{2} B
+\]
+where $C = T(1)$.
+Since $n = 2^k$, we have
+$3^k = 2^{\log_2 3^k} = 2^{k \log_2 3} = (2^k)^{\log_2 3} = n^{\log_2 3}$.
+Therefore
+\begin{align*}
+  T(n)
+  &= n^{\log_2 3} C + 2(n^{\log_2 3} - n) A + \frac{n^{\log_2 3} - 1}{2} B \\
+  &= (C + 2A + B/2) n^{\log_2 3} - 2A n - B/2 \\
+  &= O(n^{\log_2 3}) \\
+  &= O(n^{1.5849...})
+\end{align*}
+\qed
+
+The above result is the same whether you view your integer as an array
+of decimals or as an array of bits.
+
+It's a good exercise to implement Karatsuba on your own.
+I did some number theory crunching programming during the
+summer of my freshman
+year and a prof gave me a copy of the original 
+paper published by Karatsuba.
+(Karatsuba's paper has since inspired several improvements.)
+As you see from the above, the amount of math that you need to know
+is pretty minimal.
+Basically the ingredients are
+\[
+(aT + b)(cT + d) = acT^2 + (ad + bc)T + bd
+\]
+(which is not new) and this (which is new):
+\begin{align*}
+(a+b)(c+d) &= ac + ad + bc + bd \\
+\THEREFORE \,\,\, (a+b)(c+d) - ac - bd &= ad + bc
+\end{align*}
+
+There are various obvious optimizations which only tweaks the
+constants of your big-O, but not the big-O itself. 
+For instance if you look at this addition:
+\begin{align*}
+(1234)(1357)  
+&= A(T^2)^2 + D T^2 + B \\
+&= 156(T^2)^2 + 1126 T^2 + 1938 \\
+&= 1560000 + 112600 + 1938 \\
+&= 1674538
+\end{align*}
+you'll see that you are adding $1560000$ with another number $112600$.
+There are some zeroes in $112600$.
+So you might want to have a function that adds say $1126$ to an integer
+starting at the 100s digit position.
+This will speed up for instance adding to an integer $123456789123456789$, 
+the number
+$123000000000000$:
+\begin{Verbatim}
+          123456789123456789
+        +    123000000000000
+        --------------------
+
+        --------------------
+               ^
+               |
+               start column addition here
+\end{Verbatim}
+
+Another thing to note is that our computers are mostly 32 bit machines.
+If you're using an array of integers to model long integers,
+you only want to cut up the integers up to a certain point, and not
+to the digit-level.
+For instance you might want to model your long integers
+with arrays of 16-bit integers.
+Note that the process of cutting up the integers into pieces
+takes time.
+In fact when the number of digits is small, highschool multiplication
+might be faster.
+Therefore you want to write your code in such as way that 
+if the length of the integers is less than a certain constant,
+then highschool multiplication is used;
+if the length is greater than this constant, then Karatsuba is used.
+That's what I did.
+
+(The language I used long long long time ago to do Karatsuba
+was Pascal.
+Each element of the array models 0 to 999.
+I found through timed testing that if the array has length $\leq 5$,
+then highschool multiplication was actually faster.
+This is of course machine specific.
+This explains why when you install some number crunching libraries,
+before the installation is completed, it will tests the code to tweak
+such constants for maximum performance.)
+
+OK. 
+Enough hints.
+You should go ahead and write a long integer package that 
+incorporates 
+Karatsuba for multiplication.
+
+\input{exercises/rsa-30/main.tex}
+\input{exercises/rsa-31/main.tex}
+\input{exercises/rsa-32/main.tex}
+\input{exercises/rsa-33/main.tex}

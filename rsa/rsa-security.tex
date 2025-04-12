@@ -1,0 +1,233 @@
+\sectionthree{RSA security}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+First of all Bob has to be able to select two primes. Note that
+the primes must be large. 
+
+Why? 
+
+First of all note that Eve has $(N,e)$ since it is the public key.
+What does Eve want?
+She wants the decryption key $(N, d)$ in order to decrypt messages, i.e.,
+she wants $d$.
+Both $e$ and $d$ are integers in mod $\phi(N)$, i.e., $0 < d < \phi(N)$. 
+Recall that
+\[
+ \phi(N) = N \prod_{p \mid N } \biggl( 1 - \frac{1}{p}\biggr)
+\]
+For the case $N = pq$, 
+\[
+\phi(N) = (p-1)(q-1)
+\]
+Therefore if Eve has $p$ and $q$, she can compute
+$\phi(N)$.
+After that she can compute the multiplicative inverse of 
+$e$ mod $\phi(N)$ using the Extended Euclidean algorithm.
+Therefore Eve might try to factor $N$ to get $p$ and $q$ in order to get $\phi(N)$.
+
+The obvious brute force method is to try to divide $N$ by 2, 3, $\ldots$.
+So in summary here's what Eve might want to try:
+
+\textsc{Eve's Dream 1}.
+\begin{tightlist}
+\item[1.] Factor $N$ to obtain $p$ and $q$
+\item[2.] Compute $\phi(N) = (p-1)(q-1)$
+\item[3.] Compute the multiplicative inverse $d$ of $e$ in mod $\phi(N)$ using
+ the Euclidean algorithm.
+\end{tightlist}
+
+Note that the only reason why she needs $p$ and $q$ is so that she can compute 
+$\phi(N)$.
+What if somehow Eve got a hold of $\phi(N)$?
+Then she can proceed onto step 3.
+She doesn't really care about the primes $p$ and $q$ in this case.
+The important is to compute $d$.
+And to compute $d$ she needs to know $\phi(N)$.
+
+\textsc{Eve's Dream 2}.
+\begin{tightlist}
+\item[1.] Compute $\phi(N)$ from $N$
+\item[2.] Compute the multiplicative inverse $d$ of $e$ in mod $\phi(N)$ using
+ the Euclidean algorithm.
+\end{tightlist}
+
+So here's an important question:
+\textit{Is there a way to compute $\phi(N)$ without factorizing $N$?}
+
+
+There's no known fast way to computing $\phi(N)$ from $N$
+other than by definition
+or through the factorization $N$.
+Without the above, Eve is back to square 1, i.e., 
+she has to factorize $N$.
+And since the naive approach is to try to divide $N$ by $2, 3, 4, \ldots$,
+the goal of Bob (who's setting up the RSA parameters) is to make sure that $p$
+and $q$ are huge primes.
+
+\input{exercises/rsa-03/main.tex}
+ 
+However ... the interesting thing is this:
+If Eve has $N = pq$ and $\phi(N)$,
+she can very quickly compute the primes $p$ and $q$.
+Why?
+
+\input{exercises/rsa-04/main.tex}
+
+\begin{comment}
+Note that for $N = pq$
+\[
+\phi(N) = (p-1)(q-1) = pq - (p+q) + 1
+\]
+You see the sum and product of $p$ and $q$.
+The sum and product of two quantities appear in a
+\textit{very} familiar 
+context.
+Hmmm ... where have we seen this before?
+Look at this:
+\[
+(x - a)(x - b) = x^2 - (a+b)x + (ab)
+\] 
+The sum and product of roots of a quadratic equation appears in the 
+coefficients
+of the polynomial (if the leading coefficient is 1).
+For our case we have
+\[
+(x-p)(x-q) = x^2 - (p+q)x + (pq)
+\]
+But $pq = N$ and 
+from
+\[
+\phi(N) = pq - (p+q) + 1
+\]
+we have
+\[
+p+q = pq - \phi(N) + 1 = n - \phi(N) + 1
+\]
+Putting this into our polynomial we get
+\begin{align*}
+(x-p)(x-q) 
+&= x^2 - (p+q)x + (pq) \\
+&= x^2 - (N - \phi(N) + 1)x + N
+\end{align*}
+The point: the polynomial $(x-p)(x-q)$ has coefficients that depends only on 
+$N$ and $\phi(N)$.
+
+So what does this mean for Eve?
+If she has $N$ and $\phi(N)$, she can write down the polynomial
+\begin{align*}
+x^2 - (N - \phi(N) + 1) + N
+\end{align*}
+She can also solve for the roots of this polynomial (using the quadratic 
+equation formula)
+and therefore obtain the primes of $N$.
+\end{comment}
+
+
+Hence Bob must be able to generate large random primes in order to not let Eve
+factorize $N$.
+This is the main attack on RSA: Factorization of $N$.
+
+Well ... \lq\lq large'' is kind of vague.
+Just how big do we need the primes to be?
+
+Suppose you have two primes of roughly 100 digits each.
+Multiplying them together you get a number $n$ that roughly 200 digits long, 
+i.e. $10^{200}$.
+Suppose Eve can divide such a number by a trial divisor really fast, say she 
+can perform such divisions
+at a rate of $1,000,000,000$ per second, i.e. $10^9$ per second.
+She would need to try the numbers up to roughly the square root of $10^{200}$,
+ i.e. $10^{100}$.
+In terms of number of years the amount of time needed is
+\[
+10^{100} / 10^9 / (60 \cdot 60 \cdot 24 \cdot 365)
+\]
+which is
+\[
+{\scriptsize 317097919837645865043125317097919837645865043125317097919837645865043125317097919837}
+\]
+i.e., roughly $10^{85}$ years (give or take a century or two!)
+She won't be around that long.
+In general, this methods requires
+$O(n^{1/2})$ divisions.
+
+There are many intricate factorization algorithms
+other than brute force testing 2, 3, 5, ...: quadratic
+sieve, elliptic curve factorization, number field sieve,
+generalized number field sieve, etc. 
+The fastest method known is the generalized number field sieve (GNFS)
+with a expected runtime of
+\[
+  e^{(c + o(1)) (\ln n)^{1/3} (\ln \ln n)^{2/3}}
+\]
+where $c = (64/9)^{1/3}$.
+It is superpolynomial (more than polynomial)
+and subexponential (less than exponential).
+(Example:
+$n^2$ is polynomial,
+$2^n$ is exponential, 
+but $2^{\sqrt{n}}$ is greater than polynomial
+but less than exponential.)
+The $o(1)$ means a number that becomes 0 when $n$ grows.
+Formally $f(n) = o(1)$ means
+for any constant $c \neq 0$,
+$f(n)/c \rightarrow 0$ as $n \rightarrow \infty$.
+For instance $1/n = o(1)$.
+
+In general public key cryptosystems
+(and some other security protocols)
+involve the solution of some complex
+mathematical problem. In the case of RSA, the hard problem is
+integer factorization. In order to gain credence, such companies
+usually publish challenges on their web site. For instance if you
+go to
+\url{http://www.rsasecurity.com/rsalabs/node.asp?id=2093}
+you'd find a list of number for you to factorize. The latest
+challenge to be factored was the RSA-576 number, a 576-bit or
+174-digit number. It was broken in December 2003. The prize for
+factoring RSA-576 was \$10,000. The next challenge is RSA-640:
+\begin{align*}
+ & 31074 18240 49004 37213 50750 03588 85679 30037 34602 28427 \\
+ & 27545 72016 19488 23206 44051 80815 04556 34682 96717 23286 \\
+ & 78243 79162 72838 03341 54710 73108 50191 95485 29007 33772 \\
+ & 48227 83525 74238 64540 14691 73660 24776 5234 6609
+\end{align*}
+This challenge is worth \$30,000. If this is too small for you you
+can try the largest RSA challenge, RSA-2048:
+\begin{align*}
+& 25195908475657893494027183240048398571429282126204 \\
+& 03202777713783604366202070759555626401852588078440 \\
+& 69182906412495150821892985591491761845028084891200 \\
+& 72844992687392807287776735971418347270261896375014 \\
+& 97182469116507761337985909570009733045974880842840 \\
+& 17974291006424586918171951187461215151726546322822 \\
+& 16869987549182422433637259085141865462043576798423 \\
+& 38718477444792073993423658482382428119816381501067 \\
+& 48104516603773060562016196762561338441436038339044 \\
+& 14952634432190114657544454178424020924616515723350 \\
+& 77870774981712577246796292638635637328991215483143 \\
+& 81678998850404453640235273819513786365643912120103 \\
+& 97122822120720357
+\end{align*}
+This baby is worth \$200,000.
+
+
+In order to defeat certain factorization techniques, researchers
+have suggested the following guidelines for key generation:
+\begin{enumerate}
+ \item $pq$ should have at least $1024$ bits.
+ \item $p$ and $q$ should have roughly the same size
+ \item Both $p-1$ and $q-1$ should have a large prime factor
+ \item $\gcd(p-1,q-1)$ should be small
+ \item $d > n^{0.292}$
+\end{enumerate}
+
+Integer factorization and RSA security is obviously a very hot
+area of research since it is used so widely. You can find many
+theoretical results on attacking RSA online. For instance if $pq$
+has $n$ bits and Eve knows either the least significant or most
+significant $n/4$ bits, then she can factorize $pq$. If you want
+to learn more about number theory and RSA talk to me.
+

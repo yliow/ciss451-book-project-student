@@ -1,0 +1,755 @@
+\sectionthree{Fermat primality test}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\newcommand\abcde{$\texttt{a}^\texttt{n - 1} \not\equiv \texttt{1} \ \texttt{(mod n)}$}
+
+Recall that Fermat's Little Theorem says
+that 
+\[
+  \text{$p$ prime}, \,\,\,
+  p \nmid a \implies a^{p-1} \equiv 1 \pmod{p}
+\]
+I can also say that if $1 \leq a \leq p - 1$,
+\[
+\text{$p$ prime}
+\implies
+a^{p-1} \equiv 1 \pmod{p}
+\]
+And of course we have:
+if
+$1 \leq a \leq p - 1$,
+\[
+\text{$p$ not prime}
+\impliedby
+a^{p-1} \not\equiv 1 \pmod{p}
+\]
+Replacing \lq\lq $p$" by \lq\lq $n$",
+we have the following:
+
+\begin{prop} \textnormal{(\defone{Fermat compositeness test})}
+If there is some $a$ such that $1 \leq a \leq n - 1$ and 
+\[
+a^{n-1} \not\equiv 1 \pmod{n}
+\]
+then $n$ is composite.
+\end{prop}
+
+Although the proposition above is true in general,
+when used in an algorithm, there are several cases that we want to remove.
+\begin{enumerate}[nosep]
+\item
+  Obviously $a = 1$ does not satisfy the hypothesis of the proposition.
+  Therefore the interval for $a$ should be $[2, n-1]$ instead of $[1, n-1]$.
+\item
+  Also, the hypothesis does not hold if $a = n-1$ and $n$ is odd.
+  For the case when $n$ is even, either $n = 2$ or $n = 2k$ where $k > 1$.
+  If the goal is to show $n$ is composite, the case of $n = 2$ and
+  $n = 2k$ where $k > 1$ can be checked quickly.
+  Therefore the only useful scenario to use the proposition if now
+  when $n$ is odd and $a \in [2, n-2]$.
+\item
+  For the condition \lq\lq $2 \leq a \leq n - 2$" to have any $a$ at
+  at all, we need $2 \leq n - 2$, i.e., $n \geq 4$.
+\end{enumerate}
+Altogether the proposition is useful in an algorithm
+when $n > 3$ is odd and when $a \in [2, n - 2]$.
+
+\begin{Verbatim}[frame=single,fontsize=\footnotesize,commandchars=\\\{\}]
+ALGORITHM: Fermat-compositeness-test
+INPUTS: n -- number to be tested for compositeness
+        t -- number of tries
+OUTPUT: "n is composite" if n is composite
+
+if n <= 2: return "n is not composite"
+if n % 2 is 0 and n / 2 > 1: return "n is composite"
+
+for i = 1, 2, 3, ..., t:
+    pick random a in [2, n - 2]
+    if \abcde return "n is composite"
+
+return "no conclusion"
+\end{Verbatim}
+Note that if you return \verb!"no conclusion"!, it means either $n$
+is prime or $n$ is composite but unfortunately your random
+$a$ did not pick an $a$ satisfying
+$a^{n-1} \not\equiv 1 \pmod{n}$.
+
+\begin{defn}
+  Suppose $n$ is composite and let $a \in [1, n-1]$.
+  If $a$ satisfies
+  \[
+  a^{n - 1} \not\equiv 1 \pmod{n}
+  \]
+  then $a$ is called a \defone{Fermat witness} for the compositeness of $n$.
+  Otherwise, if
+  \[
+  a^{n - 1} \equiv 1 \pmod{n}
+  \]
+  then $a$ is called a \defone{Fermat liar}.
+  The curious reason for calling such an $a$ a liar will be clarified later.
+\end{defn}
+
+Note that the above test tells you that $n$ is composite
+\textit{without} factoring $n$.
+Let's compare the above Fermat compositeness test to other compositeness test.
+\begin{enumerate}[nosep]
+  \li Division compositeness test:
+  Randomly pick $a$ such that $2 \leq a \leq \floor{\sqrt{n}}$.
+  If $a$ divides $n$, then $n$ is a composite.
+  If the chance of finding $a$ is low, then one would have to
+  run $a$ through $[2, \floor{\sqrt{n}}]$.
+  In general, iteration rather than randomization is used.
+  \li GCD compositeness test:
+  Randomly pick $a$ such that $2 \leq a \leq \floor{\sqrt{n}}$,
+  if $\gcd(a, n) > 1$, then
+  $n$ is composite.
+  If the chance of finding $a$ is low, then one would have to
+  run $a$ through $[2, \floor{\sqrt{n}}]$.
+\end{enumerate}
+Note that in both of these tests, a divisor of $n$ is found.
+The speed of the above three compositeness tests depends on how fast we can
+find some $a$ satisfying some condition in the test.
+
+To better understand the condition
+\[
+a^{n-1} \equiv 1 \pmod{n}
+\]
+where $a \in [2, n - 2]$, here's a table:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+   3 1  None 1 ...
+   4 0   0.0 0 ..0.
+   5 1   1.0 1 ..11.
+   6 0   0.0 0 ..000.
+   7 1   1.0 1 ..1111.
+   8 0   0.0 0 ..00000.
+   9 0   0.0 0 ..000000.
+  10 0   0.0 0 ..0000000.
+  11 1   1.0 1 ..11111111.
+  12 0   0.0 0 ..000000000.
+  13 1   1.0 1 ..1111111111.
+  14 0   0.0 0 ..00000000000.
+  15 0  0.17 0 ..001000000100.
+  16 0   0.0 0 ..0000000000000.
+  17 1   1.0 1 ..11111111111111.
+  18 0   0.0 0 ..000000000000000.
+  19 1   1.0 1 ..1111111111111111.
+  20 0   0.0 0 ..00000000000000000.
+  21 0  0.11 0 ..000000100001000000.
+  22 0   0.0 0 ..0000000000000000000.
+  23 1   1.0 1 ..11111111111111111111.
+  24 0   0.0 0 ..000000000000000000000.
+  25 0  0.09 0 ..0000010000000000100000.
+  26 0   0.0 0 ..00000000000000000000000.
+  27 0   0.0 0 ..000000000000000000000000.
+  28 0  0.08 0 ..0000000100000000000000010.
+  29 1   1.0 1 ..11111111111111111111111111.
+  30 0   0.0 0 ..000000000000000000000000000.
+  31 1   1.0 1 ..1111111111111111111111111111.
+  32 0   0.0 0 ..00000000000000000000000000000.
+  33 0  0.07 0 ..000000001000000000000100000000.
+  34 0   0.0 0 ..0000000000000000000000000000000.
+  35 0  0.06 0 ..00001000000000000000000000010000.
+  36 0   0.0 0 ..000000000000000000000000000000000.
+  37 1   1.0 1 ..1111111111111111111111111111111111.
+  38 0   0.0 0 ..00000000000000000000000000000000000.
+  39 0  0.06 0 ..000000000000100000000001000000000000.
+  40 0   0.0 0 ..0000000000000000000000000000000000000.
+  41 1   1.0 1 ..11111111111111111111111111111111111111.
+  42 0   0.0 0 ..000000000000000000000000000000000000000.
+  43 1   1.0 1 ..1111111111111111111111111111111111111111.
+  44 0   0.0 0 ..00000000000000000000000000000000000000000.
+  45 0  0.14 0 ..000000100000000101000000101000000001000000.
+  46 0   0.0 0 ..0000000000000000000000000000000000000000000.
+  47 1   1.0 1 ..11111111111111111111111111111111111111111111.
+  48 0   0.0 0 ..000000000000000000000000000000000000000000000.
+  49 0  0.09 0 ..0000000000000000110000000000110000000000000000.
+  50 0   0.0 0 ..00000000000000000000000000000000000000000000000.
+\end{Verbatim}
+Here are the descriptions of the columns:
+\begin{enumerate}[nosep]
+  \li First column: $n$
+  \li Third column: 1--prime, 0--composite
+  \li Fifth column: sequence of boolean values for
+  $a^{n-1} \equiv 1 \pmod{n}$
+  where $a = 0, 1, 2, ..., n - 1$, except that if
+  $a$ is not in $[2, n-2]$,
+  the value is \lq\lq ." to indicate \lq\lq not applicable".
+  The \lq\lq not applicable" values are $a = 0, 1, n-1$.
+  \li Second column: The percentage of \lq\lq 1"s in the fourth column
+  (not counting the \lq\lq not applicable" cases).
+  \li Third column: 1--percentage of witnesses is 0\%, 0--otherwise.
+  \li Fourth column: 1--if values in fifth column are all 1.
+  (Ignore this for now.)
+\end{enumerate}
+Of course when $n$ is prime, the sequence of boolean values are all
+\lq\lq $1$"s.
+Now let us focus on the composite $n$'s.
+
+For $n = 15$:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+  15 0  0.17 0 ..001000000100.
+\end{Verbatim}
+there are 10 Fermat witnesses for the compositeness of $15$
+(i.e., 2, 3, 5, 6, 7, 8, 9, 10, 12, 13)
+and 2 Fermat liars (i.e., 4, 11).
+For instance $2$ is a Fermat witness since
+\[
+2^{15 - 1} = 2^{14} = (2^4)^3 \cdot 2^2 = (16)^3 \cdot 4 \equiv 1^3 \cdot 4 = 4 \not\equiv 1 \pmod{16}
+\]
+and $4$ is a Fermat liar since
+\[
+4^{15 - 1} = 4^{14} = (4^2)^7 = (16)^7 \equiv 1^7 = 1 \pmod{16}
+\]
+The percentage of Fermat liars (among integers $a \in [2, 13]$) is $17\%$.
+Therefore there are more Fermat witnesses than Fermat liars.
+In fact, when $n$ is composite,
+the fact that there are more Fermat witnesses than not seems to be very common.
+The first time the percentage of Fermat liars is $> 50\%$ is
+when $n = 561$ (at $57\%$).
+
+This means that when $n$ is composite
+and we randomly pick an $a$ such that $a \in [2, n-2]$,
+the chance that $a$ is a Fermat witness to $n$'s compositeness
+seems be to very high.
+The percentage of Fermat witnesses will be quantified later.
+
+\input{exercises/rsa-18/main.tex}
+
+Compared to the brute force division compositeness test,
+suppose $n = pq$ with $p < q$,
+then in $[2, \floor{\sqrt{n}}]$, there's only one divisor.
+For instance if $n = 11 \cdot 13 = 143$, $[2, \floor{\sqrt{n}}] = [2, 11]$.
+and the only divisor of $n$ in this interval is $11$.
+The percentage of finding a divisor (with one try) in this case is $10\%$.
+The chance of finding some $a$ such that $\gcd(a, n) > 1$ is the same.
+If $n = pq$ where $q$ is much larger than $p$, then the GCD compositeness
+test has a better change of finding a good $a$, because
+$a = p, 2p, 3p, ...kp$ would work where $kp$ is the largest integer
+$\leq \sqrt{pq}$.
+For instance is $n = 2 \cdot 13$, then $a = 2, 4 \leq \floor{\sqrt{2 \cdot 13}} = 5$ works
+so the number of good $a$s is $2/4 = 50\%$.
+However if you look at the table above, you will see that for $n = 26$,
+the percentage of Fermat witness is $100\%$.
+
+For Fermat compositeness test, from the above table,
+the entry for $n = 143$ is
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+143 0  0.01 0 ..0000000000100000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000100
+00000000.
+\end{Verbatim}
+There's a $99\%$ chance of finding a Fermat witness (with one try).
+
+\input{exercises/rsa-19/main.tex}
+\input{exercises/rsa-20/main.tex}
+
+The above Fermat compositeness test tells you when $n$ is a composite.
+It does not tell you if $n$ is a prime.
+One can ask if the following is true: 
+\[
+a^{n-1} \equiv 1 \pmod{n} \implies n \text{ is prime}
+\]
+if $n$ is odd and $a \in [2, n-2]$.
+This is clearly not true.
+For instance in the above data for $n = 143$, you see that
+there are two Fermat liars, the first being $a = 12$:
+\[
+12^{143 - 1} = 12^{142} = (12^2)^{71} = 144^{71} \equiv 1^{71} = 1 \pmod{143}
+\]
+The first composite $n$ to have a Fermat liar is $n = 15$, where the liar is $a = 4$:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+15 0  0.17 0 ..001000000100.
+\end{Verbatim}
+\[
+4^{15 - 1} = 4^{14} = 16^7 \equiv 1^7 \equiv 1 \pmod{15} 
+\]  
+In this case,
+we say that $15$ is a
+\defterm{Fermat pseudoprime}\index{Fermat pseudoprime}
+and
+$4$ is a
+\defterm{Fermat liar}\index{Fermat liar}\tinysidebar{Fermat liar \\ Fermat pseudoprime \\ base}
+for $15$.
+(Sometimes $4$ is called a
+\defterm{base}\index{base} for $15$.)
+Why is $15$ called a pseudoprime and $4$ is a liar?
+The fact
+\[
+4^{15 - 1} \equiv 1 \pmod{15} 
+\]
+is very similar to Fermat Little Theorem where the modulus is a prime $p$ and $p \nmid a$:
+\[
+a^{p - 1} \equiv 1 \pmod{p} 
+\]
+$4$ and $15$ are trying to trick you into thinking that $15$ is like a prime. 
+
+Note that if $a$ is a Fermat liar, then it is invertible:
+
+\begin{prop}
+  \mbox{}
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+    \item
+      If $a$ is a Fermat liar for composite $n$,
+      then $a$ is invertible mod $n$, i.e., $\gcd(a, n) = 1$.
+    \item
+      Therefore if $\gcd(a, n) > 1$, then $a$ cannot be a Fermat liar.
+      In other words, if $\gcd(a, n) > 1$, then $a$ is a Fermat witness.
+  \end{enumerate}
+\end{prop}
+\proof
+(a)
+TODO
+
+(b) This follows from (a).
+\qed
+
+Therefore for $a \in [0, n-1]$ (although for compositeness testing
+we are only interested in the case when $n > 3$ is odd and $a \in [2, n-2]$):
+\begin{enumerate}
+  \item $a$ is a Fermat witness and $\gcd(a, n) = 1$
+  \item $a$ is a Fermat witness and $\gcd(a, n) > 1$
+  \item $a$ is a Fermat liar (and in this case $\gcd(a, n) = 1$)
+\end{enumerate}
+So in the above table, to be \lq\lq fair" to Fermat liar,
+if one is interested in comparing the number of
+Fermat liars against Fermat witnesses for $n$,
+sometimes one can temporarily ignore the $a$ such that
+$\gcd(a, n) > 1$.
+If we do this, then
+there are composite numbers $n$ where \textit{every} $a$ in $[2, n-2]$
+such that $\gcd(a, n) = 1$ is a Fermat liar for $n$.
+Such an $n$ is called a \defone{Carmichael number}.
+
+Let me collect all these definitions below.
+
+\begin{defn}
+  Let $n$ be a composite.
+  Then
+  \begin{enumerate}[nosep]
+  \item[(a)] $n$ is a
+    \defterm{Fermat pseudoprime}\index{Fermat pseudoprime}\tinysidebar{Fermat pseudoprime}
+    if $n$ is not a prime and 
+    if there is some $a \in [2, n-2]$ such that 
+    \[
+    a^{n-1} \equiv 1 \pmod{n}
+    \]
+    In this case, we say that $a$ is a
+    \defone{Fermat liar} for $n$.
+    ($a$ is also called a \defone{base} for $n$.)
+  \item[(b)] $n$ is a \defone{Carmichael number}
+    if every $a \in [2, n-2]$ such that $\gcd(a, n) = 1$
+    is a Fermat liar for $n$, i.e., for all such $a$,
+    \[
+    a^{n-1} \equiv 1 \pmod{n}
+    \]
+  \end{enumerate}
+\end{defn}
+
+The following is similar to the earlier table:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+   3 1  None 1 ...
+   4 0  None 1 ....
+   5 1   1.0 1 ..11.
+   6 0  None 1 ......
+   7 1   1.0 1 ..1111.
+   8 0   0.0 0 ...0.0..
+   9 0   0.0 0 ..0.00.0.
+  10 0   0.0 0 ...0...0..
+  11 1   1.0 1 ..11111111.
+  12 0   0.0 0 .....0.0....
+  13 1   1.0 1 ..1111111111.
+  14 0   0.0 0 ...0.0...0.0..
+  15 0  0.33 0 ..0.1..00..1.0.
+  16 0   0.0 0 ...0.0.0.0.0.0..
+  17 1   1.0 1 ..11111111111111.
+  18 0   0.0 0 .....0.0...0.0....
+  19 1   1.0 1 ..1111111111111111.
+  20 0   0.0 0 ...0...0.0.0.0...0..
+  21 0   0.2 0 ..0.00..1.00.1..00.0.
+  22 0   0.0 0 ...0.0.0.0...0.0.0.0..
+  23 1   1.0 1 ..11111111111111111111.
+  24 0   0.0 0 .....0.0...0.0...0.0....
+  25 0  0.11 0 ..000.0100.0000.0010.000.
+  26 0   0.0 0 ...0.0.0.0.0...0.0.0.0.0..
+  27 0   0.0 0 ..0.00.00.00.00.00.00.00.0.
+  28 0   0.2 0 ...0.0...1.0.0.0.0.0...0.1..
+  29 1   1.0 1 ..11111111111111111111111111.
+  30 0   0.0 0 .......0...0.0...0.0...0......
+  31 1   1.0 1 ..1111111111111111111111111111.
+  32 0   0.0 0 ...0.0.0.0.0.0.0.0.0.0.0.0.0.0..
+  33 0  0.11 0 ..0.00.00.1..00.00.00..1.00.00.0.
+  34 0   0.0 0 ...0.0.0.0.0.0.0...0.0.0.0.0.0.0..
+  35 0  0.09 0 ..000.1.00.000..0000..000.00.1.000.
+  36 0   0.0 0 .....0.0...0.0...0.0...0.0...0.0....
+  37 1   1.0 1 ..1111111111111111111111111111111111.
+  38 0   0.0 0 ...0.0.0.0.0.0.0.0...0.0.0.0.0.0.0.0..
+  39 0  0.09 0 ..0.00.00.00..1.00.00.00.1..00.00.00.0.
+  40 0   0.0 0 ...0...0.0.0.0...0.0.0.0...0.0.0.0...0..
+  41 1   1.0 1 ..11111111111111111111111111111111111111.
+  42 0   0.0 0 .....0.....0.0...0.0...0.0...0.0.....0....
+  43 1   1.0 1 ..1111111111111111111111111111111111111111.
+  44 0   0.0 0 ...0.0.0.0...0.0.0.0.0.0.0.0.0.0...0.0.0.0..
+  45 0  0.27 0 ..0.0..01..0.00.01.1..00..1.10.00.0..10..0.0.
+  46 0   0.0 0 ...0.0.0.0.0.0.0.0.0.0...0.0.0.0.0.0.0.0.0.0..
+  47 1   1.0 1 ..11111111111111111111111111111111111111111111.
+  48 0   0.0 0 .....0.0...0.0...0.0...0.0...0.0...0.0...0.0....
+  49 0   0.1 0 ..00000.000000.000110.000000.011000.000000.00000.
+  50 0   0.0 0 ...0...0.0.0.0...0.0.0.0...0.0.0.0...0.0.0.0...0..
+\end{Verbatim}
+except that for the fifth column,
+an entry of \lq\lq ." is used to indicate \lq\lq not applicable",
+where \lq\lq not applicable" is when
+$a \in \{0, 1, n-1\}$ or when $\gcd(a, n) > 1$.
+The fourth column is $1$ if all values of $a \in [2, n - 1]$
+satisfying $\gcd(a, n) = 1$ are Fermat liars.
+In this case $n$ is a Carmichael number
+and the value for the third column (percentage of Fermat liars)
+is $1.0 = 100\%$.
+
+\input{exercises/rsa-21/main.tex}
+
+The first Carmichael number is $561$. Here's the row for $561$
+from the table:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+561 0   1.0 1 ..1.11.11.1..11.1..11..1.11.11.11..1.11.11.1..11.11.11..1.11
+.11.11.1..11.11.1..11.11..1..1.11.11.11.11.11.11.1..11.11.1...1.11.11.11.1
+1..1.11.1..11.11.11..1.11.11.11.11.1..11.1..11.11.11..1.11.11.11.11.11.11.
+1..11.11.11....11.11.11.11.11..1.1..11.11.11..1.11.11.11.11.11.1..1..11.11
+.11..1..1.11.11.11.11.11.1..11.11.11..1.1..11.11.11.11.11....11.11.11..1.1
+1.11.11.11.11.11.1..11.11.11..1.11..1.11.11.11.11.1..11.11.11..1.11.1..11.
+11.11.11.1...1.11.11..1.11.11.11.11.11.11.1..1..11.11..1.11.11..1.11.11.11
+.1..11.11.11..1.11.11.1..11.11.11.1..11..1.11..1.11.11.1.
+\end{Verbatim}
+
+The concept of Carmichael numbers was named after
+\href{https://en.wikipedia.org/wiki/Robert_Daniel_Carmichael}{Carmichael}
+because of a 1910 paper he wrote.
+However the defining property of a Carmichael number was studied as far back
+as at least 1885.
+For instance the first 6 Carmichael numbers (including 561) were
+first discovered by
+\href{https://en.wikipedia.org/wiki/V%C3%A1clav_%C5%A0imerka}{\v{S}imerka}
+in 1885.
+In his 1910 paper,
+Carmichael conjectured that there are infinitely many Carmichael numbers.
+This was not proven until 1994
+(see \url{https://math.dartmouth.edu/~carlp/PDF/paper95.pdf}).
+Here's the wikipedia entry for
+\href{https://en.wikipedia.org/wiki/Carmichael_number}{Carmichael numbers}.
+
+\input{exercises/rsa-22/main.tex}
+
+The above gives us a probabilistic primality test:
+if $n > 3$ and we pick $a \in [2, n-2]$ and we have
+\[
+a^{n-1} \equiv 1 \pmod{n}
+\]
+then $n$ is \lq\lq probably a prime".
+Why?
+Because
+\[
+a^{n-1} \equiv 1 \pmod{n}
+\]
+can occur in two ways:
+\begin{enumerate}[nosep]
+\item $n$ is a prime (the fact that $n \nmid a$ is guaranteed by the fact that
+  $n$ is prime and $a \in [2, n-2]$)
+\item $n$ is a Fermat pseudoprime and $a$ is Fermat liar for $n$
+\end{enumerate}
+From the first table, we see that most of the \lq\lq 1" occurs when
+$n$ is a prime.
+For a fixed $n$,
+the more $a$'s we try, the higher the probability that $n$ is prime,
+unless of course our $n$ has lots of liars.
+In particular, in the worse scenario, if $n$ is a Carmichael number,
+the test will say $n$ is very likely a prime when in fact it's not.
+
+Combining the Fermat compositeness test with the \lq\lq probably prime test",
+we now have:
+
+\begin{prop} \textnormal{(\defone{Fermat Primality Test})}
+  If there is some $a$ such that $1 \leq a \leq n - 1$ and
+  \[
+  a^{n-1} \not\equiv 1 \pmod{n}
+  \]
+  then $n$ is composite.
+  If there is some randomly chosen $a \in [2, n-2]$ such that 
+  \[
+  a^{n-1} \equiv 1 \pmod{n}
+  \]
+  then $n$ is \lq\lq probably a prime".
+\end{prop}
+
+Here's the Fermat primality test algorithm:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize,commandchars=\\\{\}]
+ALGORITHM: Fermat-primality-test
+INPUTS: n -- number to be tested for compositeness/primeness. Assume n >= 2.
+        t -- number of tries
+OUTPUT: "n is composite" or "n is probably prime" (after t tries)
+
+if n is 2: return "n is prime"
+if n % 2 is 0 and n / 2 > 1: return "n is composite"
+
+for i = 1, 2, 3, ..., t:
+    pick random a in [2, n - 2]
+    if \abcde return "n is composite"
+
+return "n is probably prime"
+\end{Verbatim}
+Note that we have not included the handling of $n \leq 1$.
+In general, primality tests are for handling cases when $n$ is large.
+We have added a note that $n$ is assumed to be $\geq 2$.
+
+Note that the first 2 checks (i.e., $n$ is even) can be omitted:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize,commandchars=\\\{\}]
+ALGORITHM: Fermat-primality-test
+INPUTS: n -- number to be tested for compositeness/primeness. Assume n >= 2.
+        t -- number of tries
+OUTPUT: "n is composite" or "n is probably prime" (after t tries)
+
+for i = 1, 2, 3, ..., t:
+    pick random a in [2, n - 2]
+    if \abcde return "n is composite"
+
+return "n is probably prime"
+\end{Verbatim}
+Why?
+Because if $n = 2$, then $[2, n - 2]$ is empty, which means that
+\texttt{"n is probably prime"} is returned.
+And if $n = 2k$ where $k > 1$, then $\gcd(a, n) > 1$
+whenever $a$ is even or when $a = k$.
+This means that more than half of the values in $[2, n-2]$
+are Fermat witnesses, so there is a strong likeliheed that
+\verb!"n is composite"! will be returned especially if $t > 1$.
+
+Note that when given an integer $n \geq 0$, either $n$ is a prime
+or it is not.
+The statement \lq\lq n is probably a prime" should actually be
+\lq\lq there's probably a value in $[2, n-2]$
+satisfying some condition".
+But the phrase \lq\lq n is probably a prime" has been in use for a long
+time and it's hard to break the usage.
+
+When comparing number of Fermat witnesses against Fermat liar,
+we can be a little bit more precise:
+
+\begin{prop}
+  Let $n$ be composite.
+  If there is a Fermat witness $w$ for $n$ such that $\gcd(w, n) = 1$, then
+  \[
+  |\{a \in [1, n - 1] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| > \frac{n - 1}{2}
+  \]
+\end{prop}
+\proof
+TODO
+\qed
+
+
+In the above proposition, the $a$ is an integer in $[1, n - 1]$.
+Remember that we usually test $a \in [2, n-2]$.
+Also, we usually assume $n > 3$ is odd.
+Note that $1^{n-1} \equiv 1 \pmod{n}$.
+Hence the above proposition implies
+\[
+|\{a \in [2, n - 1] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| > \frac{n - 1}{2}
+\]
+If $n$ is odd.
+Then $n - 1$ is even and $(n-1)^{n-1} \equiv (-1)^{n-1} \equiv 1 \pmod{n}$.
+Hence
+\[
+|\{a \in [2, n - 2] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| > \frac{n - 1}{2}
+\]
+Also, $(n - 1)/2$ is an integer.
+Therefore
+\[
+|\{a \in [2, n - 2] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| \geq \frac{n - 1}{2}
++ 1 = \frac{n + 1}{2} 
+\]
+The number of integer in $[2, n - 2]$ is $n - 2 - 1 = n - 3$.
+Therefore $>50\%$ of the values in $[2, n - 2]$ are Fermat witnesses.
+If $n$ is even.
+Then $n - 1$ is odd and $(n-1)^{n-1} \equiv (-1)^{n-1} \equiv -1 \pmod{n}$.
+\[
+|\{a \in [2, n - 2] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| + 1 > \frac{n - 1}{2}
+\]
+In this case $(n - 1)/2$ is not an integer.
+\[
+|\{a \in [2, n - 2] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| + 1
+\geq \frac{n - 1}{2} + \frac{1}{2}
+\]
+i.e.,
+\[
+|\{a \in [2, n - 2] \mid a^{n-1} \not\equiv 1 \pmod{n} \}|
+\geq \frac{n - 1}{2} - \frac{1}{2}
+= \frac{n - 2}{2}
+\]
+Together,
+\[
+|\{a \in [2, n - 2] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| >
+\begin{cases}
+  \displaystyle \frac{n + 1}{2} & \text{ if $n$ is odd} \\
+  \displaystyle \frac{n - 2}{2} & \text{ if $n$ is even}
+\end{cases}
+\]
+In both of the above cases
+\[
+|\{a \in [2, n - 2] \mid a^{n-1} \not\equiv 1 \pmod{n} \}| > \frac{n - 3}{2}
+\]
+i.e., more than 1/2 of the values in $[2, n - 2]$ are witnesses.
+
+Suppose $p$ is the probability of not finding a Fermat witness
+$a$ in $[2, n-2]$ for $n$.
+Assuming there is a Fermat witness $a$ with $\gcd(a, n) = 1$.
+From the above, more than half of the $a$ in $[2, n - 2]$ are Fermat
+witnesses for $n$.
+This means that $p < 0.5$.
+The probability of not finding a Fermat witness after $t$ tries is
+\[
+p^{t}
+\]
+Therefore the probability of finding a Fermat witness is
+\[
+1 - p^t
+\]
+For instance assuming $p = 0.5$, then $t=8$ tries,
+if no Fermat witness is found, the probability that $n$ is prime is
+\[
+1 - p^t > 1 - 0.5^8 = 0.99609375
+\]
+If $t = 10$, we have
+\[
+1 - p^t > 1 - 0.5^{10} = 0.9990234375
+\]
+And if $t = 20$, we reach
+\[
+1 - p^t > 1 - 0.5^{10} = 0.9999990463256836
+\]
+Of course all the above is based on the assumption that there is
+a Fermat witness $a$ such that $\gcd(a, n) = 1$.
+You are out of luck if $n$ is a Carmichael number.
+You can think of Carmichael numbers as extreme failure cases of Fermat
+primality test.
+
+The question is how common are Carmichael numbers?
+Carmichael numbers are very rare.
+At this point, we know that the density of Carmichael numbers
+is about 1 in 50 trillion = $5 \times 10^{13}$.
+
+\begin{eg}
+In the following, we obtain a random integer with 10 digits
+and found a Fermat witness with one try:
+\begin{Verbatim}[fontsize=\footnotesize,frame=single]
+import random; random.seed()
+d = 10
+n = random.randrange(10**(d - 1), 10**d)
+print(n)
+for i in range(20):
+    a = random.randrange(2, n - 1)
+    b = (pow(a, n - 1, n) != 1)
+    print(i, a, b)
+    if b: break
+\end{Verbatim}
+The output is
+\begin{Verbatim}[fontsize=\footnotesize,frame=single]
+1151731626
+0 869958907 True
+\end{Verbatim}
+Fermat primality test says that 1151731626 is composite with only one try.
+In fact $1151731626 = 2 \cdot 3 \cdot 19 \cdot 10102909$.
+\end{eg}
+
+\begin{eg}
+Here's another run of the above code where no Fermat witness was found
+after 20 tries:
+\begin{Verbatim}[fontsize=\footnotesize,frame=single,commandchars=\\\{\}]
+\userinput{3584990077}
+0 3295070400 False
+1 3215421426 False
+2 262972142 False
+3 1050903352 False
+4 152804132 False
+5 1015451650 False
+6 885960417 False
+7 720561088 False
+8 1694137561 False
+9 2065337998 False
+10 3345601994 False
+11 1535607663 False
+12 3183174792 False
+13 1772850385 False
+14 2569697199 False
+15 948739551 False
+16 2148646472 False
+17 1640965445 False
+18 2024258764 False
+19 3229113680 False
+\end{Verbatim}
+No Fermat witness was found after 20 tries.
+Fermat primality test would return \lq\lq probably a prime".
+In fact $3584990077$ is prime.
+In this case $3584990077$ is small enough that a brute force
+prime testing by brute force division can be used.
+\end{eg}
+
+\input{exercises/rsa-23/main.tex}
+\input{exercises/rsa-24/main.tex}
+\input{exercises/rsa-25/main.tex}
+
+The following is a major theorem on Carmichael numbers:
+
+\begin{thm} \textnormal{(\defone{Koselt's Theorem} 1899)}
+  Let $n$ be a positive integer.
+  Then $n$ is a Carmichael number iff $n$ is odd, squarefree, and
+  if $p \mid n$, then $p-1 \mid n-1$.
+\end{thm}
+\proof
+Omitted.
+\qed
+
+The conditions on $n$ in the above theorem is frequently called
+\defone{Koselt's criterion}.
+
+\begin{eg}
+Consider 561.
+From the above second table, we know that 561 is a Carmichael.
+Also, as mentioned earlier \v{S}imerka was the first to discover this
+Carmichael number.
+561 is small and can be easily factorized: $561 = 3 \cdot 11 \cdot 17$.
+Note that 561 is odd and squarefree.
+Furthermore $2 \mid 560$, $10 \mid 560$, and $16 \mid 560$.
+Therefore $561$ satisfies Koselt's criteria and therefore
+$561$ is a Carmichael number.
+\end{eg}
+
+\input{exercises/rsa-26/main.tex}
+
+Although Koselt proved his theorem in 1899,
+he never mention any Carmichael number in his publications.
+
+\begin{cor} \textnormal{(Cernick 1939)}\label{cor:cernick}
+  If $6k + 1$, $12k + 1$, and $18k + 1$ are all primes, then the product
+  $(6k + 1)(12k + 1)(18k + 1)$ is a Carmichael number.
+\end{cor}
+\proof
+Let $n = (6k + 1)(12k + 1)(18k + 1) = 6 \cdot 12 \cdot 18 \cdot k^3
++ (6 \cdot 12 + 6 \cdot 18 + 12 \cdot 18)k^2
++ (6 + 12 + 18)k
++ 1$.
+$n$ is clearly odd and since $n$ is a product of three distinct primes,
+$4n$ is clearly squarefree.
+Note that
+$n - 1 = (6k + 1)(12k + 1)(18k + 1) = 6 \cdot 12 \cdot 18 \cdot k^3
++ (6 \cdot 12 + 6 \cdot 18 + 12 \cdot 18)k^2
++ (6 + 12 + 18)k$.
+Clearly
+$6k \mid n - 1$,
+$12k \mid n - 1$,
+$18k \mid n - 1$.
+Therefore by Korselt's Theorem, $n$ is a Carmichael number.
+\qed
+
+\input{exercises/rsa-27/main.tex}
+\input{exercises/rsa-28/main.tex}
+\input{exercises/rsa-29/main.tex}

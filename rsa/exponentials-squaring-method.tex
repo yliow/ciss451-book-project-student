@@ -1,0 +1,159 @@
+\sectionthree{Exponentiation: the squaring method}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+See CISS358. Skip this section if you have taken CISS358.
+
+Note that for RSA we need to compute powers. Extremely large
+powers.
+The obvious method: If $n > 0$,
+\[
+a^n = a^{n-1} \cdot a
+\]
+has a runtime of $O(n)$ (in fact $\Theta(n)$) of multiplications.
+If the exponentiation is in mod $N$, then
+you take mod $N$ after each multiplication to previous
+the $a^k$ from becoming too huge, i.e.,
+\[
+a^k = a^{k-1} \cdot a \pmod{N}
+\]
+
+There's a much faster way to compute exponentiation.
+
+First I will describe it using recursion:
+\[
+a^n =
+\begin{cases}
+  1 & n = 0 \\
+  \left( a^{n/2} \right)^2 & n > 0 \text{ and $n$ is even} \\
+  a \cdot \left( a^{(n - 1)/2} \right)^2 & n > 0 \text{ and $n$ is odd} \\
+\end{cases}
+\]
+Here, $n \geq 0$.
+
+\begin{eg}
+Here's an example to compute $2^{27}$
+\begin{enumerate}[nosep]
+\item $2^{27} = 2 \cdot \left( 2^{13} \cdot 2^{13} \right) $
+\item $2^{13} = 2 \cdot \left( 2^{6} \cdot 2^{6} \right) $
+\item $2^6 = \left( 2^3 \cdot 2^3 \right)$
+\item $2^3 = 2 \cdot \left( 2^1 \cdot 2^1 \right)$
+\item $2^1 = 2 \cdot \left( 2^0 \cdot 2^0 \right) = 2 \cdot \left( 1 \cdot 1 \right)$
+\end{enumerate}
+\end{eg}
+
+It's easy to write an algorithm implementing the above:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: power
+INPUTS: a, n where n >= 0
+
+if n == 0:
+    return 1
+else:
+    if n is even: 
+        x = power(a, n / 2)
+        return x * x
+    else:
+        x = power(a, (n - 1) / 2)
+        return a * x * x
+\end{Verbatim}
+The number of recursions is $O(\lg n)$ where the main
+cost of each recursion step is either one or two multiplications.
+
+This above recursion can be rewritten using a loop.
+Suppose you want to compute $a^x$.
+First you write $x$ as a binary number:
+\[
+x = (x_k\cdots x_0)_2 = x_k 2^k + \ldots + x_12^2 + x_02^0
+\]
+where each $x_i$ is $0$ or $1$.
+As an example suppose we look at
+\[
+x = 27 = (11011)_2 =  1 \cdot 2^4 + 1 \cdot 2^3 + 0 \cdot 2^2 + 1 \cdot 2^1 + 1 \cdot 2^0
+\]
+Then
+\[
+a^{27} \equiv a^{1 \cdot 2^4 + 1 \cdot 2^3 + 0 \cdot 2^3 + 1 \cdot 2^1 + 1 \cdot 2^0} \equiv a^{2^4}a^{2^3}a^{2^1}a^{2^0}
+\]
+Notice that the computation of $a^{27}$ on the right
+depends on $a^{2^0},a^{2^1},a^{2^2},...$
+In general $a^{2^{i+1}} = (a^{2^i})^2$.
+In the following $b$ runs through $a^{2^0},a^{2^1},a^{2^2},...$.
+Notice that $a^{2^i}$ is included in $a^{27}$ if the $i$--th bit of $x$ is $1$.
+Instead of pre-computing the bits of $x$, we can compute the $i$--th bit
+iteratively as the exponentiation is computed.
+In the following $p$ runs through the partial products of $a^{2^0},a^{2^1},a^{2^2},...$,
+picking up $a^{2^i}$ if the $i$--th bit of $n$ is $1$.
+In this case, $p$ and $b$ will run through the following values:
+\begin{align*}
+p = 1                                                         & \hspace{1cm} b = a = a^{2^0} \\
+p = p \cdot b = a^{2^0}                                        & \hspace{1cm} b = b \cdot b = a^{2^1}\\
+p = p \cdot b = a^{2^0} \cdot a^{2^1}                            & \hspace{1cm} b = b \cdot b = a^{2^2}\\
+                                                              & \hspace{1cm} b = b \cdot b = a^{2^3} \\
+p = p \cdot b = a^{2^0} \cdot a^{2^1} \cdot a^{2^3}               & \hspace{1cm} b = b \cdot b = a^{2^4} \\
+p = p \cdot b = a^{2^0} \cdot a^{2^1} \cdot a^{2^3}  \cdot a^{2^4} & \hspace{1cm} b = b \cdot b = a^{2^5}
+\end{align*}
+Here's the algorithm:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: power
+INPUTS: a, n where n >= 0
+OUTPUT: a^n
+
+p = 1
+b = a
+
+while n is not 0:
+    bit = n % 2
+    n = n / 2 (integer division)
+    if bit == 1:
+        p = p * b
+    b = b * b
+
+return p    
+\end{Verbatim}
+
+And if the exponentiation is done in mod $N$, then we just
+mod by $N$ as frequently as we can:
+\begin{Verbatim}[frame=single,fontsize=\footnotesize]
+ALGORITHM: power-mod
+INPUTS: a, n, N where n >= 0 and N is the modulus
+OUTPUT: (a^n) % N
+
+p = 1
+b = a % N
+while n is not 0:
+    if n % 2 == 1:
+        p = (p * b) % N
+    n = n // 2 
+    b = (b * b) % N
+return p    
+\end{Verbatim}
+
+The number of iterations is the number of bits of $n$, i.e.,
+the number of iterations is $\floor{\lg n + 1}$ ($\lg = \log_2$).
+Each iteration in the worse case scenario involves
+two mod $N$ multiplications.
+Hence the runtime time is
+\[
+O((\lg n) \cdot M)
+\]
+where $M$ is the runtime for multiplication of two integers in $\Z/N$.
+(In the case when we are performing exponentiation without mod $N$,
+the length of the integer \verb!p! in the above increases.
+In that case the factor $M$ for the runtime of multiplication increases.)
+
+
+To include the case of negative exponent, when $a$ is a real number
+\[
+a^{-n} = (a^{-1})^n
+\]
+and for mod $N$, if $a$ is invertible,
+\[
+a^{-n} = (a^{-1})^n \pmod{N}
+\]
+
+\input{exercises/rsa-15/main.tex}
+\input{exercises/rsa-16/main.tex}
+\input{exercises/rsa-17/main.tex}
+

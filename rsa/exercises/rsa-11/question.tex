@@ -1,0 +1,17 @@
+\tinysidebar{\debug{exercises/{rsa-11/question.tex}}}
+  You now have everything you need to write a python program to
+  generate RSA keys (both private and public).
+  Allow the user to specify the bit length of the key (that means 
+  the bit length of $N$) and the number of rounds of Miller-Rabin.
+  Default the bit length to 4096 and the number of rounds of Miller-Rabin to 128.
+  You can choose your $p$ and $q$ this way:
+  Assume $p$ and $q$ have $n/2$ bits each where $n$ is the bitlength of $N$.
+  Put random bits into $p$ and $q$.
+  Obvously you want $p$ and $q$ to be odd and if you want $p$ to be $n/2$ bits
+  then the $n/2$--order bit can't be 0.
+  You then test if the $p$ and $q$ are prime using Miller-Rabin.
+  You can also hard-code the testing for divisibility with a small number of primes:
+  say the first 1,000,000 primes.
+  
+  Next, test your RSA by encrypting and decrypting an integer $M$ that is $< N$.
+  (There are other conditions on the various quantities to make your RSA key generator more secure.)

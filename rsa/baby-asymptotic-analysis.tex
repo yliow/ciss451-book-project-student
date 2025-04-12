@@ -1,0 +1,303 @@
+\sectionthree{Baby Asymptotic Analysis}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+The mathematical technology used to measure the speed of an algorithm is
+called asymptotic analysis.
+I'm not going to explain everything in asymptotic analysis.
+I'll only give you enough to move forward.
+(By the way this area of math was created by people in the area of
+number theory.)
+
+Let's look at a simple problem first.
+Suppose you're given two 3-digit numbers to add, say you want to do
+$123 + 234$.
+This is what you would do:
+\begin{Verbatim}[frame=single]
+        1 2 3
+    +   3 6 9
+    ---------
+        4 9 2 
+    ---------
+\end{Verbatim}
+The mount of work done involves reading two digits for each column,
+computing the digit sum, which gives two numbers (remember you need to
+compute the carry too, right?) the sum mod 10 and sum / 10.
+For instance for the first column (the leftmost one), you do
+\begin{Verbatim}[frame=single]
+    3 +  9 = 12
+   12 % 10 = 2
+   12 / 10 = 1
+\end{Verbatim}
+Once that's done you write down:
+\begin{Verbatim}[frame=single]
+          1
+        1 2 3
+    +   3 6 9
+    ---------
+            2 
+    ---------
+\end{Verbatim}
+Correct? You then go on to the second column and do this:
+\begin{Verbatim}[frame=single]
+   1 + 2 + 6 = 9
+   9 % 10 = 9
+   9 / 10 = 0
+\end{Verbatim}
+and you write this:
+\begin{Verbatim}[frame=single]
+        0 1
+        1 2 3
+    +   3 6 9
+    ---------
+          9 2 
+    ---------
+\end{Verbatim}
+and so on.
+
+Note that what you do is the same for each column.
+The first column is kind of different because you don't have 
+to worry about any carry at all.
+However to make the first column like the rest, you can create an
+initial carry of 0 too:
+\begin{Verbatim}[frame=single]
+            0
+        1 2 3
+    +   3 6 9
+    ---------
+       
+    ---------
+\end{Verbatim}
+Why would you do that?
+Well ... it make the algorithm more uniform.
+But in any case for each column, you basically perform the following
+work:
+\begin{Verbatim}[frame=single]
+   0 + 3 + 9 = 12
+   12 % 10 = 1
+   12 / 10 = 1
+\end{Verbatim}
+Of course you also have to read the digits
+(think of this as work done reading the piece of paper), 
+write the digits on the piece of paper.
+Suppose it takes times $t_1$ to do all that for each column.
+
+There are 3 columns. 
+Therefore when you're done with all the column operations, you would have
+used up this amount of time:
+\[
+3 \cdot t_1
+\]
+There was actually one step you did by putting a zero as an initial carry:
+\begin{Verbatim}[frame=single]
+            0
+        1 2 3
+    +   3 6 9
+    ---------
+           
+    ---------
+\end{Verbatim}
+Let's say this takes time $t_0$. 
+So the total time is
+\[
+3 \cdot t_1 + t_0
+\]
+Don't forget that once you're done with the 3 columns, you have a carry
+beyond the 3rd column:
+\begin{Verbatim}[frame=single]
+      0 0 1 0
+        1 2 3
+    +   3 6 9
+    ---------
+        4 9 2 
+    ---------
+\end{Verbatim}
+You can put the 0 down on the fourth column:
+\begin{Verbatim}[frame=single]
+      0 0 1 0
+        1 2 3
+    +   3 6 9
+    ---------
+      0 4 9 2 
+    ---------
+\end{Verbatim}
+or just leave it blank.
+Suppose the time to put it down or not put it down is $t_2$.
+So the total time is
+\[
+3 \cdot t_1 + t_0 + t_2
+\]
+
+It should be clear that if you have two $n$--digit numbers,
+the time needed is
+\[
+n \cdot t_1 + t_0 + t_2
+\]
+Now someone who writes faster, reads faster, compute addition or quotient
+or mod 10 faster might do it in time
+\[
+n \cdot t'_1 + t'_0 + t'_2
+\]
+However the $n$ doesn't go away.
+In the long run, it's $n$ can controls the growth of this function.
+If someone were to invent a different addition algorithm that runs
+with this time:
+\[
+\frac{1}{2} n \cdot t''_1 + t''_0 + t''_2
+= n \cdot \frac{t''_1}{2} + t''_0 + t''_2
+\]
+then it's really the same as the previous one.
+Why?
+Because all you need to do is to hire someone who can read and write and
+perform digit addition, digit mod 10, digit / 10 extremely fast so that
+you $t_1$ is much smaller than the $\frac{t''_1}{2}$
+and $t_0 + t_2$ much smaller than his $t''_0 + t''_2$.
+
+Not only that ...
+if $n$ is really huge, it's clear that 
+the $n \cdot t_1$ is going to overcome the
+$t_0 + t_2$ part.
+
+And if we are concerned about the speed of our algorithm,
+obviously we worry about the case when $n$ (the number of digits)
+is huge.
+After all ... who cares that much about addition of 3 digits?
+What we should worry about is what happens when
+we apply our method to the addition of two 1000000-digit numbers.
+If you look at for instance
+\[
+n^2 + 1000000n
+\]
+and 
+\[
+n^2
+\]
+when $n$ is small (say 3), the $1000000n$ is huge.
+But if you think about $n = 10^{1000}$, you see that $n^2 + 1000000n$
+and $n^2$ are actually very close.
+(Take out your graphing calculator and try zooming out
+the graphs of $y = x^2$ and $y = x^2 + 1000000x$ to check
+that I'm not lying.)
+
+This tells us that really the function to focus on when
+measuring algorithm runtime performance is actually
+\[
+n
+\]
+and not
+\[
+n \cdot t_1 + t_0 + t_2
+\]
+
+That's the whole point of asymtotic analysis.
+(Well ... there's a lot more ... but that's enough for
+\textit{ us} ...)
+
+To say that we're ignoring the constants and focusing on the 
+part that controls the growth of the function
+\[
+n \cdot t_1 + t_0 + t_2
+\]
+we write
+\[
+n \cdot t_1 + t_0 + t_2 = O(n)
+\]
+That's called the \lq\lq big-$O$ of n''.
+
+Let's look at what's called \lq\lq high school multiplication algorithm''.
+Suppose you're given two 3-digit numbers to multiply.
+Say $123$ and $234$.
+You would do this:
+\begin{samepage}
+\begin{Verbatim}[frame=single]
+        1 2 3
+    x   2 3 4
+    ---------
+        4 9 2
+      3 6 9
+  + 2 4 6
+  -----------
+    2 8 7 8 2
+  -----------
+\end{Verbatim}
+\end{samepage}
+It's easy to see that there are 9 digits to compute in the 
+\lq\lq mid-section'' of the computation:
+\begin{samepage}
+\begin{Verbatim}[frame=single]
+        1 2 3
+    x   2 3 4
+    ---------
+        4 9 2
+      3 6 9
+  + 2 4 6
+  -----------
+    
+  -----------
+\end{Verbatim}
+\end{samepage}
+Then the 3 rows are added up.
+
+Using this method, how much time does it take to compute the 
+product of two $n$--digit integers?
+There are $n \times n$ numbers to compute in the mid-section.
+So the midsection requires 
+\[
+O(n^2)
+\] 
+Note that the numbers you get contain integers of length about $2n$.
+There are $n$ such numbers.
+Adding two $2n$-digit numbers takes $O(2n)$ time.
+But remember that we ignore constants.
+So adding two of the $2n$-digit numbers take 
+\[
+O(n)
+\] 
+times.
+Given $n$ such numbers, you need to perform $n-1$ additions.
+So altogether the time is
+\[
+O((n-1)n)
+\]
+Now look at the function
+\[
+(n-1)n
+\]
+This is
+\[
+(n-1)n = n^2 - n
+\]
+The worse part of the function (the part that grows the fastest)
+is $n^2$.
+Therefore
+\[
+O((n-1)n) = O(n^2)
+\]
+Now the computation of the midsection takes $O(n^2)$ and the
+addition part takes $O(n^2)$.
+Together it would take $O(2n^2)$.
+But again we ignore constants.
+So the time taken is $O(2n^2) = O(n^2)$.
+
+Hence the worse case runtime performance of the 
+\lq\lq high school multiplication algorithm'' is $O(n^2)$.
+
+This standard multiplication
+algorithm has been used for a very very very very long time.
+
+Can we do better?
+
+Before we leave this section, note that
+I've already said that addition runs in $O(n)$.
+You can't do better than that.
+Why?
+Well ... you have to at least read the two $n$--digit numbers, right?
+Reading them takes about $n + n$ time, which is $2n$, which is $O(n)$.
+So there's no way you can beat that.
+Hey ... you have to at least read what to add, right?!?!
+
+\newpage
+
+
+

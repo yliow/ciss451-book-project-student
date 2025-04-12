@@ -1,0 +1,119 @@
+\sectionthree{Carmichael function}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+\begin{defn}
+  The \defone{multiplicative order} of $a$ mod $n$, if it exists,
+  is the smallest positive integer $k$
+  such that $a^k \equiv 1 \pmod{n}$.
+\end{defn}
+
+Some values might not have multiplicative order.
+For instance $0^k$ is not $\equiv 1 \pmod{n}$ for all $k$.
+Recall that 
+$a$ has a multiplicative inverse mod $n$
+iff $a^k \equiv 1 \pmod{n}$ for some $k > 0$.
+
+Recall Euler's theorem: If $\gcd(a, n) = 1$, then
+\[
+a^{\phi(n)} \equiv 1 \pmod{n}
+\]
+Is $\phi(n)$ the best possible in the sense that $\phi(n)$ gives you
+the smallest for the above to be true?
+
+For instance when $n = 2$, $\phi(2) = 1$ which is the smallest
+possible positive integer to satisfy
+\[
+a^{\phi(n)} \equiv 1 \pmod{n}
+\]
+For $n = 3$, $\phi(3) = 2$ and
+\begin{align*}
+  1^1 \equiv 1, \,\,\, 2^1 \equiv 2 \pmod{3} \\
+  1^2 \equiv 1, \,\,\, 2^2 \equiv 1 \pmod{3}
+\end{align*}
+So $\phi(3) = 2$ is the smallest for
+\[
+a^{\phi(n)} \equiv 1 \pmod{n}
+\]
+to be true for both $a = 1$ and $a = 2$.
+Etc.
+But when you reach $n = 8$ when $\phi(8) = 4$,
+if $\gcd(a, 8) = 1$, then $a = 1, 3, 5, 7$ and
+\begin{align*}
+  1^2 &\equiv 1 \pmod{8} \\
+  3^2 &\equiv 1 \pmod{8} \\
+  5^2 &\equiv 1 \pmod{8} \\
+  7^2 &\equiv 1 \pmod{8}
+\end{align*}
+and $2 < 4$ (in fact $2 \mid 4$).
+In other words $2$ satisfies
+\[
+a^2 \equiv 1 \pmod{8}
+\]
+for all $a$ such that $\gcd(a, 8) = 1$.
+Of course we know from Euler's theorem that
+\[
+a^{\phi{(8)}} \equiv 1 \pmod{8}
+\]
+and $\phi(8) = 4$.
+Clearly 
+\[
+a^2 \equiv 1 \pmod{8}
+\implies
+a^4 \equiv 1 \pmod{8}
+\]
+Let's write $\lambda(8) = 4$.
+In general:
+
+\begin{defn}
+  Define the
+  \defone{Carmichael function}
+  \[
+  \lambda(n)
+  \]
+  to be the $\operatorname{LCM}$ (lowest common multiple)
+  of the multiplicative order of $a$ mod $n$
+  for all $a \in \{1, 2, ..., n\}$
+  satisfying $\gcd(a, n)$.
+  The multiplicative order of $a$ is the smallest positive integer $k$
+  such that $a^k \equiv 1 \pmod{n}$.
+\end{defn}
+
+In other words, $\lambda(n)$ is \lq\lq almost" $\phi(n)$.
+
+\begin{thm}
+  \mbox{}
+  \begin{enumerate}[nosep]
+  \item[\textnormal{(a)}]
+    $\lambda(mn) = \lambda(m) \lambda(n)$ if $\gcd(m,n) = 1$.
+  \item[\textnormal{(b)}]
+    Let $p$ be a prime and $k \geq 0$. Then
+    \[
+    \lambda(p^k)
+    =
+    \begin{cases}
+      \phi(p^k) & \text{ if $p > 2$ } \\
+      \phi(p^k) & \text{ if $p = 2, k = 0, 1, 2$ } \\
+      \frac{1}{2} \phi(p^k) & \text{ if $p = 2, k \geq 3$ } \\      
+    \end{cases}
+    \]
+  \end{enumerate}
+\end{thm}
+
+\begin{thm}
+  \mbox{}
+  \begin{enumerate}[nosep]
+  \item[\textnormal{(a)}] Let $\gcd(a, n) = 1$, if $a^k \equiv 1 \pmod{n}$, then
+    $k \mid \lambda(n)$.
+  \item[\textnormal{(b)}] If
+    \[
+    a^k \equiv 1 \pmod{n} \,\,\, \text{ for all $\gcd(a, n) = 1$}
+    \]
+    then
+    \[
+    \lambda(n) \mid k
+    \]
+  \item[\textnormal{(c)}] $\lambda(n) \mid \phi(n)$.
+  \end{enumerate}
+\end{thm}

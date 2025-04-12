@@ -1,0 +1,171 @@
+\sectionthree{Miller-Rabin primality test}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+Fermat Little Theorem says this:
+Let $a \in [2, n - 2]$.
+\[
+\text{$n$ is prime} \implies a^{n-1} \equiv 1 \pmod{n}
+\]
+The basis of Fermat primality test is
+\[
+\text{$n$ is not prime} \impliedby a^{n-1} \not\equiv 1 \pmod{n}
+\]
+We can a say bit more.
+Again we have
+\[
+\text{$n$ is prime} \implies a^{n-1} \equiv 1 \pmod{n}
+\]
+Suppose $n - 1 = 2^k m$ with $k \geq 0$ and $2 \nmid m$.
+Then we have
+\[
+\text{$n$ is prime} \implies a^{2^k m} \equiv 1 \pmod{n}
+\]
+Now note that
+\[
+a^{2^k m} = (a^m)^{2^k}
+\]
+This can be computed as a sequence of squares.
+For instance if $k = 3$, then
+\[
+a^{2^3 m} = (a^m)^{2^3} = (((a^m)^2)^2)^2 
+\]
+Note that following fact:
+
+\begin{prop}
+  If $p$ is a prime and $x^2 \equiv 1 \pmod{p}$ then $x \equiv \pm 1 \pmod{p}$.
+\end{prop}
+\proof
+TODO
+\qed
+
+Applying this proposition to $x^2 = (a^m)^{2^k}$, we have the following fact:
+if $n$ is prime, and $k > 0$, then
+\[
+(a^m)^{2^k} \equiv 1 \pmod{n} \implies (a^m)^{2^{k - 1}} \equiv \pm 1 \pmod{n}
+\]
+And if
+\[
+(a^m)^{2^{k - 1}} \equiv 1 \pmod{n}
+\]
+then
+\[
+(a^m)^{2^{k - 2}} \equiv \pm 1 \pmod{n}
+\]
+Etc.
+
+All in all, assuming $n$ is prime,
+writing $n - 1$ as $2^k m$ where $2^k$ is the highest
+power of $2$ dividing $n - 1$, then the sequence
+\begin{align*}
+  & (a^m)^{2^0} \pmod{n} \\
+  & (a^m)^{2^1} \pmod{n} \\
+  & (a^m)^{2^2} \pmod{n} \\
+  & \vdots \\
+  & (a^m)^{2^{k-2}} \pmod{n} \\
+  & (a^m)^{2^{k-1}} \pmod{n} \\
+  & (a^m)^{2^k} \pmod{n}
+\end{align*}
+either the whole sequence is 1s or it
+ends with a sequence of 1s (of length $\geq 1$)
+and before this sequence there is a $-1$.
+For instance if $k = 5$, the above sequence is a sequence of 6 numbers
+and here are some possibilities:
+\begin{enumerate}[nosep]
+\li The last three numbers might be $-1, 1, 1 \pmod{n}$ (the first three are not -1 and not 1).
+\li Or the last two might be $-1, 1 \pmod{n}$ (the first four are not -1 and not 1).
+\li Or all 6 might be $1, 1, 1, 1, 1, 1 \pmod{n}$.
+\end{enumerate}
+Of course if $k = 0$, then there is only one number in the sequence and that number is $1 \pmod{n}$.
+In general, the above is a sequence of $k + 1$ numbers
+and ends with $1$s of length $\geq 1$ or ends with $-1$ followed by $1$s of length $\geq 1$.
+
+Miller-Rabin primality test is similar to Fermat prime test.
+For an integer $n$, we compute $m$ and $k$ such that $n - 1 = 2^k \cdot m$.
+We randomly pick an $a$ in $[2, n-2]$
+look at the values
+\begin{align*}
+  &a^m \pmod{n} \\
+  &a^{2m} \pmod{n} \\
+  &a^{2^2m} \pmod{n} \\
+  &a^{2^3m} \pmod{n} \\
+  &\vdots \\
+  &a^{2^{k-2} m} \pmod{n} \\
+  &a^{2^{k-1} m} \pmod{n} \\
+  &a^{2^k m} \pmod{n}
+\end{align*}
+and if they are all 1s (i.e., the first is 1)
+or ends with $-1,1,1,...1$, the algorithm (i.e., there's a $-1$)
+returns \verb!"n is probably prime"!.
+Otherwise it returns \verb!"n is composite"!.
+The difference is Fermat primality test only looks at the last value.
+
+\begin{eg}
+As an example, note that $n = 561$ is a Carmichael number.
+Fermat primality test reports $n$ as probably prime even though it is
+a composite.
+Using Miller-Rabin primality test, first $n - 1 = 560 = 35 \cdot 2^4$.
+Let us use $a = 2$.
+\begin{align*}
+  2^{35}        &\equiv 263 \pmod{561} \\
+  (2^{35})^2    &\equiv (263)^2 \equiv 166 \pmod{561} \\
+  (2^{35})^{2^2} &\equiv (166)^2 \equiv 67 \pmod{561} \\
+  (2^{35})^{2^3} &\equiv (67)^2 \equiv 1 \pmod{561} \\
+  (2^{35})^{2^4} &\equiv (1)^2 \equiv 1 \pmod{561}
+\end{align*}
+The sequence is $263, 166, 67, 1, 1$.
+And we see that $n$ cannot be prime, because if $n$ is prime, from line 3 above
+\[
+(2^{35})^{2^3} \equiv 1 \pmod{561}
+\]
+the previous line should have been $\pm 1 \pmod{561}$, but it is not.
+Therefore Miller-Rabin primality test will report $561$ as composite.
+\end{eg}
+
+One can define
+Miller-Rabin pseudoprimes (usually called \defone{strong pseudoprimes}),
+Miller-Rabin witness,
+and
+Miller-Rabin liar.
+While the failure case of Fermat primality test is on the average
+less than 1/2, the
+failure case of Miller-Rabin is less than 1/4.
+
+Here's the Miller-Rabin primality test algorithm:
+
+\newcommand\mathmode[1]{$ #1 $}
+\begin{smallconsole}[commandchars=\\\{\}]
+ALGORITHM: Miller-Rabin-primality-test
+INPUTS: n -- integer to be tested for primeness/compositeness
+        t -- number of passes
+
+compute k and odd m such that n - 1 = 2^k * m
+for pass = 1, 2, 3, ..., t:
+    randomly select a in [2, n - 2]
+    if Miller-Rabin-one-pass(n, k, m, a) returns "n is composite":
+        return "n is a composite"
+return "n is probably a prime"
+
+
+ALGORITHM: Mill-Rabin-one-pass
+INPUTS: n, k, m where n - 1 = 2^k * m
+        a
+OUTPUT: "n is composite" or "n is probably prime"
+       
+let b \mathmode{\equiv} a^m (mod n)
+if b \mathmode{\equiv} 1 (mod n):
+    return "n is probably prime"
+for i = 0, 1, 2, ..., k - 1:
+    if b \mathmode{\equiv} -1 (mod n):
+        return "n is probably prime"
+    b \mathmode{\equiv} b^2 (mod n)
+return "n is composite"
+\end{smallconsole}
+
+\input{exercises/rsa-00/main.tex}
+\input{exercises/rsa-01/main.tex}
+\input{exercises/rsa-02/main.tex}
+
+
+

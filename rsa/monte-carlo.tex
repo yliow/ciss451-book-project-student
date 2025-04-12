@@ -1,0 +1,65 @@
+\sectionthree{Monte-Carlo algorithms}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+As noted earlier, Fermat and Miller--Rabin prime testing algorithm
+are probabilitic algorithm in the sense that if the
+return value is \verb!"n is composite"! then you know for sure $n$ is a
+composite (i.e. not a prime), 
+but if the return value is
+\verb!"n is probably a prime"!,
+then $n$ can be either be a prime or a
+composite.
+This is also called a
+\defterm{Monte-Carlo algorithm}\tinysidebar{Monte-Carlo algorithm}\index{Monte-Carlo algorithm}
+because the result returned is not guaranteed to be true.
+It's also called a \defone{false-biased Monte-Carlo algorithm} because the
+false case (i.e., \verb!"not a prime"! return value) is always correct whereas the
+true case (i.e., is a prime) is only probabilistically true.
+
+There are actually many primality testing algorithms.
+Rabin-Miller is only one of many.
+
+In number theory, there is also a theorem called the Prime Number
+Theorem that gives an estimate on prime distribution. We won't go
+into this because this is extremely technical.
+
+By the way for a long time it was thought that primality test is
+``easy".
+Note that Miller--Rabin prime testing (and other primality tests)
+is easy probabilistically.
+A deterministic polynomial runtime
+primality test was finally discovered and proven only recently
+(2002) by a group of computer scientists, Agrawal, Kayal and Saxena, from India.
+The algorithm is now called the
+\defterm{AKS primality test}\tinysidebar{AKS primality test}\index{AKS primality test}
+algorithm.
+If you want some fancy automata notation, the AKS algorithm
+says that
+\[
+  \mathsc{Primes} \in \mathsc{P}
+\]
+where $\mathsc{Primes}$ denotes the problem (or language) of
+testing for primeness and $\mathsc{P}$
+denotes the class of polynomial runtime problems.
+This $\mathsc{P}$ is the same $\mathsc{P}$ in the famous
+\lq\lq$\mathsc{P} = \mathsc{NP}$'' problem.
+AKS is however not used in real-world applications because the runtime
+is too slow.
+There is current ongoing research on improving the performance
+of this algorithm.
+
+In real-world applications of Miller-Rabin prime testing algorithm,
+to test that a random 2048-bit odd number is a prime,
+using $t = 10$ rounds is usually more than enough.
+
+In 2007, a 1039 bit integer was factored with the number field sieve using
+400 computers over 11 months.
+Nowadays (2019), primes with 2048 bit length is definitely enough -- unless
+someone discovered a new factoring algorithm.
+In RSA--speak, when you hear \lq\lq RSA 1024-bit key'', it means
+the modulus $N = pq$ has 1024 bit.
+That means the bit length of each of the two primes is about 512.
+
+\input{exercises/rsa-13/main.tex}

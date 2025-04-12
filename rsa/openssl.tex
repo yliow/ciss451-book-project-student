@@ -1,0 +1,249 @@
+\sectionthree{OpenSSL}
+\begin{python0}
+from solutions import *; clear()
+\end{python0}
+
+
+  Do this is your bash shell:
+  \begin{console}
+openssl genpkey -algorithm RSA -out private_key.pem \
+    -pkeyopt rsa_keygen_bits:2048
+\end{console}
+And you will get an RSA key. The key is stored in the file \verb!private_key.pem!.
+The utility you are using is openssl.
+Here's an example of the file:
+{\scriptsize
+\begin{console}
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDD4UOgAdmz0G5I
+LGmpxx5DNWclrpINB/bH1aLiFk4lxh85gE83UX3dEirn1PaVxSB4qvMr9dY0yZ8G
+jd7Yj/Bubk0AYhlclWbiRERRWcGigmP/CvJWP7MSarC4sT04QGv0X6+oj64jkM55
+WLApi6jHDprg4Un7LT/IJVZbr2hbmu1D6wPPYN2D1uZpavOskL6+SyYnl5U3EimQ
+M9BO5FM7K7yiRDeOFXCHgfUbh5PULZLc1u/vBdr70WopRwFRTdFdGgAY3cHG3p7d
+CLC+vNl7DaN7JsJFSoyPq5ynok1P16l9AdvnHwzVtkEtk2tYaQeZCjtyuM+3jzQ4
+zQt1Et7tAgMBAAECggEANaii3tVC7vg9DbZk56ZtStn5PKBa0AkLeGi0qxyTIdPp
+P9Y/XRcM1J+ic0mqlxKeN5AU90jr+h/1WVVJ46dipM3AeEdnTS58NaWf1W0yFzOC
+8x3rjub6RiRF7wJWk+9J43LG6vUZLhMADMvXzjm87XK5yLrOimk13L0lsA4YF2eZ
+d+EN/xaop2Olw76PSQkiVseVGKcvZo6lJMxZAgLMUTX5CmWu0U1z8yR/Lgj9CPo4
+KO2iKOhnkePEmR9OiHZ5PRPHb4Wb3CsCniwKqH0xJpAuUVYr532r9yt6rUwotw6E
+OadIcW2e5XICGRUddBhQ4Di3tN89qHVOTic6M0jQwQKBgQDvyjl7/CcyC0/86Gvj
+DDXpr1m4ePSNMyY+Oy5h5S1FB2KNibNLfZp2VYnNX73R63AZQOxNNjCDfHyiBLb2
+NJ7arqjqWH846N0cmSdI7Fpo38kyMKwwq95Zl1PqDhahjoZQSq00iTh2R1YXvGmM
+qRSes8aLO3l3A9KRGIRnuMOTUQKBgQDRHyNzfTPw8TNSLU2QFUpmZ/6XeSjtRKxP
+5dGocZ4YxLb/5FLKZeQCRZWA8ocbllwRFcuI1VgfaSclBCb8ElS76Qw/wWjaYJ/V
+qoZgKCvqtrZKruax2+gB59LjJGRqGf537F3V4qB4QP2tp4glTxiQL9yFr4p8e72R
+REgB05ES3QKBgAT2HjJeiUET0tfcxz6vZf4rzqNufUDeqg/nkZIc987R1EwxaTBK
+rQN9yZgiPv806+DZ4wnF8UMHNFz11ANMG21S59PRePBogQqycImlukkpODR9pVJs
+e/FGnEnfeMBm/ohywxqvLCfmWfWrxFNQvEh8V8NRu7Wmspil9TdgL0vBAoGBAKki
+9DteUnpXu1iFx6v3bFtzVRkSJ6Xv2yYsDOyeKG6D/DbvZn7I9idYPFk0z03iyMgQ
+xrP/Sezt0XlA6H8MHHh3Py75sWKer+fSqihvlUWbTckNuQy1feq8o3aPYp/mMkiw
+Zhyt1XgtqH+hdp4mYQmNjGCb3/ha5LHvdgX0JewJAoGAPT3a1Zb5xPQ6RARQSX2b
+Tk6AXHH7vsuYf18c0KyruUAhbQ6CUTqemz4qY5VnlWmORP277ceb9i+NtiRvm4Rd
+HoyZtvZvZc0zTtIsxYaFU6pPnnexrNgRC7+jCoAqfHeShJ/fNLiHA/Ffy06S6eQV
+Xo8vamqc1SMq2tQegRBEV9s=
+-----END PRIVATE KEY-----
+\end{console}
+}
+You can search for a website that decode PEM file data for you
+and see what is the data stored in this file.
+Here's one: \url{https://lapo.it/asn1js/}.
+To find out which are the primes, etc., you can check the the spec
+at IEFT 
+\url{https://tools.ietf.org/html/rfc2313#section-7.2}:
+{\scriptsize
+\begin{console}
+An RSA private key shall have ASN.1 type RSAPrivateKey:
+
+   RSAPrivateKey ::= SEQUENCE {
+     version Version,
+     modulus INTEGER, -- n
+     publicExponent INTEGER, -- e
+     privateExponent INTEGER, -- d
+     prime1 INTEGER, -- p
+     prime2 INTEGER, -- q
+     exponent1 INTEGER, -- d mod (p-1)
+     exponent2 INTEGER, -- d mod (q-1)
+     coefficient INTEGER -- (inverse of q) mod p }
+\end{console}
+}
+You can also extract the public key from your file:
+{\small
+\begin{console}
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+\end{console}
+}
+which can then be sent to your friend (or a server)
+for communication.
+These files are pretty standard and can be use by
+encryption/decryption programs to perform
+RSA/AES/3DES/... encryption and decryption.
+Or you can execute
+{\small
+\begin{console}
+openssl rsa -in private_key.pem -noout -text
+\end{console}
+}
+Either way, this will display a list of 9 integers.
+The command line gives this output:
+{\scriptsize
+\begin{Verbatim}[frame=single]
+Private-Key: (2048 bit)
+modulus:
+    00:c3:e1:43:a0:01:d9:b3:d0:6e:48:2c:69:a9:c7:
+    1e:43:35:67:25:ae:92:0d:07:f6:c7:d5:a2:e2:16:
+    4e:25:c6:1f:39:80:4f:37:51:7d:dd:12:2a:e7:d4:
+    f6:95:c5:20:78:aa:f3:2b:f5:d6:34:c9:9f:06:8d:
+    de:d8:8f:f0:6e:6e:4d:00:62:19:5c:95:66:e2:44:
+    44:51:59:c1:a2:82:63:ff:0a:f2:56:3f:b3:12:6a:
+    b0:b8:b1:3d:38:40:6b:f4:5f:af:a8:8f:ae:23:90:
+    ce:79:58:b0:29:8b:a8:c7:0e:9a:e0:e1:49:fb:2d:
+    3f:c8:25:56:5b:af:68:5b:9a:ed:43:eb:03:cf:60:
+    dd:83:d6:e6:69:6a:f3:ac:90:be:be:4b:26:27:97:
+    95:37:12:29:90:33:d0:4e:e4:53:3b:2b:bc:a2:44:
+    37:8e:15:70:87:81:f5:1b:87:93:d4:2d:92:dc:d6:
+    ef:ef:05:da:fb:d1:6a:29:47:01:51:4d:d1:5d:1a:
+    00:18:dd:c1:c6:de:9e:dd:08:b0:be:bc:d9:7b:0d:
+    a3:7b:26:c2:45:4a:8c:8f:ab:9c:a7:a2:4d:4f:d7:
+    a9:7d:01:db:e7:1f:0c:d5:b6:41:2d:93:6b:58:69:
+    07:99:0a:3b:72:b8:cf:b7:8f:34:38:cd:0b:75:12:
+    de:ed
+publicExponent: 65537 (0x10001)
+privateExponent:
+    35:a8:a2:de:d5:42:ee:f8:3d:0d:b6:64:e7:a6:6d:
+    4a:d9:f9:3c:a0:5a:d0:09:0b:78:68:b4:ab:1c:93:
+    21:d3:e9:3f:d6:3f:5d:17:0c:d4:9f:a2:73:49:aa:
+    97:12:9e:37:90:14:f7:48:eb:fa:1f:f5:59:55:49:
+    e3:a7:62:a4:cd:c0:78:47:67:4d:2e:7c:35:a5:9f:
+    d5:6d:32:17:33:82:f3:1d:eb:8e:e6:fa:46:24:45:
+    ef:02:56:93:ef:49:e3:72:c6:ea:f5:19:2e:13:00:
+    0c:cb:d7:ce:39:bc:ed:72:b9:c8:ba:ce:8a:69:35:
+    dc:bd:25:b0:0e:18:17:67:99:77:e1:0d:ff:16:a8:
+    a7:63:a5:c3:be:8f:49:09:22:56:c7:95:18:a7:2f:
+    66:8e:a5:24:cc:59:02:02:cc:51:35:f9:0a:65:ae:
+    d1:4d:73:f3:24:7f:2e:08:fd:08:fa:38:28:ed:a2:
+    28:e8:67:91:e3:c4:99:1f:4e:88:76:79:3d:13:c7:
+    6f:85:9b:dc:2b:02:9e:2c:0a:a8:7d:31:26:90:2e:
+    51:56:2b:e7:7d:ab:f7:2b:7a:ad:4c:28:b7:0e:84:
+    39:a7:48:71:6d:9e:e5:72:02:19:15:1d:74:18:50:
+    e0:38:b7:b4:df:3d:a8:75:4e:4e:27:3a:33:48:d0:
+    c1
+prime1:
+    00:ef:ca:39:7b:fc:27:32:0b:4f:fc:e8:6b:e3:0c:
+    35:e9:af:59:b8:78:f4:8d:33:26:3e:3b:2e:61:e5:
+    2d:45:07:62:8d:89:b3:4b:7d:9a:76:55:89:cd:5f:
+    bd:d1:eb:70:19:40:ec:4d:36:30:83:7c:7c:a2:04:
+    b6:f6:34:9e:da:ae:a8:ea:58:7f:38:e8:dd:1c:99:
+    27:48:ec:5a:68:df:c9:32:30:ac:30:ab:de:59:97:
+    53:ea:0e:16:a1:8e:86:50:4a:ad:34:89:38:76:47:
+    56:17:bc:69:8c:a9:14:9e:b3:c6:8b:3b:79:77:03:
+    d2:91:18:84:67:b8:c3:93:51
+prime2:
+    00:d1:1f:23:73:7d:33:f0:f1:33:52:2d:4d:90:15:
+    4a:66:67:fe:97:79:28:ed:44:ac:4f:e5:d1:a8:71:
+    9e:18:c4:b6:ff:e4:52:ca:65:e4:02:45:95:80:f2:
+    87:1b:96:5c:11:15:cb:88:d5:58:1f:69:27:25:04:
+    26:fc:12:54:bb:e9:0c:3f:c1:68:da:60:9f:d5:aa:
+    86:60:28:2b:ea:b6:b6:4a:ae:e6:b1:db:e8:01:e7:
+    d2:e3:24:64:6a:19:fe:77:ec:5d:d5:e2:a0:78:40:
+    fd:ad:a7:88:25:4f:18:90:2f:dc:85:af:8a:7c:7b:
+    bd:91:44:48:01:d3:91:12:dd
+exponent1:
+    04:f6:1e:32:5e:89:41:13:d2:d7:dc:c7:3e:af:65:
+    fe:2b:ce:a3:6e:7d:40:de:aa:0f:e7:91:92:1c:f7:
+    ce:d1:d4:4c:31:69:30:4a:ad:03:7d:c9:98:22:3e:
+    ff:34:eb:e0:d9:e3:09:c5:f1:43:07:34:5c:f5:d4:
+    03:4c:1b:6d:52:e7:d3:d1:78:f0:68:81:0a:b2:70:
+    89:a5:ba:49:29:38:34:7d:a5:52:6c:7b:f1:46:9c:
+    49:df:78:c0:66:fe:88:72:c3:1a:af:2c:27:e6:59:
+    f5:ab:c4:53:50:bc:48:7c:57:c3:51:bb:b5:a6:b2:
+    98:a5:f5:37:60:2f:4b:c1
+exponent2:
+    00:a9:22:f4:3b:5e:52:7a:57:bb:58:85:c7:ab:f7:
+    6c:5b:73:55:19:12:27:a5:ef:db:26:2c:0c:ec:9e:
+    28:6e:83:fc:36:ef:66:7e:c8:f6:27:58:3c:59:34:
+    cf:4d:e2:c8:c8:10:c6:b3:ff:49:ec:ed:d1:79:40:
+    e8:7f:0c:1c:78:77:3f:2e:f9:b1:62:9e:af:e7:d2:
+    aa:28:6f:95:45:9b:4d:c9:0d:b9:0c:b5:7d:ea:bc:
+    a3:76:8f:62:9f:e6:32:48:b0:66:1c:ad:d5:78:2d:
+    a8:7f:a1:76:9e:26:61:09:8d:8c:60:9b:df:f8:5a:
+    e4:b1:ef:76:05:f4:25:ec:09
+coefficient:
+    3d:3d:da:d5:96:f9:c4:f4:3a:44:04:50:49:7d:9b:
+    4e:4e:80:5c:71:fb:be:cb:98:7f:5f:1c:d0:ac:ab:
+    b9:40:21:6d:0e:82:51:3a:9e:9b:3e:2a:63:95:67:
+    95:69:8e:44:fd:bb:ed:c7:9b:f6:2f:8d:b6:24:6f:
+    9b:84:5d:1e:8c:99:b6:f6:6f:65:cd:33:4e:d2:2c:
+    c5:86:85:53:aa:4f:9e:77:b1:ac:d8:11:0b:bf:a3:
+    0a:80:2a:7c:77:92:84:9f:df:34:b8:87:03:f1:5f:
+    cb:4e:92:e9:e4:15:5e:8f:2f:6a:6a:9c:d5:23:2a:
+    da:d4:1e:81:10:44:57:db
+\end{Verbatim}
+}
+Here's a translation from the above to our notation:
+{\small
+\begin{align*}
+\texttt{modulus: } & N = pq               \\     
+\texttt{publicExponent: } & e             \\
+\texttt{privateExponent: } & d            \\
+\texttt{prime1: } & p                     \\
+\texttt{prime2: } & q                     \\
+\texttt{exponent1: } & d \pmod{p - 1} &   \\
+\texttt{exponent2: } & e \pmod{q - 1} &   \\
+\texttt{coefficient: } & q^{-1} \pmod{p}  
+\end{align*}
+}
+In base 10, the first prime $p$ is
+{\scriptsize
+\begin{Verbatim}
+ 1683862219928816349707271349921576008244427712110187331638813164158714
+ 6092027585090051888230585327087065337961823380208709800370390990580252
+ 8722258697154723550189470837399623930362147945843437808281987276857460
+ 8688959338541591277378939013616596683124563104177040476275509113499666
+ 03867461377553068393672971089
+\end{Verbatim}
+}
+while the second prime $q$ is
+{\scriptsize
+\begin{Verbatim}
+ 1468502058733357263533301801667725642866211719712179742781321148035444
+ 6332788830881798130656206247273474356027716965684873288667683801689207
+ 9488242467105914811252659920539476366695782552188898620329151145531549
+ 7121404006845630292860070621021218917792295007556534607746425085044723
+ 36435831750052666953524384477
+\end{Verbatim}
+}
+The modulus $N$ is
+{\scriptsize
+\begin{Verbatim}
+ 2472755136588788012823283243623501709484398222718811159964669228955178
+ 0726001518209955076203415749580212140160361880502461169830232465366367
+ 1996218795720793055101178409956065707059295267698070887972273933143809
+ 1099039519912687661692960509714944550110080756612347182500810089965712
+ 5497185640786642137646341798790334361381408205787804137532050691471480
+ 0849398396065099886053838469464732274927916105465641450996489417150244
+ 0556732311606837485835166684077237851753421465934633294723902781417651
+ 6983375588322606441649133504887969275866982276184004107267665903043195
+ 072291398666071369881349881441299500925076152870541385453
+\end{Verbatim}
+}
+You can verify that $pq$ is indeed $N$.
+
+\input{exercises/rsa-10/main.tex}
+
+\begin{comment}
+s = 'aa:bb'
+s = s.strip().replace('\n', '')
+parts = s.split(':')
+sum = 0
+power = 1
+for i,x in enumerate(parts[::-1]):
+    sum += int(part, 16) * power
+    power *= 256
+\end{comment}
+
+
+\input{exercises/rsa-11/main.tex}
+\input{exercises/rsa-12/main.tex}
+
+%[openssl tutorial?]
+

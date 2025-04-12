@@ -1,0 +1,17 @@
+\contentsline {chapter}{\numberline {1}RSA}{3}{chapter.1}% 
+\contentsline {section}{\numberline {1.1}RSA}{3}{section.1.1}% 
+\contentsline {section}{\numberline {1.2}Implementation issues \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: rsa-implementation-issues.tex}}}}{8}{section.1.2}% 
+\contentsline {section}{\numberline {1.3}Baby Asymptotic Analysis \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: baby-asymptotic-analysis.tex}}}}{9}{section.1.3}% 
+\contentsline {section}{\numberline {1.4}Multiplication: Karatsuba algorithm \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: karatsuba.tex}}}}{15}{section.1.4}% 
+\contentsline {section}{\numberline {1.5}Exponentiation: the squaring method \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: exponentials-squaring-method.tex}}}}{29}{section.1.5}% 
+\contentsline {section}{\numberline {1.6}Inverse in modulo arithmetic \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: inverse-in-modular-arithmetic.tex}}}}{36}{section.1.6}% 
+\contentsline {section}{\numberline {1.7}The Prime Number Theorem and finding primes \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: primality-test.tex}}}}{37}{section.1.7}% 
+\contentsline {section}{\numberline {1.8}Fermat primality test \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: fermat-primality-test.tex}}}}{46}{section.1.8}% 
+\contentsline {section}{\numberline {1.9}Miller-Rabin primality test \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: miller-rabin-primality-test.tex}}}}{74}{section.1.9}% 
+\contentsline {section}{\numberline {1.10}Monte-Carlo algorithms \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: monte-carlo.tex}}}}{81}{section.1.10}% 
+\contentsline {section}{\numberline {1.11}Carmichael function \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: carmichael-function.tex}}}}{84}{section.1.11}% 
+\contentsline {section}{\numberline {1.12}OpenSSL \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: openssl.tex}}}}{86}{section.1.12}% 
+\contentsline {section}{\numberline {1.13}RSA security \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: rsa-security.tex}}}}{94}{section.1.13}% 
+\contentsline {section}{\numberline {1.14}Fermat factorization \textnormal {\relax \fontsize {6}{7}\selectfont {\textnormal {debug: fermat-factorization.tex}}}}{100}{section.1.14}% 
+\contentsline {chapter}{Index}{114}{mylabelcounter.44}% 
+\contentsline {chapter}{Bibliography}{115}{chapter*.12}% 

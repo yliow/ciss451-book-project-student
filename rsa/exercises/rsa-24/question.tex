@@ -1,0 +1,14 @@
+\tinysidebar{\debug{exercises/{rsa-24/question.tex}}}
+  Let $n = 58645563317564309847334478714939069495243200674793$.
+  Prove that $n$ is prime or probably prime in three ways:
+  \begin{enumerate}[nosep,label=\textnormal{(\alph*)}]
+  \item Use division compositeness test.
+    Do a brute force iteration from $2$ to $\sqrt{n}$
+    to locate a potential divisor.
+  \item Use GCD compositeness test.
+    Iterate $a$ from $2$ to $\sqrt{n}$
+    and test if $\gcd(a, n) > 1$.
+  \item
+    Use Fermat primality test with $t = 10$.
+  \end{enumerate}
+
